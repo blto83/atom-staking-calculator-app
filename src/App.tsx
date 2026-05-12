@@ -14,6 +14,7 @@ import {
   HelpCircle,
   AlertTriangle,
 } from 'lucide-react';
+import { SpeedInsights } from '@vercel/speed-insights/react';
 import { PortfolioData, RewardEntry, Transaction } from './types';
 import {
   loadPortfolio,
@@ -507,6 +508,8 @@ export default function App() {
           <Footer onNavigate={(p) => navigateTo(p as Page)} />
         </main>
       </div>
+
+      <SpeedInsights />
 
       {/* Mobile Bottom Navigation */}
       {!isHomePage && <nav className="lg:hidden sticky bottom-0 bg-gray-950/95 backdrop-blur-md border-t border-gray-800/50 z-30">
