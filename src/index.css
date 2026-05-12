@@ -1,0 +1,169 @@
+@import "tailwindcss";
+
+@theme {
+  --color-brand-500: #10b981;
+  --color-cosmos-500: #6c5ce7;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  transition: background-color 0.25s ease, color 0.25s ease;
+}
+
+/* Default (dark) body */
+html.dark body {
+  background-color: #030712;
+  color: #ffffff;
+}
+
+/* Light body */
+html.light body {
+  background-color: #f3f4f6;
+  color: #0f172a;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+html.dark ::-webkit-scrollbar-thumb {
+  background: #374151;
+  border-radius: 3px;
+}
+html.dark ::-webkit-scrollbar-thumb:hover {
+  background: #4b5563;
+}
+html.light ::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 3px;
+}
+html.light ::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* Number input arrows removal */
+input[type='number']::-webkit-inner-spin-button,
+input[type='number']::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+input[type='number'] {
+  -moz-appearance: textfield;
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ========== GLASS CARD ========== */
+.glass-card {
+  background: rgba(15, 23, 42, 0.7);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(99, 102, 241, 0.1);
+}
+html.light .glass-card {
+  background: rgba(255, 255, 255, 0.92);
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04), 0 1px 2px rgba(15, 23, 42, 0.06);
+}
+
+/* ========== LIGHT THEME OVERRIDES ========== */
+/* Tailwind utilities — remap dark-only colors to light equivalents.
+   Specificity: html.light .class beats single .class */
+
+/* Backgrounds */
+html.light .bg-gray-950 { background-color: #f3f4f6 !important; }
+html.light .bg-gray-900 { background-color: #ffffff !important; }
+html.light .bg-gray-900\/95 { background-color: rgba(255, 255, 255, 0.95) !important; }
+html.light .bg-gray-900\/90 { background-color: rgba(255, 255, 255, 0.9) !important; }
+html.light .bg-gray-900\/60 { background-color: rgba(248, 250, 252, 0.7) !important; }
+html.light .bg-gray-900\/40 { background-color: rgba(248, 250, 252, 0.5) !important; }
+html.light .bg-gray-950\/95 { background-color: rgba(255, 255, 255, 0.95) !important; }
+html.light .bg-gray-950\/90 { background-color: rgba(255, 255, 255, 0.92) !important; }
+html.light .bg-gray-800 { background-color: #f1f5f9 !important; }
+html.light .bg-gray-800\/30 { background-color: rgba(241, 245, 249, 0.7) !important; }
+html.light .bg-gray-800\/40 { background-color: rgba(241, 245, 249, 0.85) !important; }
+html.light .bg-gray-800\/50 { background-color: rgba(226, 232, 240, 0.7) !important; }
+html.light .bg-gray-800\/60 { background-color: #ffffff !important; }
+html.light .bg-gray-700 { background-color: #e5e7eb !important; }
+html.light .bg-gray-700\/60 { background-color: rgba(226, 232, 240, 0.8) !important; }
+html.light .bg-gray-600 { background-color: #d1d5db !important; }
+
+html.light .hover\:bg-gray-800:hover { background-color: #e5e7eb !important; }
+html.light .hover\:bg-gray-800\/30:hover { background-color: rgba(226, 232, 240, 0.6) !important; }
+html.light .hover\:bg-gray-800\/50:hover { background-color: rgba(226, 232, 240, 0.8) !important; }
+html.light .hover\:bg-gray-700:hover { background-color: #cbd5e1 !important; }
+html.light .hover\:bg-gray-700\/60:hover { background-color: rgba(203, 213, 225, 0.7) !important; }
+
+/* Text colors */
+html.light .text-white { color: #0f172a !important; }
+html.light .text-gray-300 { color: #1e293b !important; }
+html.light .text-gray-400 { color: #475569 !important; }
+html.light .text-gray-500 { color: #64748b !important; }
+html.light .text-gray-600 { color: #94a3b8 !important; }
+html.light .text-gray-700 { color: #cbd5e1 !important; }
+
+html.light .hover\:text-white:hover { color: #0f172a !important; }
+html.light .hover\:text-gray-200:hover { color: #1e293b !important; }
+html.light .hover\:text-gray-300:hover { color: #334155 !important; }
+
+/* Borders */
+html.light .border-gray-800 { border-color: #e5e7eb !important; }
+html.light .border-gray-800\/50 { border-color: rgba(229, 231, 235, 0.7) !important; }
+html.light .border-gray-700 { border-color: #d1d5db !important; }
+html.light .border-gray-700\/70 { border-color: rgba(209, 213, 219, 0.8) !important; }
+html.light .border-gray-700\/50 { border-color: rgba(209, 213, 219, 0.6) !important; }
+
+/* Brand-tinted utility backgrounds — soften slightly for light mode contrast */
+html.light .bg-cyan-500\/15 { background-color: rgba(6, 182, 212, 0.12) !important; }
+html.light .bg-cyan-500\/10 { background-color: rgba(6, 182, 212, 0.1) !important; }
+html.light .bg-cyan-500\/20 { background-color: rgba(6, 182, 212, 0.15) !important; }
+html.light .bg-emerald-500\/10 { background-color: rgba(16, 185, 129, 0.1) !important; }
+html.light .bg-emerald-500\/20 { background-color: rgba(16, 185, 129, 0.15) !important; }
+html.light .bg-red-500\/10 { background-color: rgba(239, 68, 68, 0.08) !important; }
+html.light .bg-red-500\/20 { background-color: rgba(239, 68, 68, 0.12) !important; }
+html.light .bg-amber-500\/10 { background-color: rgba(245, 158, 11, 0.1) !important; }
+html.light .bg-amber-500\/20 { background-color: rgba(245, 158, 11, 0.15) !important; }
+html.light .bg-indigo-500\/20 { background-color: rgba(99, 102, 241, 0.15) !important; }
+html.light .bg-purple-500\/20 { background-color: rgba(168, 85, 247, 0.15) !important; }
+html.light .bg-gray-500\/20 { background-color: rgba(100, 116, 139, 0.15) !important; }
+
+/* Brand text — keep readable colors against light bg */
+html.light .text-cyan-400 { color: #0891b2 !important; }
+html.light .text-cyan-300 { color: #0e7490 !important; }
+html.light .text-cyan-200 { color: #155e75 !important; }
+html.light .text-emerald-400 { color: #059669 !important; }
+html.light .text-emerald-300 { color: #047857 !important; }
+html.light .text-red-400 { color: #dc2626 !important; }
+html.light .text-red-300 { color: #b91c1c !important; }
+html.light .text-amber-400 { color: #d97706 !important; }
+html.light .text-indigo-400 { color: #4f46e5 !important; }
+html.light .text-purple-400 { color: #9333ea !important; }
+
+/* Gradient bg fixes for ad slots in light mode */
+html.light .from-gray-900\/60 { --tw-gradient-from: rgba(241, 245, 249, 0.7) !important; }
+html.light .via-gray-900\/40 { --tw-gradient-via: rgba(241, 245, 249, 0.5) !important; }
+html.light .to-gray-900\/60 { --tw-gradient-to: rgba(241, 245, 249, 0.7) !important; }
+
+/* Header / nav border on light mode */
+html.light .border-cyan-500\/30 { border-color: rgba(6, 182, 212, 0.4) !important; }
+html.light .border-emerald-500\/20 { border-color: rgba(16, 185, 129, 0.3) !important; }
+html.light .border-emerald-500\/30 { border-color: rgba(16, 185, 129, 0.4) !important; }
+html.light .border-red-500\/30 { border-color: rgba(239, 68, 68, 0.35) !important; }
+html.light .border-amber-500\/20 { border-color: rgba(245, 158, 11, 0.3) !important; }
+html.light .border-cyan-500\/20 { border-color: rgba(6, 182, 212, 0.3) !important; }
