@@ -35,6 +35,14 @@ const FAQS = [
         a: 'Staking rewards are calculated based on three main factors: (1) the amount of ATOM you have staked, (2) the network APR (annual percentage rate), and (3) your validator\'s commission fee. The formula is: Net APR = Gross APR × (1 − Validator Commission%). Your daily reward = Staked Amount × Net APR ÷ 365.',
       },
       {
+        q: 'What is APR vs APY?',
+        a: 'APR is the annual rate before considering compounding. APY is the effective annual return after rewards are compounded. For example, if you restake ATOM rewards daily, your effective return can be higher than the displayed APR because new rewards also start earning rewards.',
+      },
+      {
+        q: 'Are validator commissions included?',
+        a: 'Yes. The calculator includes validator commission when computing net rewards. If gross APR is 18% and validator commission is 5%, the estimated net APR is 17.1% because the validator keeps 5% of the rewards earned.',
+      },
+      {
         q: 'What is validator commission?',
         a: 'Validator commission is the percentage of your rewards that the validator keeps as compensation for running the infrastructure. Typical commissions range from 0% to 10%. A 5% commission means the validator keeps 5% of your gross rewards, and you receive 95%. Lower commission does not always mean better — consider validator uptime, reputation, and community contribution.',
       },
@@ -74,6 +82,10 @@ const FAQS = [
       {
         q: 'Can I use this on mobile?',
         a: 'Absolutely. The calculator is fully responsive and works on desktop, tablet, and mobile browsers. On mobile, you get a bottom navigation bar for easy access to all features.',
+      },
+      {
+        q: 'Is this financial advice?',
+        a: 'No. This website is for informational and educational purposes only. It does not recommend buying, selling, staking, unstaking, or choosing any validator. You are responsible for your own research and decisions.',
       },
     ],
   },

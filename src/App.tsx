@@ -13,6 +13,9 @@ import {
   BookOpen,
   HelpCircle,
   AlertTriangle,
+  Info,
+  Scale,
+  Shield,
 } from 'lucide-react';
 import { PortfolioData, RewardEntry, Transaction } from './types';
 import {
@@ -36,6 +39,9 @@ import SettingsPage from './components/Settings';
 import FAQPage from './components/FAQPage';
 import EducationPage from './components/EducationPage';
 import DisclaimerPage from './components/DisclaimerPage';
+import AboutPage from './components/AboutPage';
+import PrivacyPolicyPage from './components/PrivacyPolicyPage';
+import TermsOfUsePage from './components/TermsOfUsePage';
 import LivePriceBadge from './components/LivePriceBadge';
 import Footer from './components/Footer';
 
@@ -47,8 +53,11 @@ type Page =
   | 'rewards'
   | 'transactions'
   | 'settings'
+  | 'about'
   | 'faq'
   | 'education'
+  | 'privacy'
+  | 'terms'
   | 'disclaimer';
 
 const TOOL_PAGES: Page[] = ['dashboard', 'calculator', 'growth', 'rewards', 'transactions'];
@@ -66,14 +75,42 @@ const NAV_ITEMS: {
   { id: 'growth', label: 'Growth', shortLabel: 'Growth', icon: TrendingUp, section: 'tools' },
   { id: 'rewards', label: 'Rewards', shortLabel: 'Rewards', icon: Gift, section: 'tools' },
   { id: 'transactions', label: 'Transactions', shortLabel: 'Txns', icon: List, section: 'tools' },
+  { id: 'about', label: 'About', shortLabel: 'About', icon: Info, section: 'resources' },
   { id: 'education', label: 'Learn', shortLabel: 'Learn', icon: BookOpen, section: 'resources' },
   { id: 'faq', label: 'FAQ', shortLabel: 'FAQ', icon: HelpCircle, section: 'resources' },
+  { id: 'privacy', label: 'Privacy', shortLabel: 'Privacy', icon: Shield, section: 'resources' },
+  { id: 'terms', label: 'Terms', shortLabel: 'Terms', icon: Scale, section: 'resources' },
   { id: 'disclaimer', label: 'Disclaimer', shortLabel: 'Legal', icon: AlertTriangle, section: 'resources' },
   { id: 'settings', label: 'Settings', shortLabel: 'Settings', icon: SettingsIcon, section: 'resources' },
 ];
 
+const PAGE_PATHS: Record<Page, string> = {
+  home: '/',
+  dashboard: '/dashboard',
+  calculator: '/calculator',
+  growth: '/growth',
+  rewards: '/rewards',
+  transactions: '/transactions',
+  settings: '/settings',
+  about: '/about',
+  faq: '/faq',
+  education: '/learn',
+  privacy: '/privacy-policy',
+  terms: '/terms-of-use',
+  disclaimer: '/disclaimer',
+};
+
+function getPageFromPath(pathname: string): Page {
+  const found = (Object.entries(PAGE_PATHS) as [Page, string][]).find(
+    ([, path]) => path === pathname
+  );
+  return found?.[0] ?? 'home';
+}
+
 export default function App() {
-  const [currentPage, setCurrentPage] = useState<Page>('home');
+  const [currentPage, setCurrentPage] = useState<Page>(() =>
+    getPageFromPath(window.location.pathname)
+  );
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [portfolio, setPortfolio] = useState<PortfolioData>(() => loadPortfolio());
   const [rewards, setRewards] = useState<RewardEntry[]>(() => loadRewards());
@@ -92,6 +129,16 @@ export default function App() {
     saveTransactions(transactions);
   }, [transactions]);
 
+  useEffect(() => {
+    const handlePopState = () => {
+      setCurrentPage(getPageFromPath(window.location.pathname));
+      setSidebarOpen(false);
+    };
+
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
+  }, []);
+
   // Apply theme
   useEffect(() => {
     const root = document.documentElement;
@@ -103,6 +150,67 @@ export default function App() {
       root.classList.add('dark');
     }
   }, [portfolio.theme]);
+
+  useEffect(() => {
+    const meta: Record<Page, { title: string; description: string }> = {
+      home: {
+        title: 'ATOM Staking Calculator & Portfolio Tracker | Free Cosmos Rewards Tool',
+        description: 'Free ATOM staking calculator for Cosmos rewards, validator fees, APR, APY-style compounding, and portfolio projections.',
+      },
+      dashboard: {
+        title: 'ATOM Portfolio Dashboard | ATOM Staking Calculator',
+        description: 'Track ATOM holdings, staked balances, portfolio value, profit and loss, ROI, and live ATOM price locally.',
+      },
+      calculator: {
+        title: 'ATOM Staking Rewards Calculator | Cosmos APR and APY Tool',
+        description: 'Calculate daily, monthly, yearly, simple, and compounded ATOM staking rewards after validator commission.',
+      },
+      growth: {
+        title: 'ATOM Growth Projection Tool | Cosmos Staking Calculator',
+        description: 'Project ATOM staking growth over 30 days, 1 year, 3 years, and 5 years with and without compounding.',
+      },
+      rewards: {
+        title: 'ATOM Reward Tracker | Cosmos Staking Calculator',
+        description: 'Track manual ATOM staking reward claims locally with dates, notes, charts, and CSV export.',
+      },
+      transactions: {
+        title: 'ATOM Transaction Log | Cosmos Portfolio Tracker',
+        description: 'Log ATOM buys, sells, stakes, unstakes, reward claims, and restakes locally in your browser.',
+      },
+      settings: {
+        title: 'Settings | ATOM Staking Calculator',
+        description: 'Manage theme, currency, CSV exports, local data, and privacy settings for the ATOM staking calculator.',
+      },
+      about: {
+        title: 'About | ATOM Staking Calculator & Portfolio Tracker',
+        description: 'Learn the mission behind the ATOM staking calculator and how it helps users understand Cosmos rewards and validator fees.',
+      },
+      faq: {
+        title: 'ATOM Staking FAQ | Cosmos Rewards, APR, APY and Fees',
+        description: 'Beginner-friendly answers about ATOM staking, rewards, APR vs APY, validator commission, wallet connections, and risks.',
+      },
+      education: {
+        title: 'Cosmos ATOM Staking Guide | Learn ATOM Rewards',
+        description: 'Learn how Cosmos ATOM staking works, how to choose validators, understand risks, and compare compounding outcomes.',
+      },
+      privacy: {
+        title: 'Privacy Policy | ATOM Staking Calculator',
+        description: 'Read how the ATOM staking calculator handles local browser data, privacy, live price requests, and wallet safety.',
+      },
+      terms: {
+        title: 'Terms of Use | ATOM Staking Calculator',
+        description: 'Terms for using the ATOM staking calculator, including educational estimates, user responsibility, and no guarantees.',
+      },
+      disclaimer: {
+        title: 'Disclaimer | ATOM Staking Calculator',
+        description: 'Important disclaimer for ATOM staking estimates, cryptocurrency risks, privacy, and educational use.',
+      },
+    };
+
+    document.title = meta[currentPage].title;
+    const description = document.querySelector('meta[name="description"]');
+    description?.setAttribute('content', meta[currentPage].description);
+  }, [currentPage]);
 
   const handleUpdatePortfolio = useCallback((updates: Partial<PortfolioData>) => {
     setPortfolio((prev) => ({ ...prev, ...updates }));
@@ -145,12 +253,17 @@ export default function App() {
   }, [livePrice.data, portfolio.currency]);
 
   const navigateTo = (page: Page) => {
+    const nextPath = PAGE_PATHS[page];
+    if (window.location.pathname !== nextPath || window.location.hash) {
+      window.history.pushState({ page }, '', nextPath);
+    }
     setCurrentPage(page);
     setSidebarOpen(false);
     window.scrollTo(0, 0);
   };
 
   const navigateToHomeSection = (sectionId: string) => {
+    window.history.pushState({ page: 'home' }, '', `/#${sectionId}`);
     setCurrentPage('home');
     setSidebarOpen(false);
     window.setTimeout(() => {
@@ -227,10 +340,16 @@ export default function App() {
             onResetAll={handleResetAll}
           />
         );
+      case 'about':
+        return <AboutPage onNavigate={(p) => navigateTo(p as Page)} />;
       case 'faq':
         return <FAQPage onNavigate={(p) => navigateTo(p as Page)} />;
       case 'education':
         return <EducationPage onNavigate={(p) => navigateTo(p as Page)} />;
+      case 'privacy':
+        return <PrivacyPolicyPage />;
+      case 'terms':
+        return <TermsOfUsePage />;
       case 'disclaimer':
         return <DisclaimerPage />;
       default:
@@ -296,7 +415,7 @@ export default function App() {
               </div>
             </button>
 
-            <nav className="hidden md:flex items-center gap-6 text-sm font-medium">
+            <nav className="hidden md:flex items-center gap-5 text-sm font-medium">
               <button
                 onClick={() => navigateToHomeSection('features')}
                 className="text-gray-400 hover:text-cyan-400 transition-colors cursor-pointer"
@@ -308,6 +427,12 @@ export default function App() {
                 className="text-gray-400 hover:text-cyan-400 transition-colors cursor-pointer"
               >
                 How It Works
+              </button>
+              <button
+                onClick={() => navigateTo('about')}
+                className="text-gray-400 hover:text-cyan-400 transition-colors cursor-pointer"
+              >
+                About
               </button>
               <button
                 onClick={() => navigateTo('education')}
@@ -442,6 +567,12 @@ export default function App() {
               className="w-full text-left px-4 py-3 rounded-xl text-sm font-medium text-gray-300 hover:bg-gray-800/50 hover:text-cyan-400 transition-colors cursor-pointer"
             >
               Learn About Staking
+            </button>
+            <button
+              onClick={() => navigateTo('about')}
+              className="w-full text-left px-4 py-3 rounded-xl text-sm font-medium text-gray-300 hover:bg-gray-800/50 hover:text-cyan-400 transition-colors cursor-pointer"
+            >
+              About
             </button>
             <button
               onClick={() => navigateTo('faq')}

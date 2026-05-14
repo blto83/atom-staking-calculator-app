@@ -1,4 +1,4 @@
-import { Calculator, BookOpen, HelpCircle, AlertTriangle, Settings } from 'lucide-react';
+import { Calculator, BookOpen, HelpCircle, Info, Scale, Settings, Shield } from 'lucide-react';
 
 interface Props {
   onNavigate: (page: string) => void;
@@ -51,9 +51,9 @@ export default function Footer({ onNavigate }: Props) {
             <h4 className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-3">Resources</h4>
             <ul className="space-y-2">
               {[
+                { label: 'About', page: 'about', icon: Info },
                 { label: 'What is ATOM Staking?', page: 'education', icon: BookOpen },
                 { label: 'FAQ', page: 'faq', icon: HelpCircle },
-                { label: 'Disclaimer', page: 'disclaimer', icon: AlertTriangle },
                 { label: 'Settings', page: 'settings', icon: Settings },
               ].map((item) => (
                 <li key={item.page}>
@@ -72,30 +72,20 @@ export default function Footer({ onNavigate }: Props) {
           <div>
             <h4 className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-3">Legal</h4>
             <ul className="space-y-2">
-              <li>
-                <button
-                  onClick={() => onNavigate('disclaimer')}
-                  className="text-xs text-gray-500 hover:text-cyan-400 transition-colors cursor-pointer"
-                >
-                  Terms of Use
-                </button>
-              </li>
-              <li>
-                <button
-                  onClick={() => onNavigate('disclaimer')}
-                  className="text-xs text-gray-500 hover:text-cyan-400 transition-colors cursor-pointer"
-                >
-                  Disclaimer
-                </button>
-              </li>
-              <li>
-                <button
-                  onClick={() => onNavigate('disclaimer')}
-                  className="text-xs text-gray-500 hover:text-cyan-400 transition-colors cursor-pointer"
-                >
-                  Privacy Policy
-                </button>
-              </li>
+              {[
+                { label: 'Privacy Policy', page: 'privacy', icon: Shield },
+                { label: 'Terms of Use', page: 'terms', icon: Scale },
+                { label: 'Disclaimer', page: 'disclaimer', icon: Scale },
+              ].map((item) => (
+                <li key={item.page}>
+                  <button
+                    onClick={() => onNavigate(item.page)}
+                    className="text-xs text-gray-500 hover:text-cyan-400 transition-colors cursor-pointer"
+                  >
+                    {item.label}
+                  </button>
+                </li>
+              ))}
             </ul>
             <p className="text-[10px] text-gray-600 mt-4 leading-relaxed">
               This site is for informational purposes only. Not financial advice.
