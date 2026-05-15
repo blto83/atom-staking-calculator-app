@@ -154,8 +154,8 @@ export default function App() {
   useEffect(() => {
     const meta: Record<Page, { title: string; description: string }> = {
       home: {
-        title: 'ATOM Staking Calculator & Portfolio Tracker | Free Cosmos Rewards Tool',
-        description: 'Free ATOM staking calculator for Cosmos rewards, validator fees, APR, APY-style compounding, and portfolio projections.',
+        title: 'Cosmos ATOM Staking Calculator | Calculate Rewards, APR & Validator Earnings',
+        description: 'Calculate Cosmos ATOM staking rewards instantly. Estimate validator earnings, APR, compounding growth and long-term profits with our free ATOM calculator.',
       },
       dashboard: {
         title: 'ATOM Portfolio Dashboard | ATOM Staking Calculator',
