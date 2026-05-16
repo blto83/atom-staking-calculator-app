@@ -101,6 +101,7 @@ const PAGE_PATHS: Record<Page, string> = {
 };
 
 function getPageFromPath(pathname: string): Page {
+  if (pathname.startsWith('/learn/')) return 'education';
   const found = (Object.entries(PAGE_PATHS) as [Page, string][]).find(
     ([, path]) => path === pathname
   );
@@ -133,6 +134,8 @@ export default function App() {
     const handlePopState = () => {
       setCurrentPage(getPageFromPath(window.location.pathname));
       setSidebarOpen(false);
+      // Trigger a popstate broadcast to component instances if needed
+      window.dispatchEvent(new Event('locationchange'));
     };
 
     window.addEventListener('popstate', handlePopState);
@@ -186,8 +189,8 @@ export default function App() {
         description: 'Learn the mission behind the ATOM staking calculator and how it helps users understand Cosmos rewards and validator fees.',
       },
       faq: {
-        title: 'ATOM Staking FAQ | Cosmos Rewards, APR, APY and Fees',
-        description: 'Beginner-friendly answers about ATOM staking, rewards, APR vs APY, validator commission, wallet connections, and risks.',
+        title: 'ATOM Staking FAQ | Cosmos Rewards, APR, APY, Risks & Beginner Guide',
+        description: 'Comprehensive beginner-friendly FAQ about Cosmos ATOM staking. Learn about rewards, APR vs APY, validator commission, slashing risks, wallet setup, and common mistakes.',
       },
       education: {
         title: 'Cosmos ATOM Staking Guide | Learn ATOM Rewards',

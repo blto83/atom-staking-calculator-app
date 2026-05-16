@@ -7,106 +7,110 @@ interface Props {
 
 const FAQS = [
   {
-    category: 'Getting Started',
+    category: 'Basics',
     items: [
       {
-        q: 'What is ATOM staking?',
-        a: 'ATOM staking is the process of locking your Cosmos (ATOM) tokens with a validator to help secure the Cosmos Hub blockchain network. In exchange for delegating your tokens, you earn staking rewards — additional ATOM paid out periodically by the network. Staking is a form of passive income that supports network decentralization.',
+        q: 'What is Cosmos ATOM staking?',
+        a: 'Cosmos ATOM staking means delegating your ATOM tokens to a validator who helps secure the Cosmos Hub blockchain. In return, you earn staking rewards paid in additional ATOM — typically between 14% and 20% APR. Your tokens stay in your wallet; you are only delegating your voting power, not transferring ownership.',
       },
       {
-        q: 'How do I start staking ATOM?',
-        a: 'To stake ATOM, you need a wallet that supports Cosmos (such as Keplr, Leap, or Cosmostation). Transfer ATOM to your wallet, connect to a validator through the wallet interface, and delegate your tokens. Your ATOM remains in your wallet — you are not sending it to the validator, only delegating your voting/staking power.',
+        q: 'How do ATOM staking rewards work?',
+        a: 'The Cosmos Hub mints new ATOM tokens as inflation rewards to incentivize network security. These rewards are distributed proportionally to all stakers based on how much ATOM they have delegated. Your validator takes a commission percentage, and the rest goes to you as a delegator. Rewards accumulate continuously and can be claimed or restaked at any time.',
       },
       {
-        q: 'Is this calculator free to use?',
-        a: 'Yes, completely free. There is no signup, no subscription, and no hidden fees. All calculations happen in your browser and your data is stored locally on your device.',
-      },
-      {
-        q: 'Do I need to connect my wallet?',
-        a: 'No. This calculator does not require any wallet connection. You manually enter your holdings and parameters, and the tool calculates projections. This keeps your funds completely safe — the calculator never touches your actual crypto.',
-      },
-    ],
-  },
-  {
-    category: 'Staking Mechanics',
-    items: [
-      {
-        q: 'How are staking rewards calculated?',
-        a: 'Staking rewards are calculated based on three main factors: (1) the amount of ATOM you have staked, (2) the network APR (annual percentage rate), and (3) your validator\'s commission fee. The formula is: Net APR = Gross APR × (1 − Validator Commission%). Your daily reward = Staked Amount × Net APR ÷ 365.',
-      },
-      {
-        q: 'What is APR vs APY?',
-        a: 'APR is the annual rate before considering compounding. APY is the effective annual return after rewards are compounded. For example, if you restake ATOM rewards daily, your effective return can be higher than the displayed APR because new rewards also start earning rewards.',
-      },
-      {
-        q: 'Are validator commissions included?',
-        a: 'Yes. The calculator includes validator commission when computing net rewards. If gross APR is 18% and validator commission is 5%, the estimated net APR is 17.1% because the validator keeps 5% of the rewards earned.',
+        q: 'What is APR vs APY in staking?',
+        a: 'APR (Annual Percentage Rate) is the simple annual return before compounding — for example, 18% APR on 100 ATOM means roughly 18 ATOM per year. APY (Annual Percentage Yield) factors in compounding, so if you restake rewards daily, your effective return could be closer to 19–20% APY. The difference grows larger over longer time periods.',
       },
       {
         q: 'What is validator commission?',
-        a: 'Validator commission is the percentage of your rewards that the validator keeps as compensation for running the infrastructure. Typical commissions range from 0% to 10%. A 5% commission means the validator keeps 5% of your gross rewards, and you receive 95%. Lower commission does not always mean better — consider validator uptime, reputation, and community contribution.',
-      },
-      {
-        q: 'What is the unbonding period?',
-        a: 'The Cosmos Hub has a 21-day unbonding period. When you unstake (undelegate) your ATOM, it takes 21 days before the tokens become liquid and transferable again. During this period, you do not earn staking rewards. Plan your liquidity needs accordingly.',
-      },
-      {
-        q: 'What is compounding in staking?',
-        a: 'Compounding means taking your earned staking rewards and restaking them so they also generate rewards. For example, if you earn 1 ATOM today and restake it, tomorrow that 1 ATOM will also earn rewards. Over time, compounding can significantly increase your total returns compared to letting rewards sit unstaked.',
-      },
-      {
-        q: 'How often are rewards distributed?',
-        a: 'On the Cosmos Hub, rewards are typically distributed every block (approximately every 6–7 seconds). However, validators may have different payout frequencies. Many validators auto-compound rewards for delegators, while others require manual claims.',
+        a: 'Validator commission is the percentage of your staking rewards that the validator keeps as payment for running infrastructure. A 5% commission on 18% APR means your net return is approximately 17.1%. Commissions typically range from 0% to 10%, and extremely low commissions may indicate unsustainable operations.',
       },
     ],
   },
   {
-    category: 'Calculator Features',
+    category: 'Risks',
     items: [
       {
+        q: 'Is ATOM staking safe?',
+        a: 'Staking ATOM is generally considered safe when you choose a reputable validator with strong uptime and no slashing history. However, it is not risk-free — slashing, price volatility, and the 21-day unbonding period are real risks you should understand before staking. Never stake more than you can afford to have illiquid for at least 21 days.',
+      },
+      {
+        q: 'What is validator slashing?',
+        a: 'Slashing is a penalty that destroys a portion of staked tokens when a validator misbehaves. Double-signing can slash 5% of all delegated tokens, while extended downtime can slash 0.01%. As a delegator, you share in your validator\'s slashing penalty, which is why choosing a reliable validator matters.',
+      },
+      {
+        q: 'What happens during the 21-day unbonding period?',
+        a: 'When you undelegate ATOM, it enters a 21-day unbonding period during which you earn zero rewards and cannot transfer or sell the tokens. This is a protocol-level security mechanism and cannot be bypassed or sped up. Plan your liquidity needs carefully before initiating an undelegation.',
+      },
+      {
+        q: 'Can staking rewards change over time?',
+        a: 'Yes. The Cosmos Hub APR fluctuates based on network inflation parameters and the total amount of ATOM staked across all validators. When more ATOM is staked, the APR tends to decrease because rewards are spread across more delegators. Governance proposals can also change inflation rates, which directly impacts your rewards.',
+      },
+      {
+        q: 'Is ATOM staking taxable?',
+        a: 'In many jurisdictions, staking rewards are treated as taxable income at the time you receive or claim them. The tax treatment varies significantly by country — some treat rewards as ordinary income, others as capital gains, and some have no clear guidance. This is not tax advice; consult a qualified tax professional familiar with cryptocurrency in your jurisdiction.',
+      },
+    ],
+  },
+  {
+    category: 'Practical Guide',
+    items: [
+      {
+        q: 'How do I choose a validator?',
+        a: 'Look for validators with 99.9%+ uptime, reasonable commission (3–10%), and a clean slashing history. Consider delegating to smaller validators to support network decentralization rather than always choosing the largest ones. Check the validator\'s self-bonded amount — higher self-stake means more aligned incentives with delegators.',
+      },
+      {
+        q: 'Keplr vs Cosmostation: which wallet should I use?',
+        a: 'Both are excellent Cosmos wallets with strong security and staking features. Keplr is the most popular and widely used, with a clean interface and broad chain support. Cosmostation offers advanced features like multi-chain portfolio management and detailed validator analytics. Try both and use whichever feels more comfortable for your needs.',
+      },
+      {
+        q: 'Can I manually compound staking rewards?',
+        a: 'Yes. You can claim your accumulated rewards through your wallet and then delegate them again to start earning rewards on your rewards. This manual compounding process takes just a few clicks in wallets like Keplr or Cosmostation. Some wallets and services also offer auto-compounding features that handle this automatically.',
+      },
+      {
+        q: 'Should I keep some ATOM unstaked for gas fees?',
+        a: 'Yes, always keep a small amount of ATOM unstaked for transaction fees — typically 0.1 to 0.5 ATOM is sufficient for most operations. If you stake 100% of your ATOM, you will not be able to claim rewards, redelegate, or perform any on-chain actions because you need unstaked ATOM to pay gas fees. This is one of the most common beginner mistakes.',
+      },
+      {
+        q: 'Can I switch validators?',
+        a: 'Yes, you can redelegate your ATOM from one validator to another instantly without going through the 21-day unbonding period. However, you cannot redelegate from the same validator more than once within a short cooldown window (typically 21 days for the same source-validator pair). Plan your redelegations carefully if you are testing multiple validators.',
+      },
+      {
+        q: 'How do I start staking ATOM?',
+        a: 'Download a Cosmos wallet like Keplr or Cosmostation, transfer ATOM to your wallet address, then use the wallet\'s staking interface to choose a validator and delegate your tokens. Your ATOM never leaves your wallet — you are only delegating your staking power. The entire process takes just a few minutes.',
+      },
+      {
+        q: 'Is this calculator free to use?',
+        a: 'Yes, completely free with no signup, no subscription, and no hidden fees. All calculations happen locally in your browser and your data is stored only on your device. We do not collect, store, or transmit any personal or financial information.',
+      },
+      {
+        q: 'Do I need to connect my wallet to use this calculator?',
+        a: 'No. This calculator never asks for wallet connections, seed phrases, or private keys. You manually enter your ATOM amount, APR, and validator commission, and the tool calculates projections. This design keeps your funds completely safe.',
+      },
+    ],
+  },
+  {
+    category: 'Beginner Mistakes',
+    items: [
+      {
+        q: 'Should I stake 100% of my ATOM?',
+        a: 'No, staking 100% of your ATOM is generally not recommended because you need unstaked ATOM for transaction fees and emergency liquidity. A common approach is staking 80–95% while keeping 5–20% liquid. Remember that once staked, your ATOM is locked for 21 days if you need to undelegate.',
+      },
+      {
+        q: 'What happens if my validator goes offline?',
+        a: 'If your validator goes offline temporarily, you simply miss out on rewards during that period — your staked ATOM is not at risk from brief downtime. However, extended downtime can result in a small slashing penalty (0.01%) and the validator being jailed. If this happens, you can redelegate to another validator to resume earning rewards.',
+      },
+      {
+        q: 'What are the most common beginner mistakes in ATOM staking?',
+        a: 'The most common mistakes include: staking 100% of ATOM with nothing left for gas fees, choosing validators based only on the lowest commission without checking uptime, not understanding the 21-day unbonding period before staking, and forgetting to claim or restake rewards regularly. Take time to understand these mechanics before committing your tokens.',
+      },
+      {
         q: 'How accurate is this calculator?',
-        a: 'The calculator uses standard mathematical formulas for APR and compound interest calculations. However, actual blockchain rewards can vary due to: network inflation parameter changes, validator performance (missed blocks = lower rewards), slashing events, and changes in total staked supply. Use the calculator as a planning tool, not a guarantee.',
-      },
-      {
-        q: 'Where does the live ATOM price come from?',
-        a: 'Live ATOM prices are fetched from the CoinGecko public API. Prices update automatically every 60 seconds. You can also manually override the price if you want to use a different source or simulate scenarios.',
-      },
-      {
-        q: 'Can I export my data?',
-        a: 'Yes. You can export your transaction history and reward entries as CSV files from the Settings page. This is useful for tax reporting and record-keeping.',
-      },
-      {
-        q: 'Is my data saved?',
-        a: 'Yes — all data is saved locally in your browser\'s localStorage. It persists across browser sessions and works offline. If you clear your browser data or use incognito mode, your data will be lost. We recommend exporting CSV backups periodically.',
-      },
-      {
-        q: 'Can I use this on mobile?',
-        a: 'Absolutely. The calculator is fully responsive and works on desktop, tablet, and mobile browsers. On mobile, you get a bottom navigation bar for easy access to all features.',
+        a: 'This calculator uses standard APR and compound interest formulas, but actual blockchain rewards can vary due to network inflation changes, validator performance, slashing events, and total staked supply fluctuations. Use these projections for planning and comparison purposes, not as guaranteed returns. Always verify with on-chain data.',
       },
       {
         q: 'Is this financial advice?',
-        a: 'No. This website is for informational and educational purposes only. It does not recommend buying, selling, staking, unstaking, or choosing any validator. You are responsible for your own research and decisions.',
-      },
-    ],
-  },
-  {
-    category: 'Risks & Considerations',
-    items: [
-      {
-        q: 'What are the risks of staking ATOM?',
-        a: 'Key risks include: (1) Slashing — if your validator misbehaves (double-signs or goes offline), a portion of your staked ATOM can be slashed. (2) Liquidity risk — the 21-day unbonding period means you cannot access your funds immediately. (3) Price risk — ATOM price can go down, reducing the fiat value of your holdings and rewards. (4) Validator risk — choosing a unreliable validator can result in missed rewards or slashing.',
-      },
-      {
-        q: 'What is slashing?',
-        a: 'Slashing is a penalty mechanism on the Cosmos Hub. If a validator double-signs (tries to cheat the network), both the validator and their delegators lose a significant portion of staked tokens (typically 5%). If a validator is offline for too long, a smaller penalty applies. Choose validators with strong track records and avoid those with history of downtime.',
-      },
-      {
-        q: 'Should I stake all my ATOM?',
-        a: 'Not necessarily. Consider keeping some ATOM unstaked for liquidity needs, trading opportunities, or unexpected expenses. A common approach is staking 70–90% of holdings while keeping 10–30% liquid. The right balance depends on your personal financial situation and risk tolerance.',
-      },
-      {
-        q: 'How do I choose a validator?',
-        a: 'Consider: (1) Uptime — validators with 100% uptime are ideal. (2) Commission — balance low fees with validator quality. (3) Decentralization — consider delegating to smaller validators to support network health. (4) Community contribution — some validators actively contribute to Cosmos development. (5) Self-bonded amount — validators with significant skin in the game are more aligned with delegators.',
+        a: 'No. This website is for informational and educational purposes only and does not constitute financial, investment, or tax advice. We do not recommend buying, selling, staking, or unstaking any cryptocurrency. You are solely responsible for your own research and financial decisions.',
       },
     ],
   },
@@ -140,7 +144,7 @@ export default function FAQPage({ onNavigate }: Props) {
           Frequently Asked Questions
         </h1>
         <p className="text-sm text-gray-400 max-w-lg mx-auto">
-          Everything you need to know about ATOM staking and how to use this calculator.
+          Comprehensive answers about Cosmos ATOM staking — from basics and risks to practical guides and common beginner mistakes.
         </p>
       </div>
 
