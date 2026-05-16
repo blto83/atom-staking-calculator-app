@@ -646,7 +646,7 @@ export default function EducationPage({ onNavigate }: Props) {
 
           {currentArticle.slug === 'atom-staking-risks-slashing-and-unbonding-period-explained' && (
             <>
-              <p className="text-base text-gray-400 italic">
+              <p className="text-base text-slate-600 dark:text-slate-300 italic font-medium leading-relaxed mb-6">
                 Staking rewards are lucrative, but they represent payment for undertaking specific network risks. Here, we explore the realities of slashing parameters and liquidity constraints.
               </p>
 
