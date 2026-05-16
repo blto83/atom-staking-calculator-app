@@ -260,6 +260,15 @@ export default function App() {
     if (window.location.pathname !== nextPath || window.location.hash) {
       window.history.pushState({ page }, '', nextPath);
     }
+    
+    // NAVIGATION BUG FIX: If user clicks 'education' (Learn) from within an article, 
+    // we need to ensure the local state in EducationPage resets to list view.
+    // By re-dispatching 'locationchange', components listening for path changes 
+    // will see the move from /learn/slug back to /learn.
+    if (page === 'education') {
+      window.dispatchEvent(new Event('locationchange'));
+    }
+
     setCurrentPage(page);
     setSidebarOpen(false);
     window.scrollTo(0, 0);
