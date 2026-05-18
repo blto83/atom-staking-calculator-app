@@ -148,6 +148,11 @@ export default function EducationPage({ onNavigate }: Props) {
     return ARTICLES.find((a) => a.slug === selectedArticleSlug);
   }, [selectedArticleSlug]);
 
+  const relatedArticles = useMemo(() => {
+    if (!selectedArticleSlug) return [];
+    return ARTICLES.filter((a) => a.slug !== selectedArticleSlug);
+  }, [selectedArticleSlug]);
+
   const handleArticleClick = (slug: string) => {
     window.history.pushState({ page: 'education' }, '', `/learn/${slug}`);
     setSelectedArticleSlug(slug);
@@ -256,6 +261,18 @@ export default function EducationPage({ onNavigate }: Props) {
                 </button>
                 .
               </p>
+              <div className="border-t border-slate-200 dark:border-slate-850 pt-8 mt-8">
+                <h3 className="text-sm font-bold text-slate-500 uppercase tracking-wider mb-4">Related Staking Guides:</h3>
+                <ul className="space-y-2">
+                  {relatedArticles.map((rel) => (
+                    <li key={rel.id}>
+                      <button onClick={() => handleArticleClick(rel.slug)} className="text-xs text-cyan-600 dark:text-cyan-400 hover:underline font-bold cursor-pointer flex items-center gap-1">
+                        • {rel.title}
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              </div>
             </>
           )}
 
@@ -264,6 +281,20 @@ export default function EducationPage({ onNavigate }: Props) {
               <p className="text-base text-slate-600 dark:text-slate-300 italic font-medium leading-relaxed mb-6">
                 Staking yield on Cosmos is commonly expressed as a simple baseline percentage (APR). However, by implementing an optimized compounding strategy, you transition into the domain of exponential interest (APY), which dramatically shifts your long-term ATOM accumulation. In this guide, we break down the exact differences, validator fee impacts, and variables that define your real returns.
               </p>
+
+              {/* Related Staking Guides at top for SEO */}
+              <div className="border-b border-slate-200 dark:border-slate-850 pb-6 mb-8">
+                <h3 className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-3">Top Staking Resources:</h3>
+                <ul className="flex flex-wrap gap-x-4 gap-y-2">
+                  {relatedArticles.slice(0, 3).map((rel) => (
+                    <li key={rel.id}>
+                      <button onClick={() => handleArticleClick(rel.slug)} className="text-[11px] text-cyan-600 dark:text-cyan-400 hover:underline font-bold cursor-pointer">
+                        • {rel.title}
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              </div>
 
               {/* Early CTA Block 1 */}
               <div className="bg-gradient-to-r from-cyan-500/10 to-indigo-500/10 border border-cyan-500/35 rounded-xl p-5 my-6 text-center sm:text-left flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 shadow-sm">
@@ -580,30 +611,42 @@ export default function EducationPage({ onNavigate }: Props) {
 
               <p>
                 To learn more about how these variables interact, we highly recommend reading our introductory{' '}
-                <button onClick={() => onNavigate('education')} className="text-cyan-400 hover:text-cyan-300 underline cursor-pointer font-medium">
+                <button onClick={() => handleArticleClick('what-is-cosmos-atom-staking-beginner-guide-2026')} className="text-cyan-400 hover:text-cyan-300 underline cursor-pointer font-medium">
                   ATOM Staking Beginner Guide
                 </button>
                 . You can also check out our validator selection guide,{' '}
-                <button onClick={() => onNavigate('education')} className="text-cyan-400 hover:text-cyan-300 underline cursor-pointer font-medium">
+                <button onClick={() => handleArticleClick('how-to-choose-the-right-cosmos-validator-5-core-metrics')} className="text-cyan-400 hover:text-cyan-300 underline cursor-pointer font-medium">
                   5 Core Validator Metrics
                 </button>
                 , or read more about risk management on our{' '}
-                <button onClick={() => onNavigate('education')} className="text-cyan-400 hover:text-cyan-300 underline cursor-pointer font-medium">
+                <button onClick={() => handleArticleClick('atom-staking-risks-slashing-and-unbonding-period-explained')} className="text-cyan-400 hover:text-cyan-300 underline cursor-pointer font-medium">
                   ATOM Staking Risks Page
                 </button>
                 .
               </p>
+              <div className="border-t border-slate-200 dark:border-slate-850 pt-8 mt-8">
+                <h3 className="text-sm font-bold text-slate-500 uppercase tracking-wider mb-4">Related Staking Guides:</h3>
+                <ul className="space-y-2">
+                  {relatedArticles.map((rel) => (
+                    <li key={rel.id}>
+                      <button onClick={() => handleArticleClick(rel.slug)} className="text-xs text-cyan-600 dark:text-cyan-400 hover:underline font-bold cursor-pointer flex items-center gap-1">
+                        • {rel.title}
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              </div>
             </>
           )}
 
           {currentArticle.slug === 'how-to-choose-the-right-cosmos-validator-5-core-metrics' && (
             <>
-              <p className="text-base text-gray-400 italic">
+              <p className="text-base text-slate-600 dark:text-slate-300 italic font-medium leading-relaxed mb-6">
                 Delegating your tokens is a vote of trust. Choosing a validator is not just about selecting the lowest fee; you must evaluate performance and decentralization metrics to protect your capital.
               </p>
 
-              <h2 className="text-xl sm:text-2xl font-bold text-white flex items-center gap-2.5 mt-8">
-                <Users className="w-5 h-5 text-purple-400" />
+              <h2 className="text-xl sm:text-2xl font-extrabold text-slate-900 dark:text-white flex items-center gap-2.5 mt-8 mb-4">
+                <Users className="w-5 h-5 text-purple-500 dark:text-purple-400" />
                 1. Key Validator Metrics
               </h2>
               <p>
@@ -611,22 +654,22 @@ export default function EducationPage({ onNavigate }: Props) {
               </p>
               <ul className="space-y-3 my-4">
                 <li className="flex items-start gap-2">
-                  <CheckCircle2 className="w-4 h-4 text-cyan-400 shrink-0 mt-1" />
-                  <div>
-                    <strong className="text-white">Uptime and Infrastructure:</strong> Target node operators maintaining 99.9% uptime. Missed validation blocks reduce your rewards.
-                  </div>
+                  <CheckCircle2 className="w-4 h-4 text-cyan-500 dark:text-cyan-400 shrink-0 mt-1" />
+                  <p className="text-sm sm:text-base text-slate-700 dark:text-slate-300">
+                    <strong className="text-slate-900 dark:text-white font-bold">Uptime and Infrastructure:</strong> Target node operators maintaining 99.9% uptime. Missed validation blocks reduce your rewards.
+                  </p>
                 </li>
                 <li className="flex items-start gap-2">
-                  <CheckCircle2 className="w-4 h-4 text-cyan-400 shrink-0 mt-1" />
-                  <div>
-                    <strong className="text-white">Commission Fee Structure:</strong> Commissions usually range from 2% to 10%. Avoid 0% commission nodes as they are often financially unsustainable, and avoid 100% commission nodes unless they are specific institutional networks.
-                  </div>
+                  <CheckCircle2 className="w-4 h-4 text-cyan-500 dark:text-cyan-400 shrink-0 mt-1" />
+                  <p className="text-sm sm:text-base text-slate-700 dark:text-slate-300">
+                    <strong className="text-slate-900 dark:text-white font-bold">Commission Fee Structure:</strong> Commissions usually range from 2% to 10%. Avoid 0% commission nodes as they are often financially unsustainable, and avoid 100% commission nodes unless they are specific institutional networks.
+                  </p>
                 </li>
                 <li className="flex items-start gap-2">
-                  <CheckCircle2 className="w-4 h-4 text-cyan-400 shrink-0 mt-1" />
-                  <div>
-                    <strong className="text-white">Decentralization Support:</strong> Consider delegating to top-20 to top-100 range validators. Spreading stake down the ranks boosts the overall security and Nakamoto coefficient of the Cosmos Hub.
-                  </div>
+                  <CheckCircle2 className="w-4 h-4 text-cyan-500 dark:text-cyan-400 shrink-0 mt-1" />
+                  <p className="text-sm sm:text-base text-slate-700 dark:text-slate-300">
+                    <strong className="text-slate-900 dark:text-white font-bold">Decentralization Support:</strong> Consider delegating to top-20 to top-100 range validators. Spreading stake down the ranks boosts the overall security and Nakamoto coefficient of the Cosmos Hub.
+                  </p>
                 </li>
               </ul>
 
@@ -641,6 +684,31 @@ export default function EducationPage({ onNavigate }: Props) {
                 </button>
                 .
               </p>
+              <div className="border-t border-slate-200 dark:border-slate-850 pt-8 mt-8">
+                <h3 className="text-sm font-bold text-slate-500 uppercase tracking-wider mb-4">Related Staking Guides:</h3>
+                <ul className="space-y-2">
+                  <li>
+                    <button onClick={() => handleArticleClick('what-is-cosmos-atom-staking-beginner-guide-2026')} className="text-xs text-cyan-600 dark:text-cyan-400 hover:underline font-bold cursor-pointer flex items-center gap-1">
+                      • What Is Cosmos ATOM Staking? Beginner Guide (2026)
+                    </button>
+                  </li>
+                  <li>
+                    <button onClick={() => handleArticleClick('staking-apr-vs-apy-mathematics-of-compounding-atom')} className="text-xs text-cyan-600 dark:text-cyan-400 hover:underline font-bold cursor-pointer flex items-center gap-1">
+                      • Staking APR vs APY: The Mathematics of Compounding ATOM
+                    </button>
+                  </li>
+                  <li>
+                    <button onClick={() => handleArticleClick('atom-staking-risks-slashing-and-unbonding-period-explained')} className="text-xs text-cyan-600 dark:text-cyan-400 hover:underline font-bold cursor-pointer flex items-center gap-1">
+                      • ATOM Staking Risks: Slashing and the 21-Day Unbonding Period
+                    </button>
+                  </li>
+                  <li>
+                    <button onClick={() => handleArticleClick('maximized-atom-portfolio-planning-passive-income-strategy')} className="text-xs text-cyan-600 dark:text-cyan-400 hover:underline font-bold cursor-pointer flex items-center gap-1">
+                      • Maximized ATOM Portfolio Planning: Passive Income Strategy
+                    </button>
+                  </li>
+                </ul>
+              </div>
             </>
           )}
 
@@ -650,8 +718,8 @@ export default function EducationPage({ onNavigate }: Props) {
                 Staking rewards are lucrative, but they represent payment for undertaking specific network risks. Here, we explore the realities of slashing parameters and liquidity constraints.
               </p>
 
-              <h2 className="text-xl sm:text-2xl font-bold text-white flex items-center gap-2.5 mt-8">
-                <AlertTriangle className="w-5 h-5 text-red-400" />
+              <h2 className="text-xl sm:text-2xl font-extrabold text-slate-900 dark:text-white flex items-center gap-2.5 mt-8 mb-4">
+                <AlertTriangle className="w-5 h-5 text-red-500 dark:text-red-400" />
                 1. Slashing Risks: Double-Signing vs. Downtime
               </h2>
               <p>
@@ -661,8 +729,8 @@ export default function EducationPage({ onNavigate }: Props) {
                 If a validator experiences prolonged downtime (misses over 95% of consecutive 10,000 blocks), they get jailed and lose 0.01% of delegations. While downtime slashing is negligible, being jailed means the node generates zero rewards until the operator unjails it manually.
               </p>
 
-              <h2 className="text-xl sm:text-2xl font-bold text-white flex items-center gap-2.5 mt-8">
-                <Shield className="w-5 h-5 text-amber-400" />
+              <h2 className="text-xl sm:text-2xl font-extrabold text-slate-900 dark:text-white flex items-center gap-2.5 mt-8 mb-4">
+                <Shield className="w-5 h-5 text-amber-500 dark:text-amber-400" />
                 2. The 21-Day Unbonding lockup
               </h2>
               <p>
@@ -675,17 +743,42 @@ export default function EducationPage({ onNavigate }: Props) {
                 </button>
                 .
               </p>
+              <div className="border-t border-slate-200 dark:border-slate-850 pt-8 mt-8">
+                <h3 className="text-sm font-bold text-slate-500 uppercase tracking-wider mb-4">Related Staking Guides:</h3>
+                <ul className="space-y-2">
+                  <li>
+                    <button onClick={() => handleArticleClick('what-is-cosmos-atom-staking-beginner-guide-2026')} className="text-xs text-cyan-600 dark:text-cyan-400 hover:underline font-bold cursor-pointer flex items-center gap-1">
+                      • What Is Cosmos ATOM Staking? Beginner Guide (2026)
+                    </button>
+                  </li>
+                  <li>
+                    <button onClick={() => handleArticleClick('staking-apr-vs-apy-mathematics-of-compounding-atom')} className="text-xs text-cyan-600 dark:text-cyan-400 hover:underline font-bold cursor-pointer flex items-center gap-1">
+                      • Staking APR vs APY: The Mathematics of Compounding ATOM
+                    </button>
+                  </li>
+                  <li>
+                    <button onClick={() => handleArticleClick('how-to-choose-the-right-cosmos-validator-5-core-metrics')} className="text-xs text-cyan-600 dark:text-cyan-400 hover:underline font-bold cursor-pointer flex items-center gap-1">
+                      • How to Choose the Right Cosmos Validator: 5 Core Metrics
+                    </button>
+                  </li>
+                  <li>
+                    <button onClick={() => handleArticleClick('maximized-atom-portfolio-planning-passive-income-strategy')} className="text-xs text-cyan-600 dark:text-cyan-400 hover:underline font-bold cursor-pointer flex items-center gap-1">
+                      • Maximized ATOM Portfolio Planning: Passive Income Strategy
+                    </button>
+                  </li>
+                </ul>
+              </div>
             </>
           )}
 
           {currentArticle.slug === 'maximized-atom-portfolio-planning-passive-income-strategy' && (
             <>
-              <p className="text-base text-gray-400 italic">
+              <p className="text-base text-slate-600 dark:text-slate-300 italic font-medium leading-relaxed mb-6">
                 Efficient capital allocation is critical in crypto finance. Let\\'s review the strategy of maintaining liquid reserves, managing gas parameters, and tracking active returns.
               </p>
 
-              <h2 className="text-xl sm:text-2xl font-bold text-white flex items-center gap-2.5 mt-8">
-                <Users className="w-5 h-5 text-cyan-400" />
+              <h2 className="text-xl sm:text-2xl font-extrabold text-slate-900 dark:text-white flex items-center gap-2.5 mt-8 mb-4">
+                <Users className="w-5 h-5 text-cyan-500 dark:text-cyan-400" />
                 1. Portfolio Allocation and Gas Reserves
               </h2>
               <p>
@@ -698,12 +791,65 @@ export default function EducationPage({ onNavigate }: Props) {
                 </button>
                 .
               </p>
+              <div className="border-t border-slate-200 dark:border-slate-850 pt-8 mt-8">
+                <h3 className="text-sm font-bold text-slate-500 uppercase tracking-wider mb-4">Related Staking Guides:</h3>
+                <ul className="space-y-2">
+                  <li>
+                    <button onClick={() => handleArticleClick('what-is-cosmos-atom-staking-beginner-guide-2026')} className="text-xs text-cyan-600 dark:text-cyan-400 hover:underline font-bold cursor-pointer flex items-center gap-1">
+                      • What Is Cosmos ATOM Staking? Beginner Guide (2026)
+                    </button>
+                  </li>
+                  <li>
+                    <button onClick={() => handleArticleClick('staking-apr-vs-apy-mathematics-of-compounding-atom')} className="text-xs text-cyan-600 dark:text-cyan-400 hover:underline font-bold cursor-pointer flex items-center gap-1">
+                      • Staking APR vs APY: The Mathematics of Compounding ATOM
+                    </button>
+                  </li>
+                  <li>
+                    <button onClick={() => handleArticleClick('how-to-choose-the-right-cosmos-validator-5-core-metrics')} className="text-xs text-cyan-600 dark:text-cyan-400 hover:underline font-bold cursor-pointer flex items-center gap-1">
+                      • How to Choose the Right Cosmos Validator: 5 Core Metrics
+                    </button>
+                  </li>
+                  <li>
+                    <button onClick={() => handleArticleClick('atom-staking-risks-slashing-and-unbonding-period-explained')} className="text-xs text-cyan-600 dark:text-cyan-400 hover:underline font-bold cursor-pointer flex items-center gap-1">
+                      • ATOM Staking Risks: Slashing and the 21-Day Unbonding Period
+                    </button>
+                  </li>
+                </ul>
+              </div>
             </>
           )}
         </div>
 
+        {/* Related ATOM Staking Guides Section */}
+        <div className="border-t border-slate-200 dark:border-slate-800/65 pt-10 mt-10">
+          <h3 className="text-xl font-extrabold text-slate-900 dark:text-white mb-6">
+            Related ATOM Staking Guides
+          </h3>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            {relatedArticles.map((article) => (
+              <button
+                key={article.id}
+                onClick={() => handleArticleClick(article.slug)}
+                className="text-left glass-card p-4 rounded-xl border border-slate-200 dark:border-slate-800/65 hover:border-cyan-400 dark:hover:border-cyan-400 transition-all cursor-pointer group flex items-center gap-4 w-full"
+              >
+                <div className={`w-12 h-12 rounded-lg shrink-0 flex items-center justify-center text-2xl bg-gradient-to-br ${article.thumbnailGradient.replace('border-cyan-500/30', '')}`}>
+                  {article.emoji}
+                </div>
+                <div className="min-w-0">
+                  <h4 className="text-sm font-bold text-slate-900 dark:text-white group-hover:text-cyan-600 dark:group-hover:text-cyan-400 transition-colors line-clamp-2">
+                    {article.title}
+                  </h4>
+                  <p className="text-[10px] text-slate-500 dark:text-slate-400 mt-1 font-semibold uppercase tracking-wider">
+                    {article.category}
+                  </p>
+                </div>
+              </button>
+            ))}
+          </div>
+        </div>
+
         {/* CTA Card */}
-        <section className="rounded-2xl bg-gradient-to-r from-cyan-600 to-indigo-600 p-8 text-center shadow-xl mt-10">
+        <section className="rounded-2xl bg-gradient-to-r from-cyan-600 to-indigo-600 p-8 text-center shadow-xl mt-12">
           <h2 className="text-xl sm:text-2xl font-bold text-white mb-2">
             Calculate your ATOM staking rewards now
           </h2>
