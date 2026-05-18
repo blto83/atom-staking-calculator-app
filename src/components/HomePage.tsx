@@ -134,15 +134,15 @@ export default function HomePage({
             Free. Private. No Signup Required.
           </div>
 
-          <h1 className="text-3xl sm:text-5xl lg:text-6xl font-extrabold text-white leading-tight mb-6">
+          <h1 className="text-3xl sm:text-5xl lg:text-6xl font-extrabold text-slate-100 dark:text-white leading-tight mb-6 tracking-tight">
             Calculate Your{' '}
-            <span className="bg-gradient-to-r from-cyan-400 to-indigo-400 bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-cyan-400 to-indigo-400 bg-clip-text text-transparent font-black">
               Cosmos ATOM
             </span>{' '}
             Staking Rewards
           </h1>
 
-          <p className="text-base sm:text-lg text-gray-400 max-w-2xl mx-auto mb-8 leading-relaxed">
+          <p className="text-base sm:text-lg text-slate-300 max-w-2xl mx-auto mb-8 leading-relaxed">
             The most accurate ATOM staking calculator on the web. Project your rewards
             with compounding, track your portfolio, and optimize your validator strategy —
             all in your browser, with zero data collection.
