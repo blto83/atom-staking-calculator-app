@@ -91,6 +91,11 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://www.atomstakingcalculator.com/learn/does-daily-compounding-increase-atom-staking-rewards</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://www.atomstakingcalculator.com/faq</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>

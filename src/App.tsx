@@ -17,7 +17,6 @@ import {
   Scale,
   Shield,
 } from 'lucide-react';
-import { SpeedInsights } from '@vercel/speed-insights/react';
 import { PortfolioData, RewardEntry, Transaction } from './types';
 import {
   loadPortfolio,
@@ -671,7 +670,6 @@ export default function App() {
           )}
         </div>
       </nav>}
-      <SpeedInsights />
     </div>
   );
 }
