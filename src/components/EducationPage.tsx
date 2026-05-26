@@ -11,7 +11,7 @@ interface Article {
   slug: string;
   title: string;
   excerpt: string;
-  category: 'Beginner Guides' | 'APR / APY Education' | 'Validator Guides' | 'Risk & Safety' | 'Portfolio Growth';
+  category: ArticleCategory;
   author: string;
   date: string;
   readTime: string;
@@ -21,6 +21,17 @@ interface Article {
   seoDescription: string;
   featured?: boolean;
 }
+
+// Centralized category configuration - all category usage derives from here
+const CATEGORY_CONFIG = [
+  { id: 'beginner-guides', label: 'Beginner Guides' },
+  { id: 'apr-apy-education', label: 'APR / APY Education' },
+  { id: 'validator-guides', label: 'Validator Guides' },
+  { id: 'risk-safety', label: 'Risk & Safety' },
+  { id: 'portfolio-growth', label: 'Portfolio Growth' },
+] as const;
+
+type ArticleCategory = (typeof CATEGORY_CONFIG)[number]['label'];
 
 const ARTICLES: Article[] = [
   {
@@ -209,7 +220,7 @@ export default function EducationPage({ onNavigate }: Props) {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string>('All');
 
-  const categories = ['All', 'Beginner Guides', 'APR / APY Education', 'Validator Guides', 'Risk & Safety', 'Portfolio Growth'];
+  const categories = useMemo(() => ['All', ...CATEGORY_CONFIG.map((c) => c.label)], []);
 
   const filteredArticles = useMemo(() => {
     return ARTICLES.filter((article) => {
