@@ -1,25 +1,6 @@
 import { useState, useMemo, useEffect } from 'react';
-import {
-  BookOpen,
-  Atom,
-  Shield,
-  TrendingUp,
-  AlertTriangle,
-  CheckCircle2,
-  Clock,
-  Users,
-  Zap,
-  ArrowRight,
-  Search,
-  Calendar,
-  User,
-  Calculator,
-  Lock,
-  ChevronLeft,
-  BarChart3,
-  Wallet,
-  HelpCircle,
-} from 'lucide-react';
+import { BookOpen, Atom, Shield, TrendingUp, TriangleAlert as AlertTriangle, CircleCheck as CheckCircle2, Clock, Users, Zap, ArrowRight, Search, Calendar, User, Calculator, Lock, ChevronLeft, ChartBar as BarChart3, Wallet, Circle as HelpCircle } from 'lucide-react';
+import { useSEOMetadata, getArticleSEOData, getDefaultLearnHubSEO } from '../hooks/useSEOMetadata';
 
 interface Props {
   onNavigate: (page: string) => void;
@@ -36,6 +17,8 @@ interface Article {
   readTime: string;
   thumbnailGradient: string;
   emoji: string;
+  seoTitle: string;
+  seoDescription: string;
 }
 
 const ARTICLES: Article[] = [
@@ -50,6 +33,8 @@ const ARTICLES: Article[] = [
     readTime: '5 min read',
     thumbnailGradient: 'from-cyan-500/20 via-blue-500/20 to-indigo-500/20 border-cyan-500/30',
     emoji: '⚛️',
+    seoTitle: 'What Is Cosmos ATOM Staking? Complete Beginner Guide 2026',
+    seoDescription: 'Learn Cosmos ATOM staking basics in 2026. Understand proof-of-stake delegation, how to earn 14-20% APR rewards, and secure passive income on the Cosmos Hub network.',
   },
   {
     id: '2',
@@ -62,6 +47,8 @@ const ARTICLES: Article[] = [
     readTime: '7 min read',
     thumbnailGradient: 'from-emerald-500/20 via-teal-500/20 to-cyan-500/20 border-emerald-500/30',
     emoji: '📈',
+    seoTitle: 'ATOM Staking APR vs APY: Compounding Mathematics Explained',
+    seoDescription: 'Understand the difference between APR and APY for ATOM staking. Learn how daily compounding increases returns and use our calculator to compare yields.',
   },
   {
     id: '3',
@@ -74,6 +61,8 @@ const ARTICLES: Article[] = [
     readTime: '6 min read',
     thumbnailGradient: 'from-purple-500/20 via-indigo-500/20 to-pink-500/20 border-purple-500/30',
     emoji: '🛡️',
+    seoTitle: 'How to Choose a Cosmos Validator: 5 Key Metrics for ATOM Staking',
+    seoDescription: 'Learn the 5 core metrics for selecting Cosmos validators: uptime, commission, self-bonded stake, voting power, and slashing history. Secure your ATOM delegation.',
   },
   {
     id: '4',
@@ -86,6 +75,8 @@ const ARTICLES: Article[] = [
     readTime: '8 min read',
     thumbnailGradient: 'from-red-500/20 via-orange-500/20 to-amber-500/20 border-red-500/30',
     emoji: '⚠️',
+    seoTitle: 'ATOM Staking Risks: Slashing, Unbonding Period & Security Guide',
+    seoDescription: 'Understand ATOM staking risks including slashing penalties, 21-day unbonding periods, validator downtime, and how to protect your Cosmos delegation.',
   },
   {
     id: '5',
@@ -98,6 +89,8 @@ const ARTICLES: Article[] = [
     readTime: '6 min read',
     thumbnailGradient: 'from-amber-500/20 via-yellow-500/20 to-orange-500/20 border-amber-500/30',
     emoji: '💼',
+    seoTitle: 'ATOM Portfolio Planning: Passive Income Strategy for Cosmos Staking',
+    seoDescription: 'Build a passive income strategy with ATOM staking. Learn optimal liquid ratios, gas allocation, redelegation timing, and portfolio management for Cosmos.',
   },
   {
     id: '6',
@@ -110,6 +103,8 @@ const ARTICLES: Article[] = [
     readTime: '8 min read',
     thumbnailGradient: 'from-blue-500/20 via-indigo-500/20 to-purple-500/20 border-blue-500/30',
     emoji: '👛',
+    seoTitle: 'Best Cosmos Wallets for ATOM Staking 2026: Keplr vs Leap vs Cosmostation',
+    seoDescription: 'Compare Keplr, Leap, and Cosmostation wallets for ATOM staking in 2026. Features, security, mobile access, validator management, and staking workflows reviewed.',
   },
   {
     id: '7',
@@ -122,6 +117,8 @@ const ARTICLES: Article[] = [
     readTime: '9 min read',
     thumbnailGradient: 'from-violet-500/20 via-purple-500/20 to-fuchsia-500/20 border-violet-500/30',
     emoji: '🏛️',
+    seoTitle: 'Best ATOM Validators for Cosmos Staking 2026: Top Selection Guide',
+    seoDescription: 'Find the best ATOM validators for Cosmos staking in 2026. Compare commission fees, uptime ratings, voting power, and decentralization metrics.',
   },
   {
     id: '8',
@@ -134,6 +131,8 @@ const ARTICLES: Article[] = [
     readTime: '8 min read',
     thumbnailGradient: 'from-rose-500/20 via-red-500/20 to-orange-500/20 border-rose-500/30',
     emoji: '🛡️',
+    seoTitle: 'Can You Lose Money Staking ATOM? Cosmos Staking Risks Explained',
+    seoDescription: 'Learn the real risks of staking Cosmos ATOM: slashing, validator downtime, 21-day unbonding locks, inflation erosion, and wallet security failures.',
   },
   {
     id: '9',
@@ -146,6 +145,8 @@ const ARTICLES: Article[] = [
     readTime: '9 min read',
     thumbnailGradient: 'from-amber-500/20 via-emerald-500/20 to-teal-500/20 border-emerald-500/30',
     emoji: '💸',
+    seoTitle: 'How Much ATOM for Passive Income? Staking Calculator & Projections',
+    seoDescription: 'Calculate how much ATOM you need for passive income. Project staking rewards, compounding returns, and monthly earnings with our Cosmos calculator.',
   },
   {
     id: '10',
@@ -158,6 +159,8 @@ const ARTICLES: Article[] = [
     readTime: '9 min read',
     thumbnailGradient: 'from-sky-500/20 via-cyan-500/20 to-emerald-500/20 border-sky-500/30',
     emoji: '🔐',
+    seoTitle: 'Is Cosmos ATOM Staking Safe for Beginners? 2026 Security Guide',
+    seoDescription: 'Learn if ATOM staking is safe for beginners. Understand wallet security, validator selection, slashing risks, and best practices for secure Cosmos delegation.',
   },
   {
     id: '11',
@@ -170,6 +173,8 @@ const ARTICLES: Article[] = [
     readTime: '9 min read',
     thumbnailGradient: 'from-teal-500/20 via-cyan-500/20 to-blue-500/20 border-teal-500/30',
     emoji: '🔁',
+    seoTitle: 'Does Daily Compounding Boost ATOM Staking Rewards? APY Comparison',
+    seoDescription: 'Compare ATOM staking rewards with daily, weekly, and monthly compounding. Calculate the APY difference and learn optimal restaking strategies for Cosmos.',
   },
 ];
 
@@ -222,6 +227,16 @@ export default function EducationPage({ onNavigate }: Props) {
     if (!selectedArticleSlug) return null;
     return ARTICLES.find((a) => a.slug === selectedArticleSlug);
   }, [selectedArticleSlug]);
+
+  // Dynamic SEO metadata based on current article
+  const seoData = useMemo(() => {
+    if (currentArticle) {
+      return getArticleSEOData(currentArticle);
+    }
+    return getDefaultLearnHubSEO();
+  }, [currentArticle]);
+
+  useSEOMetadata(seoData);
 
   const handleArticleClick = (slug: string) => {
     window.history.pushState({ page: 'education' }, '', `/learn/${slug}`);

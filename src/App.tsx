@@ -1,22 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import {
-  Home,
-  LayoutDashboard,
-  Calculator,
-  TrendingUp,
-  Gift,
-  List,
-  Settings as SettingsIcon,
-  Menu,
-  X,
-  ChevronRight,
-  BookOpen,
-  HelpCircle,
-  AlertTriangle,
-  Info,
-  Scale,
-  Shield,
-} from 'lucide-react';
+import { Hop as Home, LayoutDashboard, Calculator, TrendingUp, Gift, List, Settings as SettingsIcon, Menu, X, ChevronRight, BookOpen, Circle as HelpCircle, TriangleAlert as AlertTriangle, Info, Scale, Shield } from 'lucide-react';
 import { PortfolioData, RewardEntry, Transaction } from './types';
 import {
   loadPortfolio,
@@ -155,6 +138,9 @@ export default function App() {
   }, [portfolio.theme]);
 
   useEffect(() => {
+    // Skip metadata updates for education page - EducationPage handles its own SEO
+    if (currentPage === 'education') return;
+
     const meta: Record<Page, { title: string; description: string }> = {
       home: {
         title: 'Cosmos ATOM Staking Calculator | Calculate Rewards, APR & Validator Earnings',
