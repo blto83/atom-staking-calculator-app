@@ -19,6 +19,7 @@ interface Article {
   emoji: string;
   seoTitle: string;
   seoDescription: string;
+  featured?: boolean;
 }
 
 const ARTICLES: Article[] = [
@@ -35,6 +36,7 @@ const ARTICLES: Article[] = [
     emoji: '⚛️',
     seoTitle: 'What Is Cosmos ATOM Staking? Complete Beginner Guide 2026',
     seoDescription: 'Learn Cosmos ATOM staking basics in 2026. Understand proof-of-stake delegation, how to earn 14-20% APR rewards, and secure passive income on the Cosmos Hub network.',
+    featured: true,
   },
   {
     id: '2',
@@ -220,7 +222,8 @@ export default function EducationPage({ onNavigate }: Props) {
   }, [searchQuery, selectedCategory]);
 
   const featuredArticle = useMemo(() => {
-    return ARTICLES[0]; // "What Is Cosmos ATOM Staking? Beginner Guide (2026)" is the featured one
+    // Find the explicitly marked featured article, fallback to first article for safety
+    return ARTICLES.find((a) => a.featured) ?? ARTICLES[0];
   }, []);
 
   const currentArticle = useMemo(() => {
