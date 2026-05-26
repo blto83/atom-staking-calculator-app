@@ -238,6 +238,21 @@ export default function EducationPage({ onNavigate }: Props) {
 
   useSEOMetadata(seoData);
 
+  // Smart related articles selection: same-category first, up to 4 total
+  const relatedArticles = useMemo(() => {
+    if (!currentArticle) return [];
+
+    const sameCategory = ARTICLES.filter(
+      (a) => a.slug !== currentArticle.slug && a.category === currentArticle.category
+    );
+    const otherArticles = ARTICLES.filter(
+      (a) => a.slug !== currentArticle.slug && a.category !== currentArticle.category
+    );
+
+    // Combine same-category first, then fill with others, max 4 total
+    return [...sameCategory, ...otherArticles].slice(0, 4);
+  }, [currentArticle]);
+
   const handleArticleClick = (slug: string) => {
     window.history.pushState({ page: 'education' }, '', `/learn/${slug}`);
     setSelectedArticleSlug(slug);
@@ -2287,7 +2302,7 @@ export default function EducationPage({ onNavigate }: Props) {
             Related ATOM Staking Guides
           </h3>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 items-stretch">
-            {ARTICLES.filter((a) => a.slug !== currentArticle.slug).map((article) => (
+            {relatedArticles.map((article) => (
               <div
                 key={article.id}
                 onClick={() => handleArticleClick(article.slug)}
