@@ -1,12 +1,11 @@
 import { useEffect } from 'react';
+import { Article, SITE_URL } from '../data/articles';
 
 interface SEOData {
   title: string;
   description: string;
   canonicalUrl?: string;
 }
-
-const SITE_URL = 'https://www.atomstakingcalculator.com';
 
 export function useSEOMetadata(seoData: SEOData | null) {
   useEffect(() => {
@@ -66,11 +65,7 @@ export function useSEOMetadata(seoData: SEOData | null) {
   }, [seoData]);
 }
 
-export function getArticleSEOData(article: {
-  seoTitle: string;
-  seoDescription: string;
-  slug: string;
-}): SEOData {
+export function getArticleSEOData(article: Pick<Article, 'seoTitle' | 'seoDescription' | 'slug'>): SEOData {
   return {
     title: `${article.seoTitle} | ATOM Staking Calculator`,
     description: article.seoDescription,
