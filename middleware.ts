@@ -15,10 +15,9 @@
  * Next Phase: Full HTML metadata injection.
  */
 
-import { NextResponse } from 'npm:@vercel/edge';
+import { type NextRequest, NextResponse } from 'npm:next@latest/server';
 
-// Article metadata imported from shared module
-// This is the same data used by the React frontend
+// Article site URL for canonical links
 const SITE_URL = 'https://www.atomstakingcalculator.com';
 
 // Article metadata structure (subset for middleware)
@@ -123,9 +122,8 @@ function getArticleBySlug(slug: string): Article | undefined {
  * Main middleware function
  * Intercepts requests and injects metadata for article routes
  */
-export async function middleware(request: Request): Promise<Response> {
-  const url = new URL(request.url);
-  const pathname = url.pathname;
+export function middleware(request: NextRequest) {
+  const pathname = new URL(request.url).pathname;
 
   // Only process /learn/* routes
   const slug = extractSlug(pathname);
@@ -144,35 +142,15 @@ export async function middleware(request: Request): Promise<Response> {
     return NextResponse.next();
   }
 
-  // Article found - prepare for metadata injection
+  // Article found - metadata lookup successful
   // PHASE 2: This is where HTML metadata injection will happen
   // For now, we establish the interception and lookup flow
 
-  // Get the original HTML response
-  const response = await fetch(request);
+  // Pass request through with context about the article
+  // The response will be HTML from the SPA (via Vercel rewrite)
+  // In PHASE 2, we'll intercept and modify the HTML here
 
-  // Check if response is HTML
-  const contentType = response.headers.get('content-type') || '';
-  if (!contentType.includes('text/html')) {
-    // Not HTML - return as-is
-    return response;
-  }
-
-  // Read the HTML content
-  const html = await response.text();
-
-  // PHASE 2: Inject metadata into HTML <head>
-  // This scaffold establishes the flow; injection logic comes next
-  // For now, we verify interception works correctly
-
-  // Return modified HTML with proper headers
-  return new Response(html, {
-    status: response.status,
-    headers: {
-      'Content-Type': 'text/html; charset=utf-8',
-      'Cache-Control': response.headers.get('Cache-Control') || 'public, max-age=0, must-revalidate',
-    },
-  });
+  return NextResponse.next();
 }
 
 /**
