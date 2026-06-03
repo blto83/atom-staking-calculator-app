@@ -7,21 +7,6 @@ import { fileURLToPath } from 'url';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
-const ARTICLE_SLUGS = [
-  'what-is-cosmos-atom-staking-beginner-guide-2026',
-  'staking-apr-vs-apy-mathematics-of-compounding-atom',
-  'how-to-choose-the-right-cosmos-validator-5-core-metrics',
-  'atom-staking-risks-slashing-and-unbonding-period-explained',
-  'maximized-atom-portfolio-planning-passive-income-strategy',
-  'best-cosmos-wallets-for-atom-staking-2026',
-  'best-atom-validators-cosmos-staking-2026',
-  'can-you-lose-money-staking-atom',
-  'how-much-atom-to-make-passive-income',
-  'is-cosmos-atom-staking-safe-for-beginners',
-  'does-daily-compounding-increase-atom-staking-rewards',
-  'atom-staking-tax-implications-and-reporting-guide',
-];
-
 let SERVER_PORT = 4173;
 let SERVER_URL = `http://localhost:${SERVER_PORT}`;
 
@@ -97,6 +82,37 @@ async function prerenderArticle(browser, slug) {
   }
 }
 
+async function getArticleSlugs() {
+  // Dynamically import the articles module from the built dist folder
+  // During prerender, we import the TypeScript compiled version
+  const articlesPath = path.join(__dirname, '..', 'src', 'data', 'articles.ts');
+
+  // For runtime execution, we need to read and parse the TypeScript file
+  // Since this is ES module and runs during build, we parse the file directly
+  try {
+    const content = await fs.readFile(articlesPath, 'utf-8');
+
+    // Extract all slug values using regex to avoid TS compilation
+    // Pattern: slug: 'slug-value',
+    const slugPattern = /slug:\s*'([^']+)'/g;
+    const slugs = [];
+    let match;
+
+    while ((match = slugPattern.exec(content)) !== null) {
+      slugs.push(match[1]);
+    }
+
+    if (slugs.length === 0) {
+      throw new Error('No article slugs found in articles.ts');
+    }
+
+    // Return only unique slugs (filter out any duplicates from type defs)
+    return [...new Set(slugs)];
+  } catch (error) {
+    throw new Error(`Failed to read article slugs from articles.ts: ${error.message}`);
+  }
+}
+
 async function main() {
   console.log('🔨 ATOM Staking Calculator - Article Prerender\n');
 
@@ -104,6 +120,11 @@ async function main() {
   let browser = null;
 
   try {
+    // Get article slugs from source
+    console.log('📖 Reading article slugs from src/data/articles.ts...');
+    const ARTICLE_SLUGS = await getArticleSlugs();
+    console.log(`✓ Found ${ARTICLE_SLUGS.length} articles to prerender\n`);
+
     previewServer = await startPreviewServer();
     await waitForServer(SERVER_URL);
 
