@@ -34,6 +34,7 @@ export interface Article {
   emoji: string;
   seoTitle: string;
   seoDescription: string;
+  ogImage?: string;
   featured?: boolean;
 }
 

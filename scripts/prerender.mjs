@@ -6,23 +6,41 @@ import { fileURLToPath } from 'url';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const SITE_URL = 'https://www.atomstakingcalculator.com';
+const DEFAULT_OG_IMAGE = `${SITE_URL}/og-default.png`;
 
-async function getArticleSlugs() {
+async function getArticleMetadata() {
   const articlesPath = path.join(__dirname, '..', 'src', 'data', 'articles.ts');
   const content = await fs.readFile(articlesPath, 'utf-8');
 
-  // Extract article metadata using regex to avoid TS compilation
-  // Pattern: slug: 'slug-value', seoTitle: '...', seoDescription: '...'
   const articles = [];
-  const articlePattern = /{\s*id:\s*'[^']+',\s*slug:\s*'([^']+)',[\s\S]*?seoTitle:\s*'([^']+)',\s*seoDescription:\s*'([^']+)'/g;
 
-  let match;
-  while ((match = articlePattern.exec(content)) !== null) {
-    articles.push({
-      slug: match[1],
-      seoTitle: match[2],
-      seoDescription: match[3],
-    });
+  // Parse each article object from the TypeScript file
+  // Match article blocks starting from { id: to the closing },
+  const articleBlockPattern = /{\s*id:\s*'([^']+)',\s*slug:\s*'([^']+)',[\s\S]*?seoTitle:\s*'([^']+)',\s*seoDescription:\s*'([^']+)'[\s\S]*?},?\n\s*}/g;
+
+  // Simpler approach: extract each article object
+  const slugPattern = /slug:\s*'([^']+)'/g;
+  const seoTitlePattern = /seoTitle:\s*'([^']+)'/g;
+  const seoDescPattern = /seoDescription:\s*'([^']+)'/g;
+  const ogImagePattern = /ogImage:\s*'([^']+)'/g;
+
+  // Split by article objects
+  const articleObjects = content.match(/{\s*id:\s*'[^']+',[\s\S]*?(?:featured:\s*(?:true|false),?\s*)?}/g) || [];
+
+  for (const obj of articleObjects) {
+    const slugMatch = obj.match(/slug:\s*'([^']+)'/);
+    const seoTitleMatch = obj.match(/seoTitle:\s*'([^']+)'/);
+    const seoDescMatch = obj.match(/seoDescription:\s*'([^']+)'/);
+    const ogImageMatch = obj.match(/ogImage:\s*'([^']+)'/);
+
+    if (slugMatch && seoTitleMatch && seoDescMatch) {
+      articles.push({
+        slug: slugMatch[1],
+        seoTitle: seoTitleMatch[1],
+        seoDescription: seoDescMatch[1],
+        ogImage: ogImageMatch ? ogImageMatch[1] : null,
+      });
+    }
   }
 
   if (articles.length === 0) {
@@ -35,9 +53,12 @@ async function getArticleSlugs() {
 function injectMetadata(html, article) {
   const fullTitle = `${article.seoTitle} | ATOM Staking Calculator`;
   const canonicalUrl = `${SITE_URL}/learn/${article.slug}`;
+  const ogImageUrl = article.ogImage || DEFAULT_OG_IMAGE;
+
+  let result = html;
 
   // Replace title
-  let result = html.replace(
+  result = result.replace(
     /<title>[^<]*<\/title>/,
     `<title>${fullTitle}</title>`
   );
@@ -66,6 +87,12 @@ function injectMetadata(html, article) {
     `<meta property="og:url" content="${canonicalUrl}"`
   );
 
+  // Replace og:image
+  result = result.replace(
+    /<meta property="og:image" content="[^"]*"/,
+    `<meta property="og:image" content="${ogImageUrl}"`
+  );
+
   // Replace twitter:title
   result = result.replace(
     /<meta name="twitter:title" content="[^"]*"/,
@@ -78,6 +105,12 @@ function injectMetadata(html, article) {
     `<meta name="twitter:description" content="${article.seoDescription}"`
   );
 
+  // Replace twitter:image
+  result = result.replace(
+    /<meta name="twitter:image" content="[^"]*"/,
+    `<meta name="twitter:image" content="${ogImageUrl}"`
+  );
+
   // Replace canonical link
   result = result.replace(
     /<link rel="canonical" href="[^"]*"/,
@@ -87,13 +120,91 @@ function injectMetadata(html, article) {
   return result;
 }
 
+async function validateBuild(articles) {
+  console.log('\n🔍 Validating build output...\n');
+
+  const errors = [];
+  const distPath = path.join(__dirname, '..', 'dist');
+
+  // Check homepage
+  const homePath = path.join(distPath, 'index.html');
+  try {
+    const homeHtml = await fs.readFile(homePath, 'utf-8');
+
+    // Check for bolt.new placeholders
+    if (homeHtml.includes('bolt.new')) {
+      errors.push('Homepage still contains bolt.new references in og:image or twitter:image');
+    }
+
+    // Check required tags exist
+    const requiredTags = [
+      { pattern: /<meta property="og:title" content="[^"]+"/, name: 'og:title' },
+      { pattern: /<meta property="og:image" content="[^"]+"/, name: 'og:image' },
+      { pattern: /<link rel="canonical" href="[^"]+"/, name: 'canonical' },
+    ];
+
+    for (const tag of requiredTags) {
+      if (!tag.pattern.test(homeHtml)) {
+        errors.push(`Homepage missing ${tag.name}`);
+      }
+    }
+
+    console.log('✓ Homepage validation passed');
+  } catch (e) {
+    errors.push(`Homepage index.html not found: ${e.message}`);
+  }
+
+  // Check each article
+  for (const article of articles) {
+    const articlePath = path.join(distPath, 'learn', article.slug, 'index.html');
+
+    try {
+      const articleHtml = await fs.readFile(articlePath, 'utf-8');
+
+      // Check for bolt.new placeholders
+      if (articleHtml.includes('bolt.new')) {
+        errors.push(`Article "${article.slug}" still contains bolt.new references`);
+      }
+
+      // Check required tags
+      const requiredTags = [
+        { pattern: /<meta property="og:title" content="[^"]+"/, name: 'og:title' },
+        { pattern: /<meta property="og:image" content="[^"]+"/, name: 'og:image' },
+        { pattern: /<meta property="og:url" content="[^"]+"/, name: 'og:url' },
+        { pattern: /<link rel="canonical" href="[^"]+"/, name: 'canonical' },
+      ];
+
+      for (const tag of requiredTags) {
+        if (!tag.pattern.test(articleHtml)) {
+          errors.push(`Article "${article.slug}" missing ${tag.name}`);
+        }
+      }
+
+      console.log(`✓ Article "${article.slug}" validation passed`);
+    } catch (e) {
+      errors.push(`Article "${article.slug}" index.html not found`);
+    }
+  }
+
+  if (errors.length > 0) {
+    console.error('\n❌ Build validation failed:\n');
+    for (const error of errors) {
+      console.error(`  - ${error}`);
+    }
+    console.error('');
+    process.exit(1);
+  }
+
+  console.log('\n✅ All build validations passed!\n');
+}
+
 async function main() {
   console.log('🔨 ATOM Staking Calculator - Article Prerender\n');
 
   try {
     // Get article metadata from source
-    console.log('📖 Reading article slugs from src/data/articles.ts...');
-    const articles = await getArticleSlugs();
+    console.log('📖 Reading article metadata from src/data/articles.ts...');
+    const articles = await getArticleMetadata();
     console.log(`✓ Found ${articles.length} articles to prerender\n`);
 
     // Read the built index.html
@@ -109,7 +220,8 @@ async function main() {
       const articleHtml = injectMetadata(baseHtml, article);
       await fs.writeFile(path.join(outDir, 'index.html'), articleHtml);
 
-      console.log(`✓ Generated: /learn/${article.slug}/index.html`);
+      const imageSource = article.ogImage ? 'custom' : 'default';
+      console.log(`✓ Generated: /learn/${article.slug}/index.html (og:image: ${imageSource})`);
     }
 
     console.log(`\n✅ Successfully prerendered ${articles.length} articles!\n`);
@@ -117,7 +229,11 @@ async function main() {
     console.log('   - dist/index.html (homepage)');
     console.log(`   - dist/learn/*/index.html (${articles.length} article pages)`);
     console.log('   - dist/robots.txt');
-    console.log('   - dist/sitemap.xml\n');
+    console.log('   - dist/sitemap.xml');
+
+    // Validate the build
+    await validateBuild(articles);
+
   } catch (error) {
     console.error('\n❌ Prerender failed:', error.message);
     process.exit(1);
