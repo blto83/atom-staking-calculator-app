@@ -57,67 +57,85 @@ function injectMetadata(html, article) {
 
   let result = html;
 
-  // Replace title
+  // <title> keeps the full "seoTitle | ATOM Staking Calculator" form
   result = result.replace(
     /<title>[^<]*<\/title>/,
     `<title>${fullTitle}</title>`
   );
 
-  // Replace meta description
+  // meta description
   result = result.replace(
     /<meta name="description" content="[^"]*"/,
     `<meta name="description" content="${article.seoDescription}"`
   );
 
-  // Replace og:title
+  // og:site_name — replace if present, inject after og:type otherwise
+  if (/<meta property="og:site_name"/.test(result)) {
+    result = result.replace(
+      /<meta property="og:site_name" content="[^"]*"/,
+      `<meta property="og:site_name" content="ATOM Staking Calculator"`
+    );
+  } else {
+    result = result.replace(
+      /(<meta property="og:type"[^>]*>)/,
+      `$1\n    <meta property="og:site_name" content="ATOM Staking Calculator" />`
+    );
+  }
+
+  // og:title — use seoTitle directly (no suffix) to stay under 60 chars
   result = result.replace(
     /<meta property="og:title" content="[^"]*"/,
-    `<meta property="og:title" content="${fullTitle}"`
+    `<meta property="og:title" content="${article.seoTitle}"`
   );
 
-  // Replace og:description
+  // og:description
   result = result.replace(
     /<meta property="og:description" content="[^"]*"/,
     `<meta property="og:description" content="${article.seoDescription}"`
   );
 
-  // Replace og:url
+  // og:url
   result = result.replace(
     /<meta property="og:url" content="[^"]*"/,
     `<meta property="og:url" content="${canonicalUrl}"`
   );
 
-  // Replace og:image
+  // og:image
   result = result.replace(
     /<meta property="og:image" content="[^"]*"/,
     `<meta property="og:image" content="${ogImageUrl}"`
   );
 
-  // Replace twitter:title
+  // twitter:title — use seoTitle directly (no suffix) to stay under 60 chars
   result = result.replace(
     /<meta name="twitter:title" content="[^"]*"/,
-    `<meta name="twitter:title" content="${fullTitle}"`
+    `<meta name="twitter:title" content="${article.seoTitle}"`
   );
 
-  // Replace twitter:description
+  // twitter:description
   result = result.replace(
     /<meta name="twitter:description" content="[^"]*"/,
     `<meta name="twitter:description" content="${article.seoDescription}"`
   );
 
-  // Replace twitter:image
+  // twitter:image
   result = result.replace(
     /<meta name="twitter:image" content="[^"]*"/,
     `<meta name="twitter:image" content="${ogImageUrl}"`
   );
 
-  // Replace canonical link
+  // canonical
   result = result.replace(
     /<link rel="canonical" href="[^"]*"/,
     `<link rel="canonical" href="${canonicalUrl}"`
   );
 
   return result;
+}
+
+function extractTagContent(html, pattern) {
+  const match = html.match(pattern);
+  return match ? match[1] : null;
 }
 
 async function validateBuild(articles) {
@@ -131,21 +149,24 @@ async function validateBuild(articles) {
   try {
     const homeHtml = await fs.readFile(homePath, 'utf-8');
 
-    // Check for bolt.new placeholders
     if (homeHtml.includes('bolt.new')) {
-      errors.push('Homepage still contains bolt.new references in og:image or twitter:image');
+      errors.push('Homepage still contains bolt.new references');
     }
 
-    // Check required tags exist
     const requiredTags = [
-      { pattern: /<meta property="og:title" content="[^"]+"/, name: 'og:title' },
-      { pattern: /<meta property="og:image" content="[^"]+"/, name: 'og:image' },
-      { pattern: /<link rel="canonical" href="[^"]+"/, name: 'canonical' },
+      { pattern: /<meta property="og:title" content="([^"]+)"/, name: 'og:title', maxLen: 60 },
+      { pattern: /<meta property="og:description" content="([^"]+)"/, name: 'og:description', maxLen: 125 },
+      { pattern: /<meta property="og:site_name" content="([^"]+)"/, name: 'og:site_name', maxLen: null },
+      { pattern: /<meta property="og:image" content="([^"]+)"/, name: 'og:image', maxLen: null },
+      { pattern: /<link rel="canonical" href="([^"]+)"/, name: 'canonical', maxLen: null },
     ];
 
     for (const tag of requiredTags) {
-      if (!tag.pattern.test(homeHtml)) {
+      const content = extractTagContent(homeHtml, tag.pattern);
+      if (!content) {
         errors.push(`Homepage missing ${tag.name}`);
+      } else if (tag.maxLen && content.length > tag.maxLen) {
+        errors.push(`Homepage ${tag.name} too long (${content.length} chars, max ${tag.maxLen}): "${content}"`);
       }
     }
 
@@ -161,22 +182,25 @@ async function validateBuild(articles) {
     try {
       const articleHtml = await fs.readFile(articlePath, 'utf-8');
 
-      // Check for bolt.new placeholders
       if (articleHtml.includes('bolt.new')) {
         errors.push(`Article "${article.slug}" still contains bolt.new references`);
       }
 
-      // Check required tags
       const requiredTags = [
-        { pattern: /<meta property="og:title" content="[^"]+"/, name: 'og:title' },
-        { pattern: /<meta property="og:image" content="[^"]+"/, name: 'og:image' },
-        { pattern: /<meta property="og:url" content="[^"]+"/, name: 'og:url' },
-        { pattern: /<link rel="canonical" href="[^"]+"/, name: 'canonical' },
+        { pattern: /<meta property="og:title" content="([^"]+)"/, name: 'og:title', maxLen: 60 },
+        { pattern: /<meta property="og:description" content="([^"]+)"/, name: 'og:description', maxLen: 125 },
+        { pattern: /<meta property="og:site_name" content="([^"]+)"/, name: 'og:site_name', maxLen: null },
+        { pattern: /<meta property="og:image" content="([^"]+)"/, name: 'og:image', maxLen: null },
+        { pattern: /<meta property="og:url" content="([^"]+)"/, name: 'og:url', maxLen: null },
+        { pattern: /<link rel="canonical" href="([^"]+)"/, name: 'canonical', maxLen: null },
       ];
 
       for (const tag of requiredTags) {
-        if (!tag.pattern.test(articleHtml)) {
+        const content = extractTagContent(articleHtml, tag.pattern);
+        if (!content) {
           errors.push(`Article "${article.slug}" missing ${tag.name}`);
+        } else if (tag.maxLen && content.length > tag.maxLen) {
+          errors.push(`Article "${article.slug}" ${tag.name} too long (${content.length} chars, max ${tag.maxLen}): "${content}"`);
         }
       }
 

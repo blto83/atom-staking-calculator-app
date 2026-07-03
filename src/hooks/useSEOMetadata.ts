@@ -3,6 +3,7 @@ import { Article, SITE_URL } from '../data/articles';
 
 interface SEOData {
   title: string;
+  ogTitle?: string; // og:title and twitter:title — defaults to title if omitted
   description: string;
   canonicalUrl?: string;
 }
@@ -47,15 +48,17 @@ export function useSEOMetadata(seoData: SEOData | null) {
       meta.setAttribute('content', content);
     };
 
+    const ogTitle = seoData.ogTitle ?? seoData.title;
+
     // Open Graph
-    updateMetaTag('og:title', seoData.title);
+    updateMetaTag('og:title', ogTitle);
     updateMetaTag('og:description', seoData.description);
     if (seoData.canonicalUrl) {
       updateMetaTag('og:url', seoData.canonicalUrl);
     }
 
     // Twitter
-    updateMetaTag('twitter:title', seoData.title, false);
+    updateMetaTag('twitter:title', ogTitle, false);
     updateMetaTag('twitter:description', seoData.description, false);
 
     return () => {
@@ -68,6 +71,7 @@ export function useSEOMetadata(seoData: SEOData | null) {
 export function getArticleSEOData(article: Pick<Article, 'seoTitle' | 'seoDescription' | 'slug'>): SEOData {
   return {
     title: `${article.seoTitle} | ATOM Staking Calculator`,
+    ogTitle: article.seoTitle,
     description: article.seoDescription,
     canonicalUrl: `${SITE_URL}/learn/${article.slug}`,
   };
