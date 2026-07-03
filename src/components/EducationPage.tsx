@@ -2,6 +2,7 @@ import { useState, useMemo, useEffect } from 'react';
 import { BookOpen, Atom, Shield, TrendingUp, TriangleAlert as AlertTriangle, CircleCheck as CheckCircle2, Clock, Users, Zap, ArrowRight, Search, Calendar, User, Calculator, Lock, ChevronLeft, ChartBar as BarChart3, Wallet, Circle as HelpCircle } from 'lucide-react';
 import { useSEOMetadata, getArticleSEOData, getDefaultLearnHubSEO } from '../hooks/useSEOMetadata';
 import { ARTICLES, CATEGORY_CONFIG, Article, ArticleCategory } from '../data/articles';
+import ShareButtons from './ShareButtons';
 
 interface Props {
   onNavigate: (page: string) => void;
@@ -2125,6 +2126,9 @@ export default function EducationPage({ onNavigate }: Props) {
             </>
           )}
         </div>
+
+        {/* Social Share */}
+        <ShareButtons slug={currentArticle.slug} title={currentArticle.title} />
 
         {/* Related ATOM Staking Guides */}
         <div className="border-t border-slate-200 dark:border-slate-800/60 pt-10 mt-16 space-y-5">
