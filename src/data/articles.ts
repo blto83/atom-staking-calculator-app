@@ -194,6 +194,21 @@ export const ARTICLES: Article[] = [
     seoTitle: 'Does Daily Compounding Boost ATOM Staking Rewards?',
     seoDescription: 'Compare ATOM rewards: daily vs monthly compounding. Calculate the APY difference and learn optimal restaking strategies.',
   },
+  {
+    id: '12',
+    slug: 'self-custody-vs-exchange-staking-atom-which-is-safer',
+    title: 'Self-Custody vs Exchange Staking: Which Is Safer for ATOM Holders?',
+    excerpt: 'Compare self-custody staking through Keplr or Cosmostation versus exchange staking. Understand the real security differences, validator control, reward impacts, and when each approach makes sense.',
+    category: 'Risk & Safety',
+    author: 'ATOM Staking Calculator Team',
+    date: 'July 4, 2026',
+    readTime: '8 min read',
+    thumbnailGradient: 'from-orange-500/20 via-red-500/20 to-rose-500/20 border-orange-500/30',
+    emoji: '🔐',
+    seoTitle: 'Self-Custody vs Exchange ATOM Staking: Which Is Safer?',
+    seoDescription: 'Compare self-custody vs exchange ATOM staking to understand security tradeoffs before choosing how to stake your tokens.',
+    featured: false,
+  },
 ];
 
 /**

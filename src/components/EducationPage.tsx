@@ -2125,6 +2125,268 @@ export default function EducationPage({ onNavigate }: Props) {
               </div>
             </>
           )}
+
+          {currentArticle.slug === 'self-custody-vs-exchange-staking-atom-which-is-safer' && (
+            <>
+              <p className="text-base text-slate-600 dark:text-slate-300 italic font-medium leading-relaxed mb-6">
+                When you stake ATOM, you're not just choosing a validator — you're also choosing where your tokens live. Self-custody and exchange staking both earn rewards, but with very different security profiles. This guide breaks down the real differences.
+              </p>
+
+              {/* What Self-Custody Staking Means */}
+              <h2 className="text-xl sm:text-2xl font-extrabold text-slate-900 dark:text-white flex items-center gap-2.5 mt-8 mb-4">
+                <Lock className="w-5 h-5 text-cyan-500 dark:text-cyan-400" />
+                What Self-Custody Staking Actually Means
+              </h2>
+              <p>
+                Self-custody staking means your ATOM stays in a wallet where you hold the private keys — nobody else. Wallets like Keplr, Leap, and Cosmostation let you connect directly to the Cosmos Hub network and delegate your tokens to a validator of your choice, without ever handing your assets to a third party.
+              </p>
+              <p>
+                Technically, staking is a delegation, not a transfer. Your tokens never leave your wallet address. You're granting a validator the right to use your staking weight to help secure the network, and in exchange, you earn a proportional share of the rewards. You retain the ability to redelegate, undelegate, or vote on governance proposals at any time.
+              </p>
+
+              <h3 className="text-base sm:text-lg font-extrabold text-slate-900 dark:text-white mt-6 mb-3">
+                How Self-Custody Staking Works
+              </h3>
+              <ol className="space-y-2.5 my-4">
+                {[
+                  'Install a non-custodial wallet (Keplr, Leap, or Cosmostation)',
+                  'Fund the wallet with ATOM',
+                  'Choose a validator based on commission, uptime, and decentralization',
+                  'Delegate your tokens directly from the wallet interface',
+                  'Track and claim rewards, or let them accumulate',
+                ].map((step, i) => (
+                  <li key={i} className="flex items-start gap-3">
+                    <span className="shrink-0 w-6 h-6 rounded-full bg-cyan-500/15 border border-cyan-500/30 flex items-center justify-center text-cyan-400 font-bold text-xs mt-0.5">{i + 1}</span>
+                    <span className="text-slate-700 dark:text-slate-300 text-sm sm:text-base">{step}</span>
+                  </li>
+                ))}
+              </ol>
+              <p>
+                Because you control the private keys, no one — not even the wallet developer — can move your funds without your signature.
+              </p>
+
+              {/* What Exchange Staking Means */}
+              <h2 className="text-xl sm:text-2xl font-extrabold text-slate-900 dark:text-white flex items-center gap-2.5 mt-10 mb-4">
+                <Wallet className="w-5 h-5 text-amber-500 dark:text-amber-400" />
+                What Exchange Staking Actually Means
+              </h2>
+              <p>
+                Exchange staking works differently. When you stake ATOM through a centralized exchange, you're not delegating from your own wallet. Instead, the exchange holds custody of your tokens and stakes them on your behalf, often pooling many users' ATOM together under exchange-controlled validators.
+              </p>
+              <p>
+                You still earn staking rewards, usually shown as a simple APY on the exchange's staking page, but you don't interact with the Cosmos Hub network directly. The exchange manages validator selection, claims rewards, and credits your account balance accordingly.
+              </p>
+
+              <h3 className="text-base sm:text-lg font-extrabold text-slate-900 dark:text-white mt-6 mb-3">
+                How Exchange Staking Works
+              </h3>
+              <ol className="space-y-2.5 my-4">
+                {[
+                  'Deposit ATOM into your exchange account',
+                  'Opt into the exchange\'s staking product',
+                  'The exchange delegates pooled funds to its own or partner validators',
+                  'Rewards are credited automatically, often after the exchange takes a fee',
+                  'Unstaking follows the exchange\'s own withdrawal terms, which may differ from the network\'s native unbonding period',
+                ].map((step, i) => (
+                  <li key={i} className="flex items-start gap-3">
+                    <span className="shrink-0 w-6 h-6 rounded-full bg-amber-500/15 border border-amber-500/30 flex items-center justify-center text-amber-400 font-bold text-xs mt-0.5">{i + 1}</span>
+                    <span className="text-slate-700 dark:text-slate-300 text-sm sm:text-base">{step}</span>
+                  </li>
+                ))}
+              </ol>
+
+              {/* Quick Take + Comparison Table */}
+              <h2 className="text-xl sm:text-2xl font-extrabold text-slate-900 dark:text-white flex items-center gap-2.5 mt-10 mb-4">
+                <BarChart3 className="w-5 h-5 text-indigo-500 dark:text-indigo-400" />
+                Comparing the Two: Control vs Convenience
+              </h2>
+
+              {/* Quick Take callout */}
+              <div className="bg-gradient-to-r from-cyan-500/10 to-indigo-500/10 border border-cyan-500/30 rounded-xl p-5 my-5">
+                <p className="text-[10px] font-bold uppercase tracking-widest text-cyan-500 dark:text-cyan-400 mb-2">Quick Take</p>
+                <p className="text-sm sm:text-base text-slate-700 dark:text-slate-300">
+                  The core tradeoff is simple: self-custody gives you control over your keys and validator choice, while exchange staking gives you simplicity at the cost of that control.
+                </p>
+              </div>
+
+              {/* Comparison table */}
+              <div className="overflow-x-auto my-6 rounded-xl border border-slate-200 dark:border-slate-800/60">
+                <table className="w-full text-sm border-collapse">
+                  <thead>
+                    <tr className="border-b border-slate-200 dark:border-slate-800">
+                      <th className="text-left py-3 px-4 text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 bg-slate-50 dark:bg-slate-900/60 w-1/3">Factor</th>
+                      <th className="text-left py-3 px-4 text-xs font-bold uppercase tracking-wider text-cyan-600 dark:text-cyan-400 bg-slate-50 dark:bg-slate-900/60">Self-Custody</th>
+                      <th className="text-left py-3 px-4 text-xs font-bold uppercase tracking-wider text-amber-600 dark:text-amber-400 bg-slate-50 dark:bg-slate-900/60">Exchange Staking</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {[
+                      ['Who holds the private keys', 'You', 'The exchange'],
+                      ['Validator choice', 'You choose', 'Exchange decides'],
+                      ['Setup complexity', 'Moderate (wallet setup required)', 'Low (a few clicks)'],
+                      ['Governance voting', 'Available', 'Usually unavailable'],
+                      ['Withdrawal timing', "Network's native 21-day unbonding", "Exchange's own policy"],
+                      ['Counterparty risk', 'None', 'Exists (exchange solvency, security)'],
+                    ].map(([factor, self, exchange], i) => (
+                      <tr key={i} className={`border-b border-slate-100 dark:border-slate-800/40 ${i % 2 === 0 ? 'bg-white dark:bg-transparent' : 'bg-slate-50/50 dark:bg-slate-900/20'}`}>
+                        <td className="py-3 px-4 font-medium text-slate-700 dark:text-slate-300 text-xs sm:text-sm">{factor}</td>
+                        <td className="py-3 px-4 text-cyan-700 dark:text-cyan-300 text-xs sm:text-sm">{self}</td>
+                        <td className="py-3 px-4 text-amber-700 dark:text-amber-300 text-xs sm:text-sm">{exchange}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+
+              {/* Core Risk Difference */}
+              <h2 className="text-xl sm:text-2xl font-extrabold text-slate-900 dark:text-white flex items-center gap-2.5 mt-10 mb-4">
+                <AlertTriangle className="w-5 h-5 text-red-500 dark:text-red-400" />
+                The Core Risk Difference: Custody
+              </h2>
+              <p>
+                The single biggest difference between these two approaches is counterparty risk. When you self-custody, the only real risks are validator-related — slashing, downtime, or picking a validator with a poor track record. Your assets themselves are never exposed to a third party's solvency or security practices.
+              </p>
+              <p>
+                When you stake through an exchange, you add another layer of risk: the exchange itself. If the exchange is hacked, mismanages funds, freezes withdrawals, or becomes insolvent, your staked ATOM can become inaccessible or lost entirely — independent of anything happening on the Cosmos network itself. This isn't a hypothetical concern; the crypto industry has seen multiple exchange failures where staked or custodied assets were frozen or lost.
+              </p>
+              <p>
+                For a deeper look at the network-level risks that apply regardless of custody method — like slashing and unbonding — see our guide on{' '}
+                <button onClick={() => handleArticleClick('atom-staking-risks-slashing-and-unbonding-period-explained')} className="text-cyan-600 dark:text-cyan-400 hover:underline font-bold cursor-pointer">
+                  ATOM Staking Risks: Slashing and the 21-Day Unbonding Period
+                </button>
+                .
+              </p>
+
+              {/* Validator Choice */}
+              <h2 className="text-xl sm:text-2xl font-extrabold text-slate-900 dark:text-white flex items-center gap-2.5 mt-10 mb-4">
+                <Shield className="w-5 h-5 text-emerald-500 dark:text-emerald-400" />
+                Validator Choice and Decentralization
+              </h2>
+              <p>
+                Self-custody staking gives you direct control over which validator secures your stake. This matters for two reasons. First, different validators charge different commission rates, which directly affects your net rewards. Second, spreading stake across many independent validators — rather than concentrating it with a few large ones — helps keep the network decentralized and resistant to censorship or collusion.
+              </p>
+              <p>
+                Exchange staking typically removes this choice. Your ATOM is usually delegated to validators the exchange operates or has a business relationship with. This can contribute to validator centralization if a small number of exchanges end up controlling a large share of total staked ATOM. If validator selection matters to you, our guide on{' '}
+                <button onClick={() => handleArticleClick('how-to-choose-the-right-cosmos-validator-5-core-metrics')} className="text-cyan-600 dark:text-cyan-400 hover:underline font-bold cursor-pointer">
+                  How to Choose the Right Cosmos Validator: 5 Core Metrics
+                </button>{' '}
+                walks through the key metrics to evaluate.
+              </p>
+
+              {/* Rewards */}
+              <h2 className="text-xl sm:text-2xl font-extrabold text-slate-900 dark:text-white flex items-center gap-2.5 mt-10 mb-4">
+                <TrendingUp className="w-5 h-5 text-emerald-500 dark:text-emerald-400" />
+                Rewards: Is One Actually More Profitable?
+              </h2>
+
+              {/* Example Calculation box */}
+              <div className="border border-slate-200 dark:border-slate-800/60 rounded-xl p-5 bg-slate-50 dark:bg-slate-900/40 my-6">
+                <h4 className="text-xs font-bold uppercase tracking-wider text-cyan-600 dark:text-cyan-400 mb-4">Example Calculation</h4>
+                <p className="text-sm text-slate-700 dark:text-slate-300 mb-3">
+                  Say the network-wide staking APR is <strong className="text-slate-900 dark:text-white">15%</strong>.
+                </p>
+                <div className="space-y-3">
+                  <div className="flex items-start gap-3 p-3 rounded-lg bg-cyan-500/10 border border-cyan-500/20">
+                    <span className="text-xs font-bold text-cyan-600 dark:text-cyan-400 shrink-0 pt-0.5">Self-custody</span>
+                    <span className="text-xs text-slate-700 dark:text-slate-300">Validator charging 5% commission → effective rate of <strong className="text-slate-900 dark:text-white">~14.25% APR</strong></span>
+                  </div>
+                  <div className="flex items-start gap-3 p-3 rounded-lg bg-amber-500/10 border border-amber-500/20">
+                    <span className="text-xs font-bold text-amber-600 dark:text-amber-400 shrink-0 pt-0.5">Exchange</span>
+                    <span className="text-xs text-slate-700 dark:text-slate-300">Exchange takes its own cut on top of validator commission → effective rate often <strong className="text-slate-900 dark:text-white">10–13% APR</strong></span>
+                  </div>
+                </div>
+                <p className="text-xs text-slate-500 dark:text-slate-500 mt-3 italic">
+                  Extra intermediaries mean extra fees. Self-custody staking generally preserves more of the network's advertised reward rate.
+                </p>
+              </div>
+              <p>
+                To see how commission and compounding frequency affect your specific numbers, run your own scenario through the{' '}
+                <button onClick={() => onNavigate('calculator')} className="text-cyan-600 dark:text-cyan-400 hover:underline font-bold cursor-pointer">
+                  ATOM Staking Calculator
+                </button>{' '}
+                — you can compare different commission rates side by side.
+              </p>
+
+              {/* Unbonding */}
+              <h2 className="text-xl sm:text-2xl font-extrabold text-slate-900 dark:text-white flex items-center gap-2.5 mt-10 mb-4">
+                <Clock className="w-5 h-5 text-indigo-500 dark:text-indigo-400" />
+                Unbonding and Liquidity Differences
+              </h2>
+              <p>
+                Both paths are subject to the Cosmos Hub's native 21-day unbonding period once you initiate an unstake — this is a network rule, not something either wallets or exchanges can bypass. However, exchanges sometimes add their own processing time on top of this, or batch withdrawal requests, which can make the effective wait longer than the protocol minimum. Self-custody unstaking, by contrast, follows the network's unbonding timer directly with no additional processing layer.
+              </p>
+              <p>
+                If liquidity timing matters to your strategy, it's worth checking an exchange's specific staking terms before committing funds, since these details aren't always prominently displayed.
+              </p>
+
+              {/* Which option suits you */}
+              <h2 className="text-xl sm:text-2xl font-extrabold text-slate-900 dark:text-white flex items-center gap-2.5 mt-10 mb-4">
+                <HelpCircle className="w-5 h-5 text-cyan-500 dark:text-cyan-400" />
+                Which Option Makes Sense for You?
+              </h2>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-5">
+                <div className="bg-cyan-500/10 border border-cyan-500/25 rounded-xl p-4">
+                  <h4 className="text-sm font-bold text-cyan-600 dark:text-cyan-400 mb-3">Self-custody staking suits you if:</h4>
+                  <ul className="space-y-1.5 text-xs sm:text-sm text-slate-700 dark:text-slate-300">
+                    <li>• You're comfortable managing a wallet and seed phrase</li>
+                    <li>• You want to choose your own validator and maximize decentralization</li>
+                    <li>• You want to participate in Cosmos governance voting</li>
+                    <li>• You want to avoid exchange counterparty risk</li>
+                  </ul>
+                </div>
+                <div className="bg-amber-500/10 border border-amber-500/25 rounded-xl p-4">
+                  <h4 className="text-sm font-bold text-amber-600 dark:text-amber-400 mb-3">Exchange staking suits you if:</h4>
+                  <ul className="space-y-1.5 text-xs sm:text-sm text-slate-700 dark:text-slate-300">
+                    <li>• You're already holding ATOM on an exchange and want simplicity</li>
+                    <li>• You're less comfortable with wallet setup or seed phrase management</li>
+                    <li>• You value one-click staking over manual validator research</li>
+                    <li>• You're staking a smaller amount where the fee difference is less significant</li>
+                  </ul>
+                </div>
+              </div>
+              <p>
+                Neither path is inherently reckless, but they carry meaningfully different risk profiles. If you're new to staking altogether, our{' '}
+                <button onClick={() => handleArticleClick('what-is-cosmos-atom-staking-beginner-guide-2026')} className="text-cyan-600 dark:text-cyan-400 hover:underline font-bold cursor-pointer">
+                  beginner's guide to Cosmos ATOM staking
+                </button>{' '}
+                is a good starting point before deciding which custody model fits your comfort level.
+              </p>
+
+              {/* Key Takeaways */}
+              <h2 className="text-xl sm:text-2xl font-extrabold text-slate-900 dark:text-white flex items-center gap-2.5 mt-10 mb-4">
+                <CheckCircle2 className="w-5 h-5 text-emerald-500 dark:text-emerald-400" />
+                Key Takeaways
+              </h2>
+              <div className="border border-slate-200 dark:border-slate-800/60 rounded-xl p-5 bg-slate-50 dark:bg-slate-900/40 my-4">
+                <ul className="space-y-3">
+                  {[
+                    'Self-custody staking keeps your private keys and validator choice in your hands, with no third-party counterparty risk.',
+                    'Exchange staking trades some control and potential yield for convenience and simplicity.',
+                    'Both paths share the same 21-day network unbonding period, though exchanges may add their own processing delays.',
+                    'Fees compound across intermediaries — self-custody staking generally preserves more of the network\'s advertised reward rate.',
+                    'The "safer" option depends on what risk you\'re more willing to accept: technical self-management, or trusting a third party.',
+                  ].map((point, i) => (
+                    <li key={i} className="flex items-start gap-2.5 text-sm text-slate-700 dark:text-slate-300">
+                      <CheckCircle2 className="w-4 h-4 text-emerald-500 dark:text-emerald-400 shrink-0 mt-0.5" />
+                      <span>{point}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              <p>
+                Before choosing a path, use the{' '}
+                <button onClick={() => onNavigate('calculator')} className="text-cyan-600 dark:text-cyan-400 hover:underline font-bold cursor-pointer">
+                  ATOM Staking Calculator
+                </button>{' '}
+                to model your expected rewards under different commission and compounding assumptions, so you can compare the real numbers for your specific staking amount.
+              </p>
+
+              {/* Disclaimer */}
+              <div className="border border-slate-200 dark:border-slate-800/60 rounded-xl p-5 bg-slate-50 dark:bg-slate-900/40 my-8 text-xs sm:text-sm text-slate-600 dark:text-slate-400 italic leading-relaxed">
+                <strong className="text-slate-900 dark:text-white font-bold not-italic">Disclaimer:</strong> This article is for educational purposes only and does not constitute financial advice. Staking rewards can vary based on validator commission, network conditions, and compounding frequency, and staking — whether self-custodied or through an exchange — carries risk.
+              </div>
+            </>
+          )}
         </div>
 
         {/* Social Share */}
