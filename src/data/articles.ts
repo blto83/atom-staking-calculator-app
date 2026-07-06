@@ -209,6 +209,21 @@ export const ARTICLES: Article[] = [
     seoDescription: 'Compare self-custody vs exchange ATOM staking to understand security tradeoffs before choosing how to stake your tokens.',
     featured: false,
   },
+  {
+    id: '13',
+    slug: 'cosmos-validator-commission-explained-how-it-affects-atom-rewards',
+    title: 'Cosmos Validator Commission Explained: How It Affects Your ATOM Rewards',
+    excerpt: 'Understand how validator commission impacts your ATOM staking returns. Learn how rates are set, typical ranges, and why the lowest commission is not always the best choice.',
+    category: 'Validator Guides',
+    author: 'ATOM Staking Calculator Team',
+    date: 'July 6, 2026',
+    readTime: '7 min read',
+    thumbnailGradient: 'from-violet-500/20 via-purple-500/20 to-fuchsia-500/20 border-violet-500/30',
+    emoji: '💰',
+    seoTitle: 'Cosmos Validator Commission Explained: Rewards Impact',
+    seoDescription: 'See how validator commission affects your ATOM staking rewards, with real examples comparing low and high commission rates.',
+    featured: false,
+  },
 ];
 
 /**

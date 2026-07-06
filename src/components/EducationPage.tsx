@@ -2387,6 +2387,255 @@ export default function EducationPage({ onNavigate }: Props) {
               </div>
             </>
           )}
+
+          {currentArticle.slug === 'cosmos-validator-commission-explained-how-it-affects-atom-rewards' && (
+            <>
+              <p className="text-base text-slate-600 dark:text-slate-300 italic font-medium leading-relaxed mb-6">
+                Validator commission is the single biggest factor most ATOM stakers overlook, even though it directly determines how much of your staking reward you actually keep. This guide explains what commission is, how it works, and how to use it when choosing a validator.
+              </p>
+
+              {/* What Is Validator Commission */}
+              <h2 className="text-xl sm:text-2xl font-extrabold text-slate-900 dark:text-white flex items-center gap-2.5 mt-8 mb-4">
+                <Calculator className="w-5 h-5 text-cyan-500 dark:text-cyan-400" />
+                What Is Validator Commission?
+              </h2>
+              <p>
+                When you delegate ATOM to a validator, that validator does the technical work of running infrastructure, signing blocks, and helping secure the Cosmos Hub network. In exchange for that work, the validator takes a percentage cut of the staking rewards your delegation earns — this cut is the commission.
+              </p>
+              <p>
+                The rest of the reward — the portion after commission is deducted — is paid out to you, the delegator. Commission is set individually by each validator and is publicly visible before you delegate, so it's always a known, transparent number rather than a hidden fee.
+              </p>
+
+              <h3 className="text-base sm:text-lg font-extrabold text-slate-900 dark:text-white mt-6 mb-3">
+                How Commission Is Calculated
+              </h3>
+              <p>
+                The math is straightforward:
+              </p>
+              <div className="bg-gradient-to-r from-indigo-500/10 to-violet-500/10 border border-indigo-500/30 rounded-xl p-4 my-4 font-mono text-sm text-slate-700 dark:text-slate-300 text-center">
+                Your net reward = Gross staking reward × (1 − commission rate)
+              </div>
+
+              {/* Quick Take 1 */}
+              <div className="bg-gradient-to-r from-cyan-500/10 to-indigo-500/10 border border-cyan-500/30 rounded-xl p-5 my-5">
+                <p className="text-[10px] font-bold uppercase tracking-widest text-cyan-500 dark:text-cyan-400 mb-2">Quick Take</p>
+                <p className="text-sm sm:text-base text-slate-700 dark:text-slate-300">
+                  A 5% commission means you keep 95% of the gross reward. A 10% commission means you keep 90%. The difference sounds small in percentage terms, but it compounds meaningfully over time, especially with larger stakes or longer holding periods.
+                </p>
+              </div>
+
+              {/* Example Calculation */}
+              <h2 className="text-xl sm:text-2xl font-extrabold text-slate-900 dark:text-white flex items-center gap-2.5 mt-10 mb-4">
+                <TrendingUp className="w-5 h-5 text-emerald-500 dark:text-emerald-400" />
+                Example Calculation: Commission in Practice
+              </h2>
+
+              <div className="border border-slate-200 dark:border-slate-800/60 rounded-xl p-5 bg-slate-50 dark:bg-slate-900/40 my-6">
+                <h4 className="text-xs font-bold uppercase tracking-wider text-cyan-600 dark:text-cyan-400 mb-4">Example Calculation</h4>
+                <p className="text-sm text-slate-600 dark:text-slate-400 mb-4">
+                  Assume the network-wide staking APR is <strong className="text-slate-900 dark:text-white">15%</strong>, and you're staking <strong className="text-slate-900 dark:text-white">1,000 ATOM</strong>.
+                </p>
+                <div className="space-y-2">
+                  {[
+                    { rate: '5%', net: '142.5 ATOM/year', color: 'emerald' },
+                    { rate: '10%', net: '135 ATOM/year', color: 'cyan' },
+                    { rate: '20%', net: '120 ATOM/year', color: 'amber' },
+                  ].map((row) => (
+                    <div key={row.rate} className={`flex items-center justify-between p-3 rounded-lg bg-${row.color}-500/10 border border-${row.color}-500/20`}>
+                      <span className="text-xs font-bold text-slate-700 dark:text-slate-300">
+                        <span className={`text-${row.color}-600 dark:text-${row.color}-400`}>{row.rate} commission</span> validator
+                      </span>
+                      <span className="text-xs text-slate-600 dark:text-slate-400">
+                        Net: <strong className="text-slate-900 dark:text-white">{row.net}</strong>
+                      </span>
+                    </div>
+                  ))}
+                </div>
+                <p className="text-xs text-slate-500 dark:text-slate-500 mt-3 italic">
+                  That's a difference of up to 22.5 ATOM per year between the lowest and highest commission — purely from commission rate.
+                </p>
+              </div>
+              <p>
+                To see how this plays out with your own staking amount and a specific validator's commission rate, run the numbers through the{' '}
+                <button onClick={() => onNavigate('calculator')} className="text-cyan-600 dark:text-cyan-400 hover:underline font-bold cursor-pointer">
+                  ATOM Staking Calculator
+                </button>
+                .
+              </p>
+
+              {/* Typical Commission Rates Table */}
+              <h2 className="text-xl sm:text-2xl font-extrabold text-slate-900 dark:text-white flex items-center gap-2.5 mt-10 mb-4">
+                <BarChart3 className="w-5 h-5 text-indigo-500 dark:text-indigo-400" />
+                Typical Commission Rates on the Cosmos Hub
+              </h2>
+              <p>
+                Commission rates across Cosmos Hub validators typically range from 0% to 20%, though most established validators sit somewhere between 5% and 10%.
+              </p>
+
+              <div className="overflow-x-auto my-6 rounded-xl border border-slate-200 dark:border-slate-800/60">
+                <table className="w-full text-sm border-collapse">
+                  <thead>
+                    <tr className="border-b border-slate-200 dark:border-slate-800">
+                      <th className="text-left py-3 px-4 text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 bg-slate-50 dark:bg-slate-900/60 w-1/4">Commission Range</th>
+                      <th className="text-left py-3 px-4 text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 bg-slate-50 dark:bg-slate-900/60">What It Usually Means</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {[
+                      ['0%', 'Rare — often unsustainable long-term, or a temporary promotional rate'],
+                      ['1–5%', 'Common among competitive, established validators'],
+                      ['5–10%', 'The most typical range for reliable, professional validator operations'],
+                      ['10–20%', 'Higher end — sometimes justified by additional services, sometimes not'],
+                      ['20%+', 'Uncommon — worth extra scrutiny before delegating'],
+                    ].map(([range, meaning], i) => (
+                      <tr key={i} className={`border-b border-slate-100 dark:border-slate-800/40 ${i % 2 === 0 ? 'bg-white dark:bg-transparent' : 'bg-slate-50/50 dark:bg-slate-900/20'}`}>
+                        <td className="py-3 px-4 font-bold text-indigo-600 dark:text-indigo-400 text-xs sm:text-sm">{range}</td>
+                        <td className="py-3 px-4 text-slate-700 dark:text-slate-300 text-xs sm:text-sm">{meaning}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+              <p>
+                A validator like Cosmostation, for example, has historically run commission rates in the low-to-mid single digits, which is fairly representative of a competitive, established operator. Rates can and do change over time, so it's worth checking a validator's current commission before delegating.
+              </p>
+
+              {/* Why Rates Vary */}
+              <h2 className="text-xl sm:text-2xl font-extrabold text-slate-900 dark:text-white flex items-center gap-2.5 mt-10 mb-4">
+                <Zap className="w-5 h-5 text-amber-500 dark:text-amber-400" />
+                Why Commission Rates Vary So Much
+              </h2>
+              <p className="mb-4">Validators set commission based on several factors:</p>
+              <div className="space-y-3">
+                {[
+                  { label: 'Infrastructure and operating costs', text: 'Running reliable validator infrastructure — redundant servers, monitoring, security — costs money.' },
+                  { label: 'Competitive positioning', text: 'Newer validators sometimes set lower commission temporarily to attract delegators before raising rates later.' },
+                  { label: 'Business model', text: 'Some validators are backed by exchanges or foundations with other revenue streams, allowing leaner commission rates.' },
+                  { label: 'Perceived value-add', text: 'A minority of validators offer extra services — governance summaries, community support — and price commission slightly higher.' },
+                ].map((item) => (
+                  <div key={item.label} className="flex items-start gap-3 p-3 rounded-lg bg-slate-100 dark:bg-slate-800/40">
+                    <CheckCircle2 className="w-4 h-4 text-cyan-500 dark:text-cyan-400 shrink-0 mt-0.5" />
+                    <div>
+                      <span className="font-bold text-slate-900 dark:text-white text-sm">{item.label}.</span>{' '}
+                      <span className="text-slate-700 dark:text-slate-300 text-sm">{item.text}</span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              {/* Should You Choose Lowest Commission */}
+              <h2 className="text-xl sm:text-2xl font-extrabold text-slate-900 dark:text-white flex items-center gap-2.5 mt-10 mb-4">
+                <HelpCircle className="w-5 h-5 text-cyan-500 dark:text-cyan-400" />
+                Should You Always Choose the Lowest Commission?
+              </h2>
+              <p>
+                Not necessarily. Commission is important, but it shouldn't be the only factor in your decision.
+              </p>
+
+              {/* Quick Take 2 */}
+              <div className="bg-gradient-to-r from-amber-500/10 to-orange-500/10 border border-amber-500/30 rounded-xl p-5 my-5">
+                <p className="text-[10px] font-bold uppercase tracking-widest text-amber-500 dark:text-amber-400 mb-2">Quick Take</p>
+                <p className="text-sm sm:text-base text-slate-700 dark:text-slate-300">
+                  The cheapest validator isn't automatically the best choice if it has poor uptime, inconsistent performance, or represents a security risk to network decentralization.
+                </p>
+              </div>
+
+              <p>
+                A validator charging 2% but missing blocks regularly due to downtime can actually cost you more in missed rewards than a well-run validator charging 6%. Similarly, if a low-commission validator already holds a large share of total network stake, delegating more to it can work against network decentralization.
+              </p>
+              <p>
+                For a full breakdown of what else to evaluate alongside commission — uptime, decentralization, governance participation — see our guide on{' '}
+                <button onClick={() => handleArticleClick('how-to-choose-the-right-cosmos-validator-5-core-metrics')} className="text-cyan-600 dark:text-cyan-400 hover:underline font-bold cursor-pointer">
+                  choosing the right Cosmos validator
+                </button>
+                .
+              </p>
+
+              {/* Can Rates Change */}
+              <h2 className="text-xl sm:text-2xl font-extrabold text-slate-900 dark:text-white flex items-center gap-2.5 mt-10 mb-4">
+                <Clock className="w-5 h-5 text-indigo-500 dark:text-indigo-400" />
+                Can Validators Change Their Commission Rate?
+              </h2>
+              <p>
+                Yes. Validators can adjust their commission rate, though the Cosmos Hub protocol includes a safeguard: a validator can only increase their commission by a limited amount within a 24-hour period (governed by their "max change rate" parameter). This prevents a validator from suddenly spiking their commission from 5% to 50% overnight without delegators having a chance to react.
+              </p>
+              <p>
+                That said, rates do shift over time, and it's good practice to periodically check the commission rate of validators you've delegated to, rather than assuming it's fixed forever.
+              </p>
+
+              {/* Long-Term View */}
+              <h2 className="text-xl sm:text-2xl font-extrabold text-slate-900 dark:text-white flex items-center gap-2.5 mt-10 mb-4">
+                <TrendingUp className="w-5 h-5 text-cyan-500 dark:text-cyan-400" />
+                Commission and Compounding: A Long-Term View
+              </h2>
+              <p>
+                Commission's impact grows more noticeable the longer you stake and the more frequently you compound. Because your net reward (after commission) is what actually gets restaked or accumulates, a lower commission means a slightly larger base compounding forward each cycle.
+              </p>
+              <p>
+                Over a single year, the difference between a 5% and 10% commission validator might only be a few percentage points of total yield. Over five or ten years of compounding, that gap widens. If you're planning a long-term ATOM accumulation strategy, commission is worth weighing carefully.
+              </p>
+              <p>
+                Our guide on{' '}
+                <button onClick={() => handleArticleClick('staking-apr-vs-apy-mathematics-of-compounding-atom')} className="text-cyan-600 dark:text-cyan-400 hover:underline font-bold cursor-pointer">
+                  staking APR vs APY and the mathematics of compounding
+                </button>{' '}
+                explains how compounding frequency interacts with your net rate in more depth.
+              </p>
+
+              {/* FAQ */}
+              <h2 className="text-xl sm:text-2xl font-extrabold text-slate-900 dark:text-white flex items-center gap-2.5 mt-10 mb-4">
+                <HelpCircle className="w-5 h-5 text-violet-500 dark:text-violet-400" />
+                Frequently Asked Questions
+              </h2>
+              <div className="space-y-3 my-6">
+                {[
+                  { q: 'What is a typical validator commission for Cosmos ATOM staking?', a: 'Most established validators charge somewhere between 5% and 10%, though rates as low as 1% and as high as 20% do exist.' },
+                  { q: 'Does lower validator commission always mean higher rewards?', a: 'Generally yes — but validator reliability (uptime, avoiding slashing) also affects realized rewards, so commission shouldn\'t be evaluated in isolation.' },
+                  { q: 'Can a validator\'s commission rate change after I delegate?', a: 'Yes. Validators can adjust commission over time, subject to a protocol-level limit on how much they can raise it within a 24-hour window.' },
+                  { q: 'Why do delegators often choose validators with lower commission?', a: 'Because commission is deducted directly from staking rewards, a lower rate means a delegator keeps a larger share of the gross reward.' },
+                ].map((faq, i) => (
+                  <div key={i} className="border border-slate-200 dark:border-slate-800/60 rounded-xl p-4 bg-slate-50 dark:bg-slate-900/40">
+                    <h4 className="text-sm font-bold text-slate-900 dark:text-white mb-2">{faq.q}</h4>
+                    <p className="text-xs sm:text-sm text-slate-700 dark:text-slate-300">{faq.a}</p>
+                  </div>
+                ))}
+              </div>
+
+              {/* Key Takeaways */}
+              <h2 className="text-xl sm:text-2xl font-extrabold text-slate-900 dark:text-white flex items-center gap-2.5 mt-10 mb-4">
+                <CheckCircle2 className="w-5 h-5 text-emerald-500 dark:text-emerald-400" />
+                Key Takeaways
+              </h2>
+              <div className="border border-slate-200 dark:border-slate-800/60 rounded-xl p-5 bg-slate-50 dark:bg-slate-900/40 my-4">
+                <ul className="space-y-3">
+                  {[
+                    'Validator commission is the percentage of your staking reward a validator keeps for running infrastructure.',
+                    'Typical Cosmos Hub commission rates range from 0% to 20%, with most established validators between 5% and 10%.',
+                    'Commission directly reduces your net reward, and the impact compounds over longer staking periods.',
+                    'Commission isn\'t the only factor — uptime, reliability, and decentralization matter too.',
+                    'Validators can change commission rates over time, within protocol-defined limits.',
+                  ].map((point, i) => (
+                    <li key={i} className="flex items-start gap-2.5 text-sm text-slate-700 dark:text-slate-300">
+                      <CheckCircle2 className="w-4 h-4 text-emerald-500 dark:text-emerald-400 shrink-0 mt-0.5" />
+                      <span>{point}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              <p>
+                Use the{' '}
+                <button onClick={() => onNavigate('calculator')} className="text-cyan-600 dark:text-cyan-400 hover:underline font-bold cursor-pointer">
+                  ATOM Staking Calculator
+                </button>{' '}
+                to model your expected net rewards under different commission rates and staking amounts.
+              </p>
+
+              {/* Disclaimer */}
+              <div className="border border-slate-200 dark:border-slate-800/60 rounded-xl p-5 bg-slate-50 dark:bg-slate-900/40 my-8 text-xs sm:text-sm text-slate-600 dark:text-slate-400 italic leading-relaxed">
+                <strong className="text-slate-900 dark:text-white font-bold not-italic">Disclaimer:</strong> This article is for educational purposes only and does not constitute financial advice. Staking rewards, validator commission rates, and network conditions can change over time.
+              </div>
+            </>
+          )}
         </div>
 
         {/* Social Share */}
