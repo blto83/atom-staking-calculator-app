@@ -8,6 +8,23 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const SITE_URL = 'https://www.atomstakingcalculator.com';
 const DEFAULT_OG_IMAGE = `${SITE_URL}/og-default.png`;
 
+// Static pages to include in sitemap (besides articles)
+const STATIC_PAGES = [
+  { path: '/', changefreq: 'weekly', priority: 1.0 },
+  { path: '/dashboard', changefreq: 'weekly', priority: 0.8 },
+  { path: '/calculator', changefreq: 'weekly', priority: 0.9 },
+  { path: '/growth', changefreq: 'weekly', priority: 0.8 },
+  { path: '/rewards', changefreq: 'monthly', priority: 0.7 },
+  { path: '/transactions', changefreq: 'monthly', priority: 0.6 },
+  { path: '/about', changefreq: 'monthly', priority: 0.7 },
+  { path: '/learn', changefreq: 'monthly', priority: 0.8 },
+  { path: '/faq', changefreq: 'monthly', priority: 0.8 },
+  { path: '/privacy-policy', changefreq: 'yearly', priority: 0.5 },
+  { path: '/terms-of-use', changefreq: 'yearly', priority: 0.5 },
+  { path: '/disclaimer', changefreq: 'yearly', priority: 0.5 },
+  { path: '/settings', changefreq: 'yearly', priority: 0.3 },
+];
+
 async function getArticleMetadata() {
   const articlesPath = path.join(__dirname, '..', 'src', 'data', 'articles.ts');
   const content = await fs.readFile(articlesPath, 'utf-8');
@@ -222,6 +239,33 @@ async function validateBuild(articles) {
   console.log('\n✅ All build validations passed!\n');
 }
 
+function generateSitemap(articles) {
+  const urls = [];
+
+  // Add static pages
+  for (const page of STATIC_PAGES) {
+    urls.push(`  <url>
+    <loc>${SITE_URL}${page.path}</loc>
+    <changefreq>${page.changefreq}</changefreq>
+    <priority>${page.priority}</priority>
+  </url>`);
+  }
+
+  // Add all article pages
+  for (const article of articles) {
+    urls.push(`  <url>
+    <loc>${SITE_URL}/learn/${article.slug}</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>`);
+  }
+
+  return `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+${urls.join('\n')}
+</urlset>`;
+}
+
 async function main() {
   console.log('🔨 ATOM Staking Calculator - Article Prerender\n');
 
@@ -249,6 +293,14 @@ async function main() {
     }
 
     console.log(`\n✅ Successfully prerendered ${articles.length} articles!\n`);
+
+    // Generate dynamic sitemap
+    console.log('🗺️  Generating sitemap.xml...');
+    const sitemap = generateSitemap(articles);
+    await fs.writeFile(path.join(__dirname, '..', 'dist', 'sitemap.xml'), sitemap);
+    const totalUrls = STATIC_PAGES.length + articles.length;
+    console.log(`✓ Generated sitemap with ${totalUrls} URLs (${STATIC_PAGES.length} static + ${articles.length} articles)\n`);
+
     console.log('📊 Output:');
     console.log('   - dist/index.html (homepage)');
     console.log(`   - dist/learn/*/index.html (${articles.length} article pages)`);
