@@ -42,3 +42,21 @@ export interface RewardCalculation {
   netApr: number;
   compoundedYearlyRewards: number;
 }
+
+// Article content block types for structured content rendering
+export type HeadingIcon = 'calculator' | 'trending-up' | 'chart-bar' | 'zap' | 'help-circle' | 'help-circle-violet' | 'clock' | 'check-circle';
+
+export type ContentBlock =
+  | { type: 'intro'; text: string }
+  | { type: 'heading'; level: 2 | 3; text: string; icon?: HeadingIcon }
+  | { type: 'paragraph'; text: string }
+  | { type: 'formula'; text: string }
+  | { type: 'callout'; variant: 'quick-take' | 'quick-take-warning' | 'disclaimer'; label?: string; text: string }
+  | { type: 'example-calculation'; introText: string; rows: { rate: string; net: string; color: 'emerald' | 'cyan' | 'amber' }[]; footnote?: string }
+  | { type: 'table'; headers: string[]; rows: string[][]; highlightColumn?: number }
+  | { type: 'bullet-list'; items: { label: string; text: string }[] }
+  | { type: 'faq'; items: { question: string; answer: string }[] }
+  | { type: 'key-takeaways'; items: string[] }
+  | { type: 'internal-link'; prefix: string; linkText: string; suffix: string; articleSlug: string }
+  | { type: 'calculator-cta'; prefix: string; suffix: string };
+
