@@ -3,34 +3,220 @@ import { ContentBlock } from '../types';
 export const atomStakingRisksSlashingAndUnbonding: ContentBlock[] = [
   {
     type: 'intro',
-    text: 'Staking rewards are lucrative, but they represent payment for undertaking specific network risks. Here, we explore the realities of slashing parameters and liquidity constraints.',
+    text: 'Staking ATOM earns you rewards for helping secure the Cosmos Hub network, but that reward comes attached to real, well-defined risks. Two of the most important to understand before you delegate are slashing — a protocol-level penalty for validator misbehavior — and the 21-day unbonding period that governs how quickly you can access your funds after unstaking. Neither risk is hypothetical, and both are worth understanding in detail rather than glossing over.'
   },
   {
     type: 'heading',
     level: 2,
-    text: '1. Slashing Risks: Double-Signing vs. Downtime',
     icon: 'zap',
+    text: '1. What Is Slashing?'
   },
   {
     type: 'paragraph',
-    text: 'Slashing is a protocol-level penalty used to punish validator misbehavior. If a validator double-signs (proposing two conflicting blocks at the same time), the network slashes 5% of all delegated tokens permanently and tombstonables the validator node.',
+    text: 'Slashing is a punishment mechanism built directly into the Cosmos Hub protocol. It exists to discourage validators from acting maliciously or carelessly, since their behavior directly affects network security. When a validator is slashed, a percentage of the ATOM delegated to that validator — including tokens delegated by regular stakers, not just the validator\'s own stake — is permanently destroyed (burned). This is why validator selection matters: as a delegator, you share in the consequences of your validator\'s actions, not just their rewards.'
   },
   {
     type: 'paragraph',
-    text: 'If a validator experiences prolonged downtime (misses over 95% of consecutive 10,000 blocks), they get jailed and lose 0.01% of delegations. While downtime slashing is negligible, being jailed means the node generates zero rewards until the operator unjails it manually.',
+    text: 'There are two distinct types of slashing on the Cosmos Hub, and they carry very different severity. It is important to understand both, because the consequences for delegators differ dramatically depending on which type occurs.'
+  },
+  {
+    type: 'heading',
+    level: 3,
+    text: 'Double-Signing (Equivocation)'
+  },
+  {
+    type: 'paragraph',
+    text: 'Double-signing happens when a validator signs two conflicting blocks at the same block height — effectively trying to validate two different versions of the blockchain at once. This is treated as the most serious offense a validator can commit, since it directly threatens the network\'s consensus integrity. If double-signing is detected, the validator is immediately and permanently removed from the active set (a process called "tombstoning" — the validator can never rejoin under that same validator key), and a significant portion of all delegated ATOM is slashed. On the Cosmos Hub, this penalty is set at 5% of delegated stake.'
+  },
+  {
+    type: 'callout',
+    variant: 'quick-take-warning',
+    label: 'Quick Take',
+    text: 'A 5% double-sign slash isn\'t something that happens to the validator alone — every delegator sharing that validator loses 5% of their delegated ATOM too, proportionally. This is why choosing a validator with strong operational security (proper key management, redundant infrastructure) matters as much as chasing a low commission rate.'
+  },
+  {
+    type: 'heading',
+    level: 3,
+    text: 'Downtime'
+  },
+  {
+    type: 'paragraph',
+    text: 'The second, much less severe category is downtime slashing. If a validator fails to sign a sufficiently high percentage of blocks within a rolling window (missing more than roughly 5% of the last 10,000 blocks), the protocol considers them unreliable and takes action. Unlike double-signing, downtime slashing is minor — typically around 0.01% of delegated stake — but it comes with an additional consequence: the validator is "jailed," meaning they\'re temporarily removed from the active validator set.'
+  },
+  {
+    type: 'paragraph',
+    text: 'While a validator is jailed, delegations to that validator earn zero rewards until the validator operator manually unjails their node and it resumes normal participation. For a delegator, this doesn\'t cause direct token loss beyond the small slash, but it does mean lost opportunity cost — your ATOM sits idle instead of earning rewards during the jailed period.'
+  },
+  {
+    type: 'table',
+    headers: ['Offense', 'Slash Amount', 'Additional Consequence'],
+    rows: [
+      ['Double-signing', '5% of delegated stake', 'Validator permanently tombstoned'],
+      ['Downtime (missed blocks)', '~0.01% of delegated stake', 'Validator jailed until manually restored']
+    ]
+  },
+  {
+    type: 'heading',
+    level: 3,
+    text: 'What Happens to Delegators After a Slashing Event'
+  },
+  {
+    type: 'paragraph',
+    text: 'When a slashing event occurs, the penalty is applied automatically by the protocol to every delegator bonded to that validator at the time the offense was committed — not just the validator operator. For double-signing, this means 5% of your delegated ATOM is permanently burned. There is no insurance mechanism, no appeal process, and no way to recover the lost tokens. The slash is applied at the protocol level before any human intervention is possible.'
+  },
+  {
+    type: 'paragraph',
+    text: 'After a double-signing event, the tombstoned validator is permanently removed from the active set. As a delegator, your remaining 95% of stake is still delegated to that validator address, but since the validator can no longer produce blocks or earn rewards, your stake becomes effectively dead weight. You will need to redelegate your remaining stake to a different validator to resume earning rewards. The redelegation can happen immediately without waiting for the 21-day unbonding period, since tombstoning forces an automatic unbond for all delegators.'
+  },
+  {
+    type: 'paragraph',
+    text: 'For downtime slashing, the situation is less severe but still requires attention. The jailed validator stops earning rewards until the operator manually unjails the node. If the operator is slow to respond or has abandoned the validator, your stake could sit idle for days or weeks. You can choose to wait for the operator to unjail, or you can redelegate to another validator to resume earning immediately. Either way, the small slash penalty (around 0.01%) is already applied and cannot be reversed.'
   },
   {
     type: 'heading',
     level: 2,
-    text: '2. The 21-Day Unbonding lockup',
     icon: 'clock',
+    text: '2. The 21-Day Unbonding Period'
   },
   {
     type: 'paragraph',
-    text: 'When undelegating ATOM, the network imposes a strict 21-day unbonding freeze. During these 21 days, your ATOM does not earn staking rewards, cannot be transferred, and cannot be traded. This prevents malicious stakers from unstaking instantly during a governance attack.',
+    text: 'When you decide to undelegate (unstake) your ATOM, the tokens don\'t become available immediately. The Cosmos Hub enforces a mandatory 21-day unbonding period between the moment you initiate an unstake and the moment your ATOM becomes liquid again.'
   },
   {
     type: 'paragraph',
-    text: 'Be absolutely certain you do not need quick capital liquidity before initiating the delegation lockup. For complete transparency on these liabilities and browser data saving protocols, consult our official Disclaimer Page.',
+    text: 'This delay is a deliberate security feature, not a technical limitation. Proof-of-stake networks are vulnerable to a specific attack pattern where a malicious validator (or group of validators) could theoretically attack the network and then instantly withdraw their stake to avoid any consequences. The unbonding period closes that loophole — if a validator or delegator misbehaves and gets slashed, there\'s still a stake at risk during that 21-day window, giving the network a way to enforce accountability.'
   },
+  {
+    type: 'bullet-list',
+    items: [
+      { label: 'No rewards during unbonding', text: 'Your ATOM stops earning any staking rewards the moment you initiate undelegation — the clock starts immediately, not at the end of the 21 days.' },
+      { label: 'No transfers allowed', text: 'Your ATOM cannot be transferred, traded, or moved during the unbonding period, regardless of which wallet or exchange you used to stake.' },
+      { label: 'Slashing risk persists', text: 'You remain exposed to slashing risk during unbonding — if the validator you were delegated to gets slashed for an offense that occurred before you undelegated, your unbonding stake can still be affected.' },
+      { label: 'Automatic release', text: 'At the end of the 21 days, your ATOM is automatically released to your wallet — no manual claim step is required.' }
+    ]
+  },
+  {
+    type: 'heading',
+    level: 3,
+    text: 'Redelegation as an Alternative'
+  },
+  {
+    type: 'paragraph',
+    text: 'If your goal is simply to switch from one validator to another — rather than to fully exit staking — the Cosmos Hub offers a redelegation feature that skips the 21-day unbonding wait entirely. Redelegating moves your stake directly from one validator to another without an idle period. The tradeoff: you can only redelegate the same tokens once every 21 days, and redelegating does not give you liquid ATOM — your tokens remain staked the entire time, just with a different validator.'
+  },
+  {
+    type: 'heading',
+    level: 2,
+    icon: 'trending-up',
+    text: '3. Price Volatility Risk During Unbonding'
+  },
+  {
+    type: 'paragraph',
+    text: 'The 21-day unbonding period creates a second risk layer beyond slashing: market illiquidity. During those 21 days, your ATOM is locked and cannot be sold or moved. If market conditions deteriorate rapidly — a sudden price crash, a broader crypto sell-off, or negative ecosystem news — you are unable to exit your position. This is fundamentally different from holding unstaked ATOM in your wallet, where you can sell at any time.'
+  },
+  {
+    type: 'paragraph',
+    text: 'Because your ATOM is completely illiquid for 21 days once you begin unstaking, you\'re also exposed to whatever happens to ATOM\'s market price during that window — and you have no way to react. If the price drops significantly partway through your unbonding period, you cannot sell, hedge, or exit early. This is sometimes called "price risk" or "opportunity cost risk," and it\'s distinct from slashing risk, though the two compound each other during the same window.'
+  },
+  {
+    type: 'callout',
+    variant: 'quick-take',
+    label: 'Quick Take',
+    text: 'Because of this 21-day lock, unstaking ATOM should be a deliberate decision, not a quick reaction to short-term price movement. By the time your tokens are liquid again, the market condition that motivated the decision may have already changed.'
+  },
+  {
+    type: 'heading',
+    level: 2,
+    icon: 'check-circle',
+    text: '4. How to Reduce These Risks'
+  },
+  {
+    type: 'paragraph',
+    text: 'Neither slashing risk nor unbonding illiquidity can be eliminated entirely — they\'re built into how the Cosmos Hub secures itself. But there are concrete steps that meaningfully reduce your exposure to both.'
+  },
+  {
+    type: 'bullet-list',
+    items: [
+      { label: 'Choose validators with strong uptime', text: 'Pick validators with a strong, established uptime track record rather than the newest or highest-APR option — consistent uptime is the best predictor of avoiding downtime slashing.' },
+      { label: 'Diversify your stake', text: 'Diversify your stake across multiple reputable validators instead of concentrating it with one. This limits how much of your total stake is exposed if any single validator is slashed for double-signing.' },
+      { label: 'Avoid experimental infrastructure', text: 'Avoid validators running unusual or experimental infrastructure setups without a public track record — operational security failures are the leading cause of accidental double-signing.' },
+      { label: 'Plan unstaking in advance', text: 'Plan your unstaking decisions in advance rather than reactively, since you\'ll be committed to the full 21-day window with no way to exit early.' },
+      { label: 'Use redelegation when switching', text: 'If you only want to switch validators (not exit staking entirely), use redelegation instead of a full unstake-then-restake cycle, avoiding an unnecessary unbonding wait.' }
+    ]
+  },
+  {
+    type: 'internal-link',
+    prefix: 'For a deeper look at how to evaluate validators specifically — beyond just avoiding slashing risk — see our guide on ',
+    linkText: 'choosing the right Cosmos validator',
+    suffix: '.',
+    articleSlug: 'how-to-choose-the-right-cosmos-validator-5-core-metrics'
+  },
+  {
+    type: 'paragraph',
+    text: 'If you\'re weighing whether self-custody staking or exchange-based staking better fits your risk tolerance, our comparison of the two approaches covers custody-related risk in more depth alongside the network-level risks discussed here.'
+  },
+  {
+    type: 'internal-link',
+    prefix: 'Learn more in our guide on ',
+    linkText: 'self-custody vs exchange staking',
+    suffix: '.',
+    articleSlug: 'self-custody-vs-exchange-staking-atom-which-is-safer'
+  },
+  {
+    type: 'heading',
+    level: 2,
+    icon: 'help-circle',
+    text: 'Frequently Asked Questions'
+  },
+  {
+    type: 'faq',
+    items: [
+      {
+        question: 'How long is the Cosmos Hub unbonding period?',
+        answer: 'The unbonding period is 21 days. Once you initiate an unstake, your ATOM is locked for this full duration before becoming liquid again, with no way to shorten or bypass it.'
+      },
+      {
+        question: 'Does ATOM earn rewards during the unbonding period?',
+        answer: 'No. Rewards stop accruing the moment you initiate undelegation, not at the end of the 21 days. Your ATOM sits idle and non-earning for the entire unbonding window.'
+      },
+      {
+        question: 'Can my ATOM be slashed during the unbonding period?',
+        answer: 'Yes. If the validator you were delegated to is found to have committed a slashable offense that occurred before you undelegated, ATOM still in the unbonding process can be affected, even though it\'s no longer actively staked.'
+      },
+      {
+        question: 'What is the difference between slashing for double-signing and downtime?',
+        answer: 'Double-signing is treated as a severe, intentional-or-critical offense, resulting in a 5% slash and permanent removal (tombstoning) of the validator. Downtime is a much smaller penalty (around 0.01%) with temporary jailing rather than permanent removal.'
+      },
+      {
+        question: 'Can I avoid the 21-day unbonding period if I just want to switch validators?',
+        answer: 'Yes — use redelegation instead of a full unstake. Redelegating moves your stake to a new validator without the 21-day liquidity wait, though your tokens remain staked (not liquid) throughout.'
+      }
+    ]
+  },
+  {
+    type: 'key-takeaways',
+    items: [
+      'Slashing penalizes validator misbehavior, and delegators share proportionally in the loss — not just the validator.',
+      'Double-signing results in a 5% slash and permanent validator removal; downtime results in a much smaller ~0.01% slash and temporary jailing.',
+      'Unstaking triggers a mandatory 21-day unbonding period during which your ATOM earns no rewards and cannot be transferred or traded.',
+      'You remain exposed to slashing risk even during unbonding if your validator is penalized for a prior offense.',
+      'Redelegation lets you switch validators without triggering the 21-day unbonding wait, as long as you\'re not trying to fully exit staking.',
+      'Choosing validators with strong uptime and diversifying across several reputable validators are the most effective ways to reduce your exposure to these risks.'
+    ]
+  },
+  {
+    type: 'paragraph',
+    text: 'Understanding these risks doesn\'t mean staking ATOM is unsafe — it means going in with realistic expectations about timing, liquidity, and validator selection. Use the calculator below to model your expected net rewards after accounting for your chosen validator\'s commission, and plan your unstaking timeline with the 21-day window in mind.'
+  },
+  {
+    type: 'calculator-cta',
+    prefix: 'Ready to model your numbers? Use our live ',
+    suffix: ' to project your net ATOM staking rewards after validator commission.'
+  },
+  {
+    type: 'callout',
+    variant: 'disclaimer',
+    label: 'Disclaimer',
+    text: 'This article is for educational purposes only and does not constitute financial advice. Staking rewards, slashing parameters, and unbonding periods are governed by the Cosmos Hub protocol and can change with network upgrades or governance decisions.'
+  }
 ];
