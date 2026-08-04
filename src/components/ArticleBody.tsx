@@ -89,7 +89,7 @@ export default function ArticleBody({ blocks, onNavigate, onArticleClick }: Prop
                   {block.rows.map((row) => (
                     <div key={row.rate} className={`flex items-center justify-between p-3 rounded-lg bg-${row.color}-500/10 border border-${row.color}-500/20`}>
                       <span className="text-xs font-bold text-slate-700 dark:text-slate-300">
-                        <span className={`text-${row.color}-600 dark:text-${row.color}-400`}>{row.rate} commission</span> validator
+                        <span className={`text-${row.color}-600 dark:text-${row.color}-400`}>{row.rate}</span>
                       </span>
                       <span className="text-xs text-slate-600 dark:text-slate-400">
                         Net: <strong className="text-slate-900 dark:text-white">{row.net}</strong>
@@ -138,7 +138,7 @@ export default function ArticleBody({ blocks, onNavigate, onArticleClick }: Prop
                   <div key={item.label} className="flex items-start gap-3 p-3 rounded-lg bg-slate-100 dark:bg-slate-800/40">
                     <CheckCircle2 className="w-4 h-4 text-cyan-500 dark:text-cyan-400 shrink-0 mt-0.5" />
                     <div>
-                      <span className="font-bold text-slate-900 dark:text-white text-sm">{item.label}.</span>{' '}
+                      <span className="font-bold text-slate-900 dark:text-white text-sm">{item.label}</span>{' '}
                       <span className="text-slate-700 dark:text-slate-300 text-sm">{item.text}</span>
                     </div>
                   </div>
@@ -175,7 +175,7 @@ export default function ArticleBody({ blocks, onNavigate, onArticleClick }: Prop
           case 'internal-link':
             return (
               <p key={index}>
-                {block.prefix}
+                {block.prefix}{' '}
                 <button onClick={() => onArticleClick?.(block.articleSlug)} className="text-cyan-600 dark:text-cyan-400 hover:underline font-bold cursor-pointer">
                   {block.linkText}
                 </button>
@@ -186,7 +186,7 @@ export default function ArticleBody({ blocks, onNavigate, onArticleClick }: Prop
           case 'calculator-cta':
             return (
               <p key={index}>
-                {block.prefix}
+                {block.prefix}{' '}
                 <button onClick={() => onNavigate?.('calculator')} className="text-cyan-600 dark:text-cyan-400 hover:underline font-bold cursor-pointer">
                   ATOM Staking Calculator
                 </button>

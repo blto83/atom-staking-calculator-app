@@ -129,10 +129,6 @@ export const cosmosValidatorCommissionExplained: ContentBlock[] = [
     text: 'A validator charging 2% but missing blocks regularly due to downtime can actually cost you more in missed rewards than a well-run validator charging 6%. Similarly, if a low-commission validator already holds a large share of total network stake, delegating more to it can work against network decentralization — a factor many stakers care about beyond pure yield.'
   },
   {
-    type: 'paragraph',
-    text: 'For a full breakdown of what else to evaluate alongside commission — uptime, decentralization, governance participation — see our guide on choosing the right Cosmos validator.'
-  },
-  {
     type: 'internal-link',
     prefix: 'For a full breakdown of what else to evaluate alongside commission — uptime, decentralization, governance participation — see our guide on',
     linkText: 'choosing the right Cosmos validator',
