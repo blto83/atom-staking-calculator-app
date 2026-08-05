@@ -87,11 +87,12 @@ export default function ArticleBody({ blocks, onNavigate, onArticleClick }: Prop
                 <p className="text-sm text-slate-600 dark:text-slate-400 mb-4">{block.introText}</p>
                 <div className="space-y-2">
                   {block.rows.map((row) => (
-                    <div key={row.rate} className={`flex items-center justify-between p-3 rounded-lg bg-${row.color}-500/10 border border-${row.color}-500/20`}>
+                    <div key={row.rate} className={`flex items-center justify-between gap-3 p-3 rounded-lg bg-${row.color}-500/10 border border-${row.color}-500/20`}>
                       <span className="text-xs font-bold text-slate-700 dark:text-slate-300">
                         <span className={`text-${row.color}-600 dark:text-${row.color}-400`}>{row.rate}</span>
                       </span>
-                      <span className="text-xs text-slate-600 dark:text-slate-400">
+                      <span className="text-xs text-slate-400 dark:text-slate-500">—</span>
+                      <span className="text-xs text-slate-600 dark:text-slate-400 text-right">
                         Net: <strong className="text-slate-900 dark:text-white">{row.net}</strong>
                       </span>
                     </div>
@@ -178,7 +179,7 @@ export default function ArticleBody({ blocks, onNavigate, onArticleClick }: Prop
                 {block.prefix}{' '}
                 <button onClick={() => onArticleClick?.(block.articleSlug)} className="text-cyan-600 dark:text-cyan-400 hover:underline font-bold cursor-pointer">
                   {block.linkText}
-                </button>
+                </button>{' '}
                 {block.suffix}
               </p>
             );
@@ -189,7 +190,7 @@ export default function ArticleBody({ blocks, onNavigate, onArticleClick }: Prop
                 {block.prefix}{' '}
                 <button onClick={() => onNavigate?.('calculator')} className="text-cyan-600 dark:text-cyan-400 hover:underline font-bold cursor-pointer">
                   ATOM Staking Calculator
-                </button>
+                </button>{' '}
                 {block.suffix}
               </p>
             );
