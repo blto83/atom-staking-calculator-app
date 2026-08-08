@@ -56,10 +56,6 @@ export const howToChooseTheRightCosmosValidator: ContentBlock[] = [
     ]
   },
   {
-    type: 'paragraph',
-    text: 'For a full breakdown of how commission is calculated and how it compounds over time, see our dedicated guide on validator commission.'
-  },
-  {
     type: 'internal-link',
     prefix: 'For a full breakdown of how commission is calculated and how it compounds over time, see our dedicated guide on',
     linkText: 'validator commission',
@@ -135,19 +131,11 @@ export const howToChooseTheRightCosmosValidator: ContentBlock[] = [
     text: 'No single metric tells the full story on its own. A validator excelling on uptime and commission but concentrated in the top 5 by voting power still represents a decentralization tradeoff. Weighing all five together gives a far more complete picture than optimizing for any one factor alone.'
   },
   {
-    type: 'paragraph',
-    text: 'If you\'re also weighing whether to stake through your own wallet versus a centralized exchange, that decision interacts directly with validator choice — self-custody staking is the only path that lets you apply these five metrics yourself.'
-  },
-  {
     type: 'internal-link',
     prefix: 'If you\'re also weighing self-custody versus exchange staking, see our comparison on',
     linkText: 'self-custody vs exchange staking',
     suffix: 'for how that decision interacts with validator choice.',
     articleSlug: 'self-custody-vs-exchange-staking-atom-which-is-safer'
-  },
-  {
-    type: 'paragraph',
-    text: 'For a curated starting point rather than researching every validator from scratch, our guide on the best ATOM validators applies these same criteria to specific, currently well-regarded options.'
   },
   {
     type: 'internal-link',

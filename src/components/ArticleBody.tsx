@@ -179,7 +179,7 @@ export default function ArticleBody({ blocks, onNavigate, onArticleClick }: Prop
                 {block.prefix}{' '}
                 <button onClick={() => onArticleClick?.(block.articleSlug)} className="text-cyan-600 dark:text-cyan-400 hover:underline font-bold cursor-pointer">
                   {block.linkText}
-                </button>{' '}
+                </button>{block.suffix && block.suffix !== '.' ? ' ' : ''}
                 {block.suffix}
               </p>
             );
@@ -190,7 +190,7 @@ export default function ArticleBody({ blocks, onNavigate, onArticleClick }: Prop
                 {block.prefix}{' '}
                 <button onClick={() => onNavigate?.('calculator')} className="text-cyan-600 dark:text-cyan-400 hover:underline font-bold cursor-pointer">
                   ATOM Staking Calculator
-                </button>{' '}
+                </button>{block.suffix && !/^[.,;:!?]/.test(block.suffix) ? ' ' : ''}
                 {block.suffix}
               </p>
             );
