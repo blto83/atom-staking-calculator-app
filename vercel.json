@@ -2,8 +2,8 @@
   "buildCommand": "npm run build:prerender",
   "rewrites": [
     {
-      "source": "/((?!learn).*)$",
-      "destination": "/"
+      "source": "/(.*)",
+      "destination": "/index.html"
     }
   ]
 }
