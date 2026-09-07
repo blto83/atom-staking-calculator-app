@@ -1,0 +1,20 @@
+User-agent: *
+Allow: /
+
+# Public SEO pages
+Allow: /about
+Allow: /learn
+Allow: /faq
+Allow: /privacy-policy
+Allow: /terms-of-use
+Allow: /disclaimer
+
+# Calculator tool pages are crawlable because they provide public utility value.
+Allow: /dashboard
+Allow: /calculator
+Allow: /growth
+Allow: /rewards
+Allow: /transactions
+Allow: /settings
+
+Sitemap: https://www.atomstakingcalculator.com/sitemap.xml
