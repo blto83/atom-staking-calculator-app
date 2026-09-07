@@ -1,5 +1,18 @@
 {
   "buildCommand": "npm run build:prerender",
+  "redirects": [
+    {
+      "source": "/:path*",
+      "destination": "https://www.atomstakingcalculator.com/:path*",
+      "permanent": true,
+      "has": [
+        {
+          "type": "host",
+          "value": "atomstakingcalculator.com"
+        }
+      ]
+    }
+  ],
   "rewrites": [
     {
       "source": "/(.*)",
