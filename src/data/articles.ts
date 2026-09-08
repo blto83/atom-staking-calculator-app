@@ -239,6 +239,21 @@ export const ARTICLES: Article[] = [
     seoDescription: 'Step-by-step guide to installing Keplr, securing your seed phrase, and staking ATOM safely for the first time.',
     featured: false,
   },
+  {
+    id: '15',
+    slug: 'how-to-redelegate-atom-switch-validators-without-losing-rewards',
+    title: 'How to Redelegate ATOM: Switch Validators Without Losing Rewards',
+    excerpt: 'Learn how to redelegate ATOM to a new validator without waiting the 21-day unbonding period or losing your rewards.',
+    category: 'Validator Guides',
+    author: 'ATOM Staking Calculator Team',
+    date: 'September 8, 2026',
+    readTime: '6 min read',
+    thumbnailGradient: 'from-indigo-500/20 via-blue-500/20 to-cyan-500/20 border-indigo-500/30',
+    emoji: '🔄',
+    seoTitle: 'How to Redelegate ATOM: Switch Validators Safely',
+    seoDescription: 'Learn how to redelegate ATOM to a new validator without waiting the 21-day unbonding period or losing your rewards.',
+    featured: false,
+  },
 ];
 
 /**

@@ -19,6 +19,7 @@ import { doesDailyCompoundingIncreaseAtomStakingRewards } from '../content/does-
 import { selfCustodyVsExchangeStakingAtomWhichIsSafer } from '../content/self-custody-vs-exchange-staking-atom-which-is-safer';
 import { cosmosValidatorCommissionExplained } from '../content/cosmos-validator-commission-explained-how-it-affects-atom-rewards';
 import { howToSetUpKeplrWalletForAtomStaking2026 } from '../content/how-to-set-up-keplr-wallet-for-atom-staking-2026';
+import { howToRedelegateAtomSwitchValidatorsWithoutLosingRewards } from '../content/how-to-redelegate-atom-switch-validators-without-losing-rewards';
 
 interface Props {
   onNavigate: (page: string) => void;
@@ -39,6 +40,7 @@ const ARTICLE_CONTENT: Record<string, ContentBlock[]> = {
   'self-custody-vs-exchange-staking-atom-which-is-safer': selfCustodyVsExchangeStakingAtomWhichIsSafer,
   'cosmos-validator-commission-explained-how-it-affects-atom-rewards': cosmosValidatorCommissionExplained,
   'how-to-set-up-keplr-wallet-for-atom-staking-2026': howToSetUpKeplrWalletForAtomStaking2026,
+  'how-to-redelegate-atom-switch-validators-without-losing-rewards': howToRedelegateAtomSwitchValidatorsWithoutLosingRewards,
 };
 
 export default function EducationPage({ onNavigate }: Props) {
