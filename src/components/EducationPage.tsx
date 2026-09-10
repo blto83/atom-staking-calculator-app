@@ -20,6 +20,7 @@ import { selfCustodyVsExchangeStakingAtomWhichIsSafer } from '../content/self-cu
 import { cosmosValidatorCommissionExplained } from '../content/cosmos-validator-commission-explained-how-it-affects-atom-rewards';
 import { howToSetUpKeplrWalletForAtomStaking2026 } from '../content/how-to-set-up-keplr-wallet-for-atom-staking-2026';
 import { howToRedelegateAtomSwitchValidatorsWithoutLosingRewards } from '../content/how-to-redelegate-atom-switch-validators-without-losing-rewards';
+import { atomStakingTaxImplicationsAndReportingGuide } from '../content/atom-staking-tax-implications-and-reporting-guide';
 
 interface Props {
   onNavigate: (page: string) => void;
@@ -41,6 +42,7 @@ const ARTICLE_CONTENT: Record<string, ContentBlock[]> = {
   'cosmos-validator-commission-explained-how-it-affects-atom-rewards': cosmosValidatorCommissionExplained,
   'how-to-set-up-keplr-wallet-for-atom-staking-2026': howToSetUpKeplrWalletForAtomStaking2026,
   'how-to-redelegate-atom-switch-validators-without-losing-rewards': howToRedelegateAtomSwitchValidatorsWithoutLosingRewards,
+  'atom-staking-tax-implications-and-reporting-guide': atomStakingTaxImplicationsAndReportingGuide,
 };
 
 export default function EducationPage({ onNavigate }: Props) {

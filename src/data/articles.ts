@@ -254,6 +254,21 @@ export const ARTICLES: Article[] = [
     seoDescription: 'Learn how to redelegate ATOM to a new validator without waiting the 21-day unbonding period or losing your rewards.',
     featured: false,
   },
+  {
+    id: '16',
+    slug: 'atom-staking-tax-implications-and-reporting-guide',
+    title: 'ATOM Staking Tax Implications and Reporting Guide (2026)',
+    excerpt: 'Understand how ATOM staking rewards may be taxed, when taxable events occur, and how to keep accurate records for reporting.',
+    category: 'Risk & Safety',
+    author: 'ATOM Staking Calculator Team',
+    date: 'September 8, 2026',
+    readTime: '11 min read',
+    thumbnailGradient: 'from-amber-500/20 via-orange-500/20 to-red-500/20 border-amber-500/30',
+    emoji: '📋',
+    seoTitle: 'ATOM Staking Tax Guide: What You Need to Know (2026)',
+    seoDescription: 'Understand how ATOM staking rewards may be taxed, when taxable events occur, and how to keep accurate records for reporting.',
+    featured: false,
+  },
 ];
 
 /**
