@@ -269,6 +269,21 @@ export const ARTICLES: Article[] = [
     seoDescription: 'Understand how ATOM staking rewards may be taxed, when taxable events occur, and how to keep accurate records for reporting.',
     featured: false,
   },
+  {
+    id: '17',
+    slug: 'atom-staking-scenarios-100-1000-10000-atom-rewards',
+    title: 'ATOM Staking Scenarios: What You\'d Earn Staking 100, 1,000, and 10,000 ATOM',
+    excerpt: 'See real reward projections for staking 100, 1,000, and 10,000 ATOM, including commission impact and compounding over time.',
+    category: 'Portfolio Growth',
+    author: 'ATOM Staking Calculator Team',
+    date: 'September 14, 2026',
+    readTime: '10 min read',
+    thumbnailGradient: 'from-emerald-500/20 via-teal-500/20 to-cyan-500/20 border-emerald-500/30',
+    emoji: '📊',
+    seoTitle: 'ATOM Staking Scenarios: 100 to 10,000 ATOM Rewards',
+    seoDescription: 'See real reward projections for staking 100, 1,000, and 10,000 ATOM, including commission impact and compounding over time.',
+    featured: false,
+  },
 ];
 
 /**

@@ -21,6 +21,7 @@ import { cosmosValidatorCommissionExplained } from '../content/cosmos-validator-
 import { howToSetUpKeplrWalletForAtomStaking2026 } from '../content/how-to-set-up-keplr-wallet-for-atom-staking-2026';
 import { howToRedelegateAtomSwitchValidatorsWithoutLosingRewards } from '../content/how-to-redelegate-atom-switch-validators-without-losing-rewards';
 import { atomStakingTaxImplicationsAndReportingGuide } from '../content/atom-staking-tax-implications-and-reporting-guide';
+import { atomStakingScenarios100_1000_10000AtomRewards } from '../content/atom-staking-scenarios-100-1000-10000-atom-rewards';
 
 interface Props {
   onNavigate: (page: string) => void;
@@ -43,6 +44,7 @@ const ARTICLE_CONTENT: Record<string, ContentBlock[]> = {
   'how-to-set-up-keplr-wallet-for-atom-staking-2026': howToSetUpKeplrWalletForAtomStaking2026,
   'how-to-redelegate-atom-switch-validators-without-losing-rewards': howToRedelegateAtomSwitchValidatorsWithoutLosingRewards,
   'atom-staking-tax-implications-and-reporting-guide': atomStakingTaxImplicationsAndReportingGuide,
+  'atom-staking-scenarios-100-1000-10000-atom-rewards': atomStakingScenarios100_1000_10000AtomRewards,
 };
 
 export default function EducationPage({ onNavigate }: Props) {
