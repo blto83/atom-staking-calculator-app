@@ -284,6 +284,21 @@ export const ARTICLES: Article[] = [
     seoDescription: 'See real reward projections for staking 100, 1,000, and 10,000 ATOM, including commission impact and compounding over time.',
     featured: false,
   },
+  {
+    id: '18',
+    slug: 'atom-staking-vs-just-holding-is-it-worth-it',
+    title: 'ATOM Staking vs Just Holding: Is Staking Worth It?',
+    excerpt: 'Compare staking ATOM versus simply holding it, including inflation, opportunity cost, and the real tradeoffs involved.',
+    category: 'Beginner Guides',
+    author: 'ATOM Staking Calculator Team',
+    date: 'September 14, 2026',
+    readTime: '9 min read',
+    thumbnailGradient: 'from-cyan-500/20 via-sky-500/20 to-blue-500/20 border-cyan-500/30',
+    emoji: '⚖️',
+    seoTitle: 'ATOM Staking vs Holding: Is Staking Worth It?',
+    seoDescription: 'Compare staking ATOM versus simply holding it, including inflation, opportunity cost, and the real tradeoffs involved.',
+    featured: false,
+  },
 ];
 
 /**

@@ -22,6 +22,7 @@ import { howToSetUpKeplrWalletForAtomStaking2026 } from '../content/how-to-set-u
 import { howToRedelegateAtomSwitchValidatorsWithoutLosingRewards } from '../content/how-to-redelegate-atom-switch-validators-without-losing-rewards';
 import { atomStakingTaxImplicationsAndReportingGuide } from '../content/atom-staking-tax-implications-and-reporting-guide';
 import { atomStakingScenarios100_1000_10000AtomRewards } from '../content/atom-staking-scenarios-100-1000-10000-atom-rewards';
+import { atomStakingVsJustHoldingIsItWorthIt } from '../content/atom-staking-vs-just-holding-is-it-worth-it';
 
 interface Props {
   onNavigate: (page: string) => void;
@@ -45,6 +46,7 @@ const ARTICLE_CONTENT: Record<string, ContentBlock[]> = {
   'how-to-redelegate-atom-switch-validators-without-losing-rewards': howToRedelegateAtomSwitchValidatorsWithoutLosingRewards,
   'atom-staking-tax-implications-and-reporting-guide': atomStakingTaxImplicationsAndReportingGuide,
   'atom-staking-scenarios-100-1000-10000-atom-rewards': atomStakingScenarios100_1000_10000AtomRewards,
+  'atom-staking-vs-just-holding-is-it-worth-it': atomStakingVsJustHoldingIsItWorthIt,
 };
 
 export default function EducationPage({ onNavigate }: Props) {
