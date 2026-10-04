@@ -299,6 +299,21 @@ export const ARTICLES: Article[] = [
     seoDescription: 'Compare staking ATOM versus simply holding it, including inflation, opportunity cost, and the real tradeoffs involved.',
     featured: false,
   },
+  {
+    id: '19',
+    slug: 'how-to-use-the-atom-staking-calculator-complete-walkthrough',
+    title: 'How to Use the ATOM Staking Calculator: A Complete Walkthrough',
+    excerpt: 'A complete walkthrough of the ATOM Staking Calculator tools — rewards projection, growth tracking, and portfolio planning.',
+    category: 'Beginner Guides',
+    author: 'ATOM Staking Calculator Team',
+    date: 'October 4, 2026',
+    readTime: '9 min read',
+    thumbnailGradient: 'from-blue-500/20 via-indigo-500/20 to-violet-500/20 border-blue-500/30',
+    emoji: '🧮',
+    seoTitle: 'How to Use the ATOM Staking Calculator: Full Guide',
+    seoDescription: 'A complete walkthrough of the ATOM Staking Calculator tools — rewards projection, growth tracking, and portfolio planning.',
+    featured: false,
+  },
 ];
 
 /**

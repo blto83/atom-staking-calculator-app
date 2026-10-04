@@ -1,34 +1,3 @@
-// New article: how-to-use-the-atom-staking-calculator-complete-walkthrough
-// Category: Beginner Guides
-// Format matches the exact ContentBlock schema from src/types.ts.
-// TARGET: 2,500-3,000 actual rendered words.
-//
-// ARTICLE METADATA (for articles.ts):
-// title: 'How to Use the ATOM Staking Calculator: A Complete Walkthrough'
-// slug: 'how-to-use-the-atom-staking-calculator-complete-walkthrough'
-// date: 'October 4, 2026'
-// author: 'ATOM Staking Calculator Team'
-// readTime: '9 min read'
-// category: 'Beginner Guides'
-// seoTitle: 'How to Use the ATOM Staking Calculator: Full Guide'
-// seoDescription: 'A complete walkthrough of the ATOM Staking Calculator tools — rewards projection, growth tracking, and portfolio planning.'
-// ogImage: '' (uses site default)
-// featured: false
-//
-// Bolt: verify export name pattern against an existing article's import in
-// EducationPage.tsx before naming it. Append metadata to articles.ts array
-// (don't re-read/re-print other articles). Create content file at
-// src/content/how-to-use-the-atom-staking-calculator-complete-walkthrough.ts
-// Wire EducationPage.tsx via ArticleBody. Run npm run build:prerender.
-//
-// WORD COUNT: Insert this content exactly as written. Do not pad, shorten, or
-// paraphrase to hit any particular number — report the honest actual count.
-// Also note: the tool-name references below (Calculator, Growth, Rewards,
-// Transactions, Dashboard) are based on the site's actual nav labels seen
-// previously — please verify these match the current nav exactly before
-// inserting, and adjust only the tool names/labels if they've changed, without
-// altering any other content.
-
 import { ContentBlock } from '../types';
 
 export const howToUseTheAtomStakingCalculatorCompleteWalkthrough: ContentBlock[] = [
