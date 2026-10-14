@@ -24,6 +24,7 @@ import { atomStakingTaxImplicationsAndReportingGuide } from '../content/atom-sta
 import { atomStakingScenarios100_1000_10000AtomRewards } from '../content/atom-staking-scenarios-100-1000-10000-atom-rewards';
 import { atomStakingVsJustHoldingIsItWorthIt } from '../content/atom-staking-vs-just-holding-is-it-worth-it';
 import { howToUseTheAtomStakingCalculatorCompleteWalkthrough } from '../content/how-to-use-the-atom-staking-calculator-complete-walkthrough';
+import { howCosmosHubGovernanceWorksVotingWithStakedAtom } from '../content/how-cosmos-hub-governance-works-voting-with-staked-atom';
 
 interface Props {
   onNavigate: (page: string) => void;
@@ -49,6 +50,7 @@ const ARTICLE_CONTENT: Record<string, ContentBlock[]> = {
   'atom-staking-scenarios-100-1000-10000-atom-rewards': atomStakingScenarios100_1000_10000AtomRewards,
   'atom-staking-vs-just-holding-is-it-worth-it': atomStakingVsJustHoldingIsItWorthIt,
   'how-to-use-the-atom-staking-calculator-complete-walkthrough': howToUseTheAtomStakingCalculatorCompleteWalkthrough,
+  'how-cosmos-hub-governance-works-voting-with-staked-atom': howCosmosHubGovernanceWorksVotingWithStakedAtom,
 };
 
 export default function EducationPage({ onNavigate }: Props) {

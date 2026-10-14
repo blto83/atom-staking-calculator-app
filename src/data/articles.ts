@@ -314,6 +314,21 @@ export const ARTICLES: Article[] = [
     seoDescription: 'A complete walkthrough of the ATOM Staking Calculator tools — rewards projection, growth tracking, and portfolio planning.',
     featured: false,
   },
+  {
+    id: '20',
+    slug: 'how-cosmos-hub-governance-works-voting-with-staked-atom',
+    title: 'How Cosmos Hub Governance Works: Voting With Your Staked ATOM',
+    excerpt: 'Learn how Cosmos Hub governance works, from proposals and deposits to voting options, quorum, and how delegators vote.',
+    category: 'Validator Guides',
+    author: 'ATOM Staking Calculator Team',
+    date: 'October 9, 2026',
+    readTime: '11 min read',
+    thumbnailGradient: 'from-violet-500/20 via-purple-500/20 to-fuchsia-500/20 border-violet-500/30',
+    emoji: '🗳️',
+    seoTitle: 'Cosmos Hub Governance: How to Vote With Staked ATOM',
+    seoDescription: 'Learn how Cosmos Hub governance works, from proposals and deposits to voting options, quorum, and how delegators vote.',
+    featured: false,
+  },
 ];
 
 /**

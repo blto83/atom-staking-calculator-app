@@ -1,29 +1,3 @@
-// New article: how-cosmos-hub-governance-works-voting-with-staked-atom
-// Category: Validator Guides
-// Format matches the exact ContentBlock schema from src/types.ts.
-// TARGET: 2,500-3,000 actual rendered words.
-//
-// ARTICLE METADATA (for articles.ts):
-// title: 'How Cosmos Hub Governance Works: Voting With Your Staked ATOM'
-// slug: 'how-cosmos-hub-governance-works-voting-with-staked-atom'
-// date: 'October 9, 2026'
-// author: 'ATOM Staking Calculator Team'
-// readTime: '11 min read'
-// category: 'Validator Guides'
-// seoTitle: 'Cosmos Hub Governance: How to Vote With Staked ATOM'
-// seoDescription: 'Learn how Cosmos Hub governance works, from proposals and deposits to voting options, quorum, and how delegators vote.'
-// ogImage: '' (uses site default)
-// featured: false
-//
-// Bolt: verify export name pattern against an existing article's import in
-// EducationPage.tsx before naming it. Append metadata to articles.ts array
-// (don't re-read/re-print other articles). Create content file at
-// src/content/how-cosmos-hub-governance-works-voting-with-staked-atom.ts
-// Wire EducationPage.tsx via ArticleBody. Run npm run build:prerender.
-//
-// WORD COUNT: Insert this content exactly as written. Do not pad, shorten, or
-// paraphrase to hit any particular number. Report the honest actual count.
-
 import { ContentBlock } from '../types';
 
 export const howCosmosHubGovernanceWorksVotingWithStakedAtom: ContentBlock[] = [
