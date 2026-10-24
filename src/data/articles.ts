@@ -329,6 +329,21 @@ export const ARTICLES: Article[] = [
     seoDescription: 'Learn how Cosmos Hub governance works, from proposals and deposits to voting options, quorum, and how delegators vote.',
     featured: false,
   },
+  {
+    id: '21',
+    slug: 'atom-liquid-staking-vs-native-staking-pros-cons-risks',
+    title: 'ATOM Liquid Staking vs Native Staking: Pros, Cons, and Risks',
+    excerpt: 'Compare ATOM liquid staking and native staking side by side — liquidity, governance, fees, compounding, and the extra risks liquid staking adds on top of slashing.',
+    category: 'Risk & Safety',
+    author: 'ATOM Staking Calculator Team',
+    date: 'October 20, 2026',
+    readTime: '11 min read',
+    thumbnailGradient: 'from-blue-500/20 via-cyan-500/20 to-teal-500/20 border-blue-500/30',
+    emoji: '💧',
+    seoTitle: 'ATOM Liquid Staking vs Native Staking: Key Differences',
+    seoDescription: 'Compare ATOM liquid staking and native staking, including liquidity, governance, fees, and the risks of each approach.',
+    featured: false,
+  },
 ];
 
 /**
