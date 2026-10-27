@@ -26,6 +26,7 @@ import { atomStakingVsJustHoldingIsItWorthIt } from '../content/atom-staking-vs-
 import { howToUseTheAtomStakingCalculatorCompleteWalkthrough } from '../content/how-to-use-the-atom-staking-calculator-complete-walkthrough';
 import { howCosmosHubGovernanceWorksVotingWithStakedAtom } from '../content/how-cosmos-hub-governance-works-voting-with-staked-atom';
 import { atomLiquidStakingVsNativeStakingProsConsRisks } from '../content/atom-liquid-staking-vs-native-staking-pros-cons-risks';
+import { commonAtomStakingMistakesAndHowToAvoidThem } from '../content/common-atom-staking-mistakes-and-how-to-avoid-them';
 
 interface Props {
   onNavigate: (page: string) => void;
@@ -53,6 +54,7 @@ const ARTICLE_CONTENT: Record<string, ContentBlock[]> = {
   'how-to-use-the-atom-staking-calculator-complete-walkthrough': howToUseTheAtomStakingCalculatorCompleteWalkthrough,
   'how-cosmos-hub-governance-works-voting-with-staked-atom': howCosmosHubGovernanceWorksVotingWithStakedAtom,
   'atom-liquid-staking-vs-native-staking-pros-cons-risks': atomLiquidStakingVsNativeStakingProsConsRisks,
+  'common-atom-staking-mistakes-and-how-to-avoid-them': commonAtomStakingMistakesAndHowToAvoidThem,
 };
 
 export default function EducationPage({ onNavigate }: Props) {
