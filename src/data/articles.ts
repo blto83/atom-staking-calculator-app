@@ -359,6 +359,21 @@ export const ARTICLES: Article[] = [
     seoDescription: 'The most common ATOM staking mistakes, from wallet security to validator choice and unbonding, and how to avoid each one.',
     featured: false,
   },
+  {
+    id: '23',
+    slug: 'why-atom-staking-rewards-change-inflation-bonded-ratio-apr',
+    title: 'Why ATOM Staking Rewards Change: Inflation, Bonded Ratio, and Your APR',
+    excerpt: 'Learn why ATOM staking rewards rise and fall, how inflation and the bonded ratio set your APR, and what governance changes.',
+    category: 'APR / APY Education',
+    author: 'ATOM Staking Calculator Team',
+    date: 'October 31, 2026',
+    readTime: '11 min read',
+    thumbnailGradient: 'from-cyan-500/20 via-blue-500/20 to-indigo-500/20 border-cyan-500/30',
+    emoji: '📊',
+    seoTitle: 'Why ATOM Staking APR Changes: Inflation Explained',
+    seoDescription: 'Learn why ATOM staking rewards rise and fall, how inflation and the bonded ratio set your APR, and what governance changes.',
+    featured: false,
+  },
 ];
 
 /**

@@ -27,6 +27,7 @@ import { howToUseTheAtomStakingCalculatorCompleteWalkthrough } from '../content/
 import { howCosmosHubGovernanceWorksVotingWithStakedAtom } from '../content/how-cosmos-hub-governance-works-voting-with-staked-atom';
 import { atomLiquidStakingVsNativeStakingProsConsRisks } from '../content/atom-liquid-staking-vs-native-staking-pros-cons-risks';
 import { commonAtomStakingMistakesAndHowToAvoidThem } from '../content/common-atom-staking-mistakes-and-how-to-avoid-them';
+import { whyAtomStakingRewardsChangeInflationBondedRatioApr } from '../content/why-atom-staking-rewards-change-inflation-bonded-ratio-apr';
 
 interface Props {
   onNavigate: (page: string) => void;
@@ -55,6 +56,7 @@ const ARTICLE_CONTENT: Record<string, ContentBlock[]> = {
   'how-cosmos-hub-governance-works-voting-with-staked-atom': howCosmosHubGovernanceWorksVotingWithStakedAtom,
   'atom-liquid-staking-vs-native-staking-pros-cons-risks': atomLiquidStakingVsNativeStakingProsConsRisks,
   'common-atom-staking-mistakes-and-how-to-avoid-them': commonAtomStakingMistakesAndHowToAvoidThem,
+  'why-atom-staking-rewards-change-inflation-bonded-ratio-apr': whyAtomStakingRewardsChangeInflationBondedRatioApr,
 };
 
 export default function EducationPage({ onNavigate }: Props) {
