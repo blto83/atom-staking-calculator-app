@@ -374,6 +374,21 @@ export const ARTICLES: Article[] = [
     seoDescription: 'Learn why ATOM staking rewards rise and fall, how inflation and the bonded ratio set your APR, and what governance changes.',
     featured: false,
   },
+  {
+    id: '24',
+    slug: 'how-to-unstake-atom-step-by-step-undelegating-guide',
+    title: 'How to Unstake ATOM: Step-by-Step Guide to Undelegating',
+    excerpt: 'How to unstake ATOM safely: the steps, the 21-day unbonding wait, what happens to your rewards, and mistakes to avoid.',
+    category: 'Beginner Guides',
+    author: 'ATOM Staking Calculator Team',
+    date: 'November 10, 2026',
+    readTime: '11 min read',
+    thumbnailGradient: 'from-amber-500/20 via-orange-500/20 to-red-500/20 border-amber-500/30',
+    emoji: '🔓',
+    seoTitle: 'How to Unstake ATOM: Step-by-Step Undelegating Guide',
+    seoDescription: 'How to unstake ATOM safely: the steps, the 21-day unbonding wait, what happens to your rewards, and mistakes to avoid.',
+    featured: false,
+  },
 ];
 
 /**
