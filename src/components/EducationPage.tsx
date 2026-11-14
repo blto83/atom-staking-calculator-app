@@ -29,6 +29,7 @@ import { atomLiquidStakingVsNativeStakingProsConsRisks } from '../content/atom-l
 import { commonAtomStakingMistakesAndHowToAvoidThem } from '../content/common-atom-staking-mistakes-and-how-to-avoid-them';
 import { whyAtomStakingRewardsChangeInflationBondedRatioApr } from '../content/why-atom-staking-rewards-change-inflation-bonded-ratio-apr';
 import { howToUnstakeAtomStepByStepUndelegatingGuide } from '../content/how-to-unstake-atom-step-by-step-undelegating-guide';
+import { howToClaimAtomStakingRewardsWhenAndWhetherToRestake } from '../content/how-to-claim-atom-staking-rewards-when-and-whether-to-restake';
 
 interface Props {
   onNavigate: (page: string) => void;
@@ -59,6 +60,7 @@ const ARTICLE_CONTENT: Record<string, ContentBlock[]> = {
   'common-atom-staking-mistakes-and-how-to-avoid-them': commonAtomStakingMistakesAndHowToAvoidThem,
   'why-atom-staking-rewards-change-inflation-bonded-ratio-apr': whyAtomStakingRewardsChangeInflationBondedRatioApr,
   'how-to-unstake-atom-step-by-step-undelegating-guide': howToUnstakeAtomStepByStepUndelegatingGuide,
+  'how-to-claim-atom-staking-rewards-when-and-whether-to-restake': howToClaimAtomStakingRewardsWhenAndWhetherToRestake,
 };
 
 export default function EducationPage({ onNavigate }: Props) {

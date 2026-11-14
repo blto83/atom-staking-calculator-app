@@ -389,6 +389,21 @@ export const ARTICLES: Article[] = [
     seoDescription: 'How to unstake ATOM safely: the steps, the 21-day unbonding wait, what happens to your rewards, and mistakes to avoid.',
     featured: false,
   },
+  {
+    id: '25',
+    slug: 'how-to-claim-atom-staking-rewards-when-and-whether-to-restake',
+    title: 'How to Claim ATOM Staking Rewards: When, How, and Whether to Restake',
+    excerpt: 'Learn how ATOM staking rewards accrue, how to claim them in your wallet, and when claiming and restaking is worth the fee.',
+    category: 'APR / APY Education',
+    author: 'ATOM Staking Calculator Team',
+    date: 'November 14, 2026',
+    readTime: '11 min read',
+    thumbnailGradient: 'from-emerald-500/20 via-teal-500/20 to-cyan-500/20 border-emerald-500/30',
+    emoji: '💰',
+    seoTitle: 'How to Claim ATOM Staking Rewards: A Step-by-Step Guide',
+    seoDescription: 'Learn how ATOM staking rewards accrue, how to claim them in your wallet, and when claiming and restaking is worth the fee.',
+    featured: false,
+  },
 ];
 
 /**
