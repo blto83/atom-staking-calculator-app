@@ -177,9 +177,13 @@ export default function ArticleBody({ blocks, onNavigate, onArticleClick }: Prop
             return (
               <p key={index}>
                 {block.prefix}{' '}
-                <button onClick={() => onArticleClick?.(block.articleSlug)} className="text-cyan-600 dark:text-cyan-400 hover:underline font-bold cursor-pointer">
+                <a
+                  href={`/learn/${block.articleSlug}`}
+                  onClick={(e) => { if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) return; e.preventDefault(); onArticleClick?.(block.articleSlug); }}
+                  className="text-cyan-600 dark:text-cyan-400 no-underline hover:underline font-bold cursor-pointer"
+                >
                   {block.linkText}
-                </button>{block.suffix && block.suffix !== '.' ? ' ' : ''}
+                </a>{block.suffix && block.suffix !== '.' ? ' ' : ''}
                 {block.suffix}
               </p>
             );
@@ -188,9 +192,13 @@ export default function ArticleBody({ blocks, onNavigate, onArticleClick }: Prop
             return (
               <p key={index}>
                 {block.prefix}{' '}
-                <button onClick={() => onNavigate?.('calculator')} className="text-cyan-600 dark:text-cyan-400 hover:underline font-bold cursor-pointer">
+                <a
+                  href="/calculator"
+                  onClick={(e) => { if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) return; e.preventDefault(); onNavigate?.('calculator'); }}
+                  className="text-cyan-600 dark:text-cyan-400 no-underline hover:underline font-bold cursor-pointer"
+                >
                   ATOM Staking Calculator
-                </button>{block.suffix && !/^[.,;:!?]/.test(block.suffix) ? ' ' : ''}
+                </a>{block.suffix && !/^[.,;:!?]/.test(block.suffix) ? ' ' : ''}
                 {block.suffix}
               </p>
             );
