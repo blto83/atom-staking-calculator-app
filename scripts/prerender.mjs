@@ -8,6 +8,22 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const SITE_URL = 'https://www.atomstakingcalculator.com';
 const DEFAULT_OG_IMAGE = `${SITE_URL}/og-default.png`;
 
+// Titles/descriptions mirror the runtime meta map in src/App.tsx
+const ROUTES = [
+  { path: '/calculator', title: 'ATOM Staking Rewards Calculator | Cosmos APR and APY Tool', description: 'Calculate daily, monthly, yearly, simple, and compounded ATOM staking rewards after validator commission.', robots: 'index, follow' },
+  { path: '/growth', title: 'ATOM Growth Projection Tool | Cosmos Staking Calculator', description: 'Project ATOM staking growth over 30 days, 1 year, 3 years, and 5 years with and without compounding.', robots: 'index, follow' },
+  { path: '/learn', title: 'Cosmos ATOM Staking Guide | Learn ATOM Rewards', description: 'Learn how Cosmos ATOM staking works, how to choose validators, understand risks, and compare compounding outcomes.', robots: 'index, follow' },
+  { path: '/faq', title: 'ATOM Staking FAQ | Cosmos Rewards, APR, APY, Risks & Beginner Guide', description: 'Comprehensive beginner-friendly FAQ about Cosmos ATOM staking. Learn about rewards, APR vs APY, validator commission, slashing risks, wallet setup, and common mistakes.', robots: 'index, follow' },
+  { path: '/about', title: 'About | ATOM Staking Calculator & Portfolio Tracker', description: 'Learn the mission behind the ATOM staking calculator and how it helps users understand Cosmos rewards and validator fees.', robots: 'index, follow' },
+  { path: '/dashboard', title: 'ATOM Portfolio Dashboard | ATOM Staking Calculator', description: 'Track ATOM holdings, staked balances, portfolio value, profit and loss, ROI, and live ATOM price locally.', robots: 'noindex, follow' },
+  { path: '/rewards', title: 'ATOM Reward Tracker | Cosmos Staking Calculator', description: 'Track manual ATOM staking reward claims locally with dates, notes, charts, and CSV export.', robots: 'noindex, follow' },
+  { path: '/transactions', title: 'ATOM Transaction Log | Cosmos Portfolio Tracker', description: 'Log ATOM buys, sells, stakes, unstakes, reward claims, and restakes locally in your browser.', robots: 'noindex, follow' },
+  { path: '/settings', title: 'Settings | ATOM Staking Calculator', description: 'Manage theme, currency, CSV exports, local data, and privacy settings for the ATOM staking calculator.', robots: 'noindex, follow' },
+  { path: '/privacy-policy', title: 'Privacy Policy | ATOM Staking Calculator', description: 'Read how the ATOM staking calculator handles local browser data, privacy, live price requests, and wallet safety.', robots: 'index, follow' },
+  { path: '/terms-of-use', title: 'Terms of Use | ATOM Staking Calculator', description: 'Terms for using the ATOM staking calculator, including educational estimates, user responsibility, and no guarantees.', robots: 'index, follow' },
+  { path: '/disclaimer', title: 'Disclaimer | ATOM Staking Calculator', description: 'Important disclaimer for ATOM staking estimates, cryptocurrency risks, privacy, and educational use.', robots: 'index, follow' },
+];
+
 // Static pages to include in sitemap (besides articles)
 const STATIC_PAGES = [
   { path: '/', changefreq: 'weekly', priority: 1.0 },
@@ -150,6 +166,57 @@ function injectMetadata(html, article) {
   return result;
 }
 
+function injectRouteMetadata(html, route) {
+  const canonicalUrl = `${SITE_URL}${route.path}`;
+
+  let result = html.replace(
+    /<title>[^<]*<\/title>/,
+    `<title>${route.title}</title>`
+  );
+
+  result = result.replace(
+    /<meta name="description" content="[^"]*"/,
+    `<meta name="description" content="${route.description}"`
+  );
+
+  result = result.replace(
+    /<meta property="og:title" content="[^"]*"/,
+    `<meta property="og:title" content="${route.title}"`
+  );
+
+  result = result.replace(
+    /<meta property="og:description" content="[^"]*"/,
+    `<meta property="og:description" content="${route.description}"`
+  );
+
+  result = result.replace(
+    /<meta property="og:url" content="[^"]*"/,
+    `<meta property="og:url" content="${canonicalUrl}"`
+  );
+
+  result = result.replace(
+    /<meta name="twitter:title" content="[^"]*"/,
+    `<meta name="twitter:title" content="${route.title}"`
+  );
+
+  result = result.replace(
+    /<meta name="twitter:description" content="[^"]*"/,
+    `<meta name="twitter:description" content="${route.description}"`
+  );
+
+  result = result.replace(
+    /<link rel="canonical" href="[^"]*"/,
+    `<link rel="canonical" href="${canonicalUrl}"`
+  );
+
+  result = result.replace(
+    /<meta name="robots" content="[^"]*"/,
+    `<meta name="robots" content="${route.robots}"`
+  );
+
+  return result;
+}
+
 function extractTagContent(html, pattern) {
   const match = html.match(pattern);
   return match ? match[1] : null;
@@ -227,6 +294,36 @@ async function validateBuild(articles) {
     }
   }
 
+  // Check each static route page
+  for (const route of ROUTES) {
+    const routePath = path.join(distPath, route.path.replace(/^\//, ''), 'index.html');
+
+    try {
+      const routeHtml = await fs.readFile(routePath, 'utf-8');
+      const canonicalUrl = `${SITE_URL}${route.path}`;
+
+      const canonicalMatches = routeHtml.match(/<link rel="canonical" href="([^"]+)"/g) || [];
+      const canonicalContent = extractTagContent(routeHtml, /<link rel="canonical" href="([^"]+)"/);
+      if (canonicalMatches.length !== 1 || canonicalContent !== canonicalUrl) {
+        errors.push(`Route "${route.path}" must have exactly one canonical equal to ${canonicalUrl} (found ${canonicalMatches.length}: ${canonicalContent})`);
+      }
+
+      const twitterCardMatches = routeHtml.match(/<meta name="twitter:card" content="([^"]+)"/g) || [];
+      if (twitterCardMatches.length !== 1) {
+        errors.push(`Route "${route.path}" must have exactly one twitter:card (found ${twitterCardMatches.length})`);
+      }
+
+      const robotsContent = extractTagContent(routeHtml, /<meta name="robots" content="([^"]+)"/);
+      if (route.robots === 'noindex, follow' && !/noindex/.test(robotsContent || '')) {
+        errors.push(`Route "${route.path}" must contain noindex (found: "${robotsContent}")`);
+      }
+
+      console.log(`✓ Route "${route.path}" validation passed`);
+    } catch (e) {
+      errors.push(`Route "${route.path}" index.html not found`);
+    }
+  }
+
   if (errors.length > 0) {
     console.error('\n❌ Build validation failed:\n');
     for (const error of errors) {
@@ -294,6 +391,17 @@ async function main() {
 
     console.log(`\n✅ Successfully prerendered ${articles.length} articles!\n`);
 
+    console.log('📄 Prerendering static route pages...\n');
+
+    for (const route of ROUTES) {
+      const outDir = path.join(__dirname, '..', 'dist', route.path.replace(/^\//, ''));
+      await fs.mkdir(outDir, { recursive: true });
+      await fs.writeFile(path.join(outDir, 'index.html'), injectRouteMetadata(baseHtml, route));
+      console.log(`✓ Generated: ${route.path}/index.html`);
+    }
+
+    console.log(`\n✅ Successfully prerendered ${ROUTES.length} static route pages!\n`);
+
     // Generate dynamic sitemap
     console.log('🗺️  Generating sitemap.xml...');
     const sitemap = generateSitemap(articles);
@@ -303,6 +411,7 @@ async function main() {
 
     console.log('📊 Output:');
     console.log('   - dist/index.html (homepage)');
+    console.log(`   - dist/<route>/index.html (${ROUTES.length} static route pages)`);
     console.log(`   - dist/learn/*/index.html (${articles.length} article pages)`);
     console.log('   - dist/robots.txt');
     console.log('   - dist/sitemap.xml');
