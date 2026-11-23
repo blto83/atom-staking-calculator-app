@@ -210,9 +210,10 @@ export default function EducationPage({ onNavigate }: Props) {
           </h3>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 items-stretch">
             {relatedArticles.map((article) => (
-              <div
+              <a
                 key={article.id}
-                onClick={() => handleArticleClick(article.slug)}
+                href={`/learn/${article.slug}`}
+                onClick={(e) => { if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) return; e.preventDefault(); handleArticleClick(article.slug); }}
                 className="glass-card rounded-xl border border-slate-200 dark:border-slate-800/60 p-5 hover:border-cyan-400 dark:hover:border-cyan-400 hover:shadow-md transition-all duration-200 cursor-pointer flex flex-col justify-between group h-full"
               >
                 <div>
@@ -227,10 +228,10 @@ export default function EducationPage({ onNavigate }: Props) {
                   </h4>
                 </div>
                 <div className="flex items-center gap-1 text-[11px] text-cyan-600 dark:text-cyan-400 font-bold pt-3.5 group-hover:underline mt-auto border-t border-slate-200 dark:border-slate-800/40">
-                  Read Guide
+                  <span>Read Guide</span>
                   <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform shrink-0" />
                 </div>
-              </div>
+              </a>
             ))}
           </div>
         </div>
@@ -338,9 +339,10 @@ export default function EducationPage({ onNavigate }: Props) {
           </div>
         ) : (
           filteredArticles.map((article) => (
-            <div
+            <a
               key={article.id}
-              onClick={() => handleArticleClick(article.slug)}
+              href={`/learn/${article.slug}`}
+              onClick={(e) => { if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) return; e.preventDefault(); handleArticleClick(article.slug); }}
               className="glass-card rounded-2xl border border-slate-200 dark:border-slate-800/65 overflow-hidden hover:border-cyan-400 dark:hover:border-cyan-400 hover:shadow-lg hover:shadow-cyan-500/5 transition-all duration-300 flex flex-col cursor-pointer group"
             >
               <div className={`h-40 w-full bg-gradient-to-br ${article.thumbnailGradient} border-b border-slate-200 dark:border-slate-800/65 flex items-center justify-center text-5xl relative overflow-hidden`}>
@@ -370,7 +372,7 @@ export default function EducationPage({ onNavigate }: Props) {
                   </div>
                 </div>
               </div>
-            </div>
+            </a>
           ))
         )}
       </div>
