@@ -24,22 +24,9 @@ const ROUTES = [
   { path: '/disclaimer', title: 'Disclaimer | ATOM Staking Calculator', description: 'Important disclaimer for ATOM staking estimates, cryptocurrency risks, privacy, and educational use.', robots: 'index, follow' },
 ];
 
-// Static pages to include in sitemap (besides articles)
-const STATIC_PAGES = [
-  { path: '/', changefreq: 'weekly', priority: 1.0 },
-  { path: '/dashboard', changefreq: 'weekly', priority: 0.8 },
-  { path: '/calculator', changefreq: 'weekly', priority: 0.9 },
-  { path: '/growth', changefreq: 'weekly', priority: 0.8 },
-  { path: '/rewards', changefreq: 'monthly', priority: 0.7 },
-  { path: '/transactions', changefreq: 'monthly', priority: 0.6 },
-  { path: '/about', changefreq: 'monthly', priority: 0.7 },
-  { path: '/learn', changefreq: 'monthly', priority: 0.8 },
-  { path: '/faq', changefreq: 'monthly', priority: 0.8 },
-  { path: '/privacy-policy', changefreq: 'yearly', priority: 0.5 },
-  { path: '/terms-of-use', changefreq: 'yearly', priority: 0.5 },
-  { path: '/disclaimer', changefreq: 'yearly', priority: 0.5 },
-  { path: '/settings', changefreq: 'yearly', priority: 0.3 },
-];
+// Pages included in the sitemap. Private/app pages (dashboard, rewards,
+// transactions, settings) and legal pages are intentionally excluded.
+const SITEMAP_PAGES = ['/', '/calculator', '/growth', '/learn', '/faq', '/about'];
 
 async function getArticleMetadata() {
   const articlesPath = path.join(__dirname, '..', 'src', 'data', 'articles.ts');
@@ -66,12 +53,15 @@ async function getArticleMetadata() {
     const seoDescMatch = obj.match(/seoDescription:\s*'([^']+)'/);
     const ogImageMatch = obj.match(/ogImage:\s*'([^']+)'/);
 
+    const dateMatch = obj.match(/date:\s*'([^']+)'/);
+
     if (slugMatch && seoTitleMatch && seoDescMatch) {
       articles.push({
         slug: slugMatch[1],
         seoTitle: seoTitleMatch[1],
         seoDescription: seoDescMatch[1],
         ogImage: ogImageMatch ? ogImageMatch[1] : null,
+        date: dateMatch ? dateMatch[1] : null,
       });
     }
   }
@@ -336,24 +326,31 @@ async function validateBuild(articles) {
   console.log('\n✅ All build validations passed!\n');
 }
 
+function formatDateLastmod(dateStr) {
+  if (!dateStr) return null;
+  const parsed = new Date(dateStr);
+  if (Number.isNaN(parsed.getTime())) return null;
+  return parsed.toISOString().slice(0, 10);
+}
+
 function generateSitemap(articles) {
   const urls = [];
+  const buildDate = new Date().toISOString().slice(0, 10);
 
-  // Add static pages
-  for (const page of STATIC_PAGES) {
+  // Add static pages with the build date as lastmod
+  for (const pagePath of SITEMAP_PAGES) {
     urls.push(`  <url>
-    <loc>${SITE_URL}${page.path}</loc>
-    <changefreq>${page.changefreq}</changefreq>
-    <priority>${page.priority}</priority>
+    <loc>${SITE_URL}${pagePath}</loc>
+    <lastmod>${buildDate}</lastmod>
   </url>`);
   }
 
-  // Add all article pages
+  // Add all article pages with their published date as lastmod
   for (const article of articles) {
+    const lastmod = formatDateLastmod(article.date);
+    const lastmodTag = lastmod ? `\n    <lastmod>${lastmod}</lastmod>` : '';
     urls.push(`  <url>
-    <loc>${SITE_URL}/learn/${article.slug}</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <loc>${SITE_URL}/learn/${article.slug}</loc>${lastmodTag}
   </url>`);
   }
 
@@ -406,8 +403,12 @@ async function main() {
     console.log('🗺️  Generating sitemap.xml...');
     const sitemap = generateSitemap(articles);
     await fs.writeFile(path.join(__dirname, '..', 'dist', 'sitemap.xml'), sitemap);
-    const totalUrls = STATIC_PAGES.length + articles.length;
-    console.log(`✓ Generated sitemap with ${totalUrls} URLs (${STATIC_PAGES.length} static + ${articles.length} articles)\n`);
+    const sitemapUrlCount = (sitemap.match(/<loc>/g) || []).length;
+    const expectedUrlCount = SITEMAP_PAGES.length + articles.length;
+    if (sitemapUrlCount !== expectedUrlCount) {
+      throw new Error(`Sitemap URL count mismatch: expected ${expectedUrlCount} (${SITEMAP_PAGES.length} static + ${articles.length} articles), found ${sitemapUrlCount}`);
+    }
+    console.log(`✓ Generated sitemap with ${sitemapUrlCount} URLs (${SITEMAP_PAGES.length} static + ${articles.length} articles)\n`);
 
     console.log('📊 Output:');
     console.log('   - dist/index.html (homepage)');
