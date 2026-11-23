@@ -1,22 +1,16 @@
 {
   "buildCommand": "npm run build:prerender",
-  "redirects": [
-    {
-      "source": "/:path*",
-      "destination": "https://www.atomstakingcalculator.com/:path*",
-      "permanent": true,
-      "has": [
-        {
-          "type": "host",
-          "value": "atomstakingcalculator.com"
-        }
-      ]
-    }
-  ],
-  "rewrites": [
+  "trailingSlash": false,
+  "headers": [
+    { "source": "/dashboard", "headers": [{ "key": "X-Robots-Tag", "value": "noindex, follow" }] },
+    { "source": "/rewards", "headers": [{ "key": "X-Robots-Tag", "value": "noindex, follow" }] },
+    { "source": "/transactions", "headers": [{ "key": "X-Robots-Tag", "value": "noindex, follow" }] },
+    { "source": "/settings", "headers": [{ "key": "X-Robots-Tag", "value": "noindex, follow" }] },
     {
       "source": "/(.*)",
-      "destination": "/index.html"
+      "has": [{ "type": "host", "value": "atom-staking-calculator-app.vercel.app" }],
+      "headers": [{ "key": "X-Robots-Tag", "value": "noindex" }]
     }
-  ]
+  ],
+  "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }]
 }
