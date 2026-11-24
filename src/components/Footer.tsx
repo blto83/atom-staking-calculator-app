@@ -28,19 +28,20 @@ export default function Footer({ onNavigate }: Props) {
             <h4 className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-3">Tools</h4>
             <ul className="space-y-2">
               {[
-                { label: 'Dashboard', page: 'dashboard', icon: Calculator },
-                { label: 'Calculator', page: 'calculator', icon: Calculator },
-                { label: 'Growth Projection', page: 'growth', icon: Calculator },
-                { label: 'Reward Tracker', page: 'rewards', icon: Calculator },
-                { label: 'Transaction Log', page: 'transactions', icon: Calculator },
+                { label: 'Dashboard', href: '/dashboard', icon: Calculator },
+                { label: 'Calculator', href: '/calculator', icon: Calculator },
+                { label: 'Growth Projection', href: '/growth', icon: Calculator },
+                { label: 'Reward Tracker', href: '/rewards', icon: Calculator },
+                { label: 'Transaction Log', href: '/transactions', icon: Calculator },
               ].map((item) => (
-                <li key={item.page}>
-                  <button
-                    onClick={() => onNavigate(item.page)}
-                    className="text-xs text-gray-500 hover:text-cyan-400 transition-colors cursor-pointer"
+                <li key={item.href}>
+                  <a
+                    href={item.href}
+                    onClick={(e) => { if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) return; e.preventDefault(); onNavigate(item.page); }}
+                    className="text-xs text-gray-500 hover:text-cyan-400 transition-colors cursor-pointer no-underline"
                   >
                     {item.label}
-                  </button>
+                  </a>
                 </li>
               ))}
             </ul>
@@ -51,18 +52,19 @@ export default function Footer({ onNavigate }: Props) {
             <h4 className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-3">Resources</h4>
             <ul className="space-y-2">
               {[
-                { label: 'About', page: 'about', icon: Info },
-                { label: 'What is ATOM Staking?', page: 'education', icon: BookOpen },
-                { label: 'FAQ', page: 'faq', icon: HelpCircle },
-                { label: 'Settings', page: 'settings', icon: Settings },
+                { label: 'About', href: '/about', page: 'about', icon: Info },
+                { label: 'What is ATOM Staking?', href: '/learn/what-is-cosmos-atom-staking-beginner-guide-2026', page: 'education', icon: BookOpen },
+                { label: 'FAQ', href: '/faq', page: 'faq', icon: HelpCircle },
+                { label: 'Settings', href: '/settings', page: 'settings', icon: Settings },
               ].map((item) => (
-                <li key={item.page}>
-                  <button
-                    onClick={() => onNavigate(item.page)}
-                    className="text-xs text-gray-500 hover:text-cyan-400 transition-colors cursor-pointer"
+                <li key={item.href}>
+                  <a
+                    href={item.href}
+                    onClick={(e) => { if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) return; e.preventDefault(); onNavigate(item.page); }}
+                    className="text-xs text-gray-500 hover:text-cyan-400 transition-colors cursor-pointer no-underline"
                   >
                     {item.label}
-                  </button>
+                  </a>
                 </li>
               ))}
             </ul>
@@ -73,17 +75,18 @@ export default function Footer({ onNavigate }: Props) {
             <h4 className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-3">Legal</h4>
             <ul className="space-y-2">
               {[
-                { label: 'Privacy Policy', page: 'privacy', icon: Shield },
-                { label: 'Terms of Use', page: 'terms', icon: Scale },
-                { label: 'Disclaimer', page: 'disclaimer', icon: Scale },
+                { label: 'Privacy Policy', href: '/privacy-policy', page: 'privacy', icon: Shield },
+                { label: 'Terms of Use', href: '/terms-of-use', page: 'terms', icon: Scale },
+                { label: 'Disclaimer', href: '/disclaimer', page: 'disclaimer', icon: Scale },
               ].map((item) => (
-                <li key={item.page}>
-                  <button
-                    onClick={() => onNavigate(item.page)}
-                    className="text-xs text-gray-500 hover:text-cyan-400 transition-colors cursor-pointer"
+                <li key={item.href}>
+                  <a
+                    href={item.href}
+                    onClick={(e) => { if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) return; e.preventDefault(); onNavigate(item.page); }}
+                    className="text-xs text-gray-500 hover:text-cyan-400 transition-colors cursor-pointer no-underline"
                   >
                     {item.label}
-                  </button>
+                  </a>
                 </li>
               ))}
             </ul>

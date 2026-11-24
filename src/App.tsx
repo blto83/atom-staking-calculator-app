@@ -369,10 +369,11 @@ export default function App() {
             const Icon = item.icon;
             const isActive = currentPage === item.id;
             return (
-              <button
+              <a
                 key={item.id}
-                onClick={() => navigateTo(item.id)}
-                className={`w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-all cursor-pointer ${
+                href={PAGE_PATHS[item.id]}
+                onClick={(e) => { if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) return; e.preventDefault(); navigateTo(item.id); }}
+                className={`w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-all cursor-pointer no-underline ${
                   isActive
                     ? 'bg-cyan-500/15 text-cyan-400'
                     : 'text-gray-400 hover:bg-gray-800/50 hover:text-gray-200'
@@ -380,7 +381,7 @@ export default function App() {
               >
                 <Icon className="w-4 h-4 shrink-0" />
                 {item.label}
-              </button>
+              </a>
             );
           })}
         </div>
@@ -394,9 +395,10 @@ export default function App() {
       {isHomePage ? (
         <header className="sticky top-0 z-50 bg-gray-950/90 backdrop-blur-md border-b border-gray-800/50">
           <div className="max-w-7xl mx-auto flex items-center justify-between px-4 h-16">
-            <button
-              onClick={() => navigateTo('home')}
-              className="flex items-center gap-2.5 cursor-pointer"
+            <a
+              href="/"
+              onClick={(e) => { if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) return; e.preventDefault(); navigateTo('home'); }}
+              className="flex items-center gap-2.5 cursor-pointer no-underline"
             >
               <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-cyan-500 to-indigo-600 flex items-center justify-center text-sm font-bold shadow-lg shadow-cyan-500/20">
                 ⚛️
@@ -407,39 +409,44 @@ export default function App() {
                 </h1>
                 <p className="text-[10px] text-gray-500 leading-tight">Calculate. Track. Compound.</p>
               </div>
-            </button>
+            </a>
 
             <nav className="hidden md:flex items-center gap-5 text-sm font-medium">
-              <button
-                onClick={() => navigateToHomeSection('features')}
-                className="text-gray-400 hover:text-cyan-400 transition-colors cursor-pointer"
+              <a
+                href="/#features"
+                onClick={(e) => { if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) return; e.preventDefault(); navigateToHomeSection('features'); }}
+                className="text-gray-400 hover:text-cyan-400 transition-colors cursor-pointer no-underline"
               >
                 Features
-              </button>
-              <button
-                onClick={() => navigateToHomeSection('how-it-works')}
-                className="text-gray-400 hover:text-cyan-400 transition-colors cursor-pointer"
+              </a>
+              <a
+                href="/#how-it-works"
+                onClick={(e) => { if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) return; e.preventDefault(); navigateToHomeSection('how-it-works'); }}
+                className="text-gray-400 hover:text-cyan-400 transition-colors cursor-pointer no-underline"
               >
                 How It Works
-              </button>
-              <button
-                onClick={() => navigateTo('about')}
-                className="text-gray-400 hover:text-cyan-400 transition-colors cursor-pointer"
+              </a>
+              <a
+                href="/about"
+                onClick={(e) => { if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) return; e.preventDefault(); navigateTo('about'); }}
+                className="text-gray-400 hover:text-cyan-400 transition-colors cursor-pointer no-underline"
               >
                 About
-              </button>
-              <button
-                onClick={() => navigateTo('education')}
-                className="text-gray-400 hover:text-cyan-400 transition-colors cursor-pointer"
+              </a>
+              <a
+                href="/learn"
+                onClick={(e) => { if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) return; e.preventDefault(); navigateTo('education'); }}
+                className="text-gray-400 hover:text-cyan-400 transition-colors cursor-pointer no-underline"
               >
                 Learn
-              </button>
-              <button
-                onClick={() => navigateTo('faq')}
-                className="text-gray-400 hover:text-cyan-400 transition-colors cursor-pointer"
+              </a>
+              <a
+                href="/faq"
+                onClick={(e) => { if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) return; e.preventDefault(); navigateTo('faq'); }}
+                className="text-gray-400 hover:text-cyan-400 transition-colors cursor-pointer no-underline"
               >
                 FAQ
-              </button>
+              </a>
             </nav>
 
             <div className="hidden md:flex items-center gap-3">
@@ -455,12 +462,13 @@ export default function App() {
                   onToggleAuto={() => livePrice.setAutoRefresh(!livePrice.autoRefresh)}
                 />
               </div>
-              <button
-                onClick={() => navigateTo('dashboard')}
-                className="bg-cyan-500 hover:bg-cyan-600 text-white font-semibold rounded-xl px-4 py-2 text-sm transition-all shadow-lg shadow-cyan-500/20 cursor-pointer"
+              <a
+                href="/dashboard"
+                onClick={(e) => { if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) return; e.preventDefault(); navigateTo('dashboard'); }}
+                className="bg-cyan-500 hover:bg-cyan-600 text-white font-semibold rounded-xl px-4 py-2 text-sm transition-all shadow-lg shadow-cyan-500/20 cursor-pointer no-underline"
               >
                 Launch App
-              </button>
+              </a>
             </div>
 
             <button
@@ -482,9 +490,10 @@ export default function App() {
               >
                 {sidebarOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
               </button>
-              <button
-                onClick={() => navigateTo('home')}
-                className="flex items-center gap-2.5 cursor-pointer"
+              <a
+                href="/"
+                onClick={(e) => { if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) return; e.preventDefault(); navigateTo('home'); }}
+                className="flex items-center gap-2.5 cursor-pointer no-underline"
               >
                 <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-cyan-500 to-indigo-600 flex items-center justify-center text-sm font-bold">
                   ⚛️
@@ -495,14 +504,14 @@ export default function App() {
                   </h1>
                   <p className="text-[10px] text-gray-500 leading-tight">Calculate. Track. Compound.</p>
                 </div>
-              </button>
+              </a>
             </div>
 
             {/* Breadcrumb */}
             <div className="hidden sm:flex items-center gap-1 text-xs text-gray-500">
-              <button onClick={() => navigateTo('home')} className="hover:text-cyan-400 transition-colors cursor-pointer">
+              <a href="/" onClick={(e) => { if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) return; e.preventDefault(); navigateTo('home'); }} className="hover:text-cyan-400 transition-colors cursor-pointer no-underline">
                 Home
-              </button>
+              </a>
               <ChevronRight className="w-3 h-3" />
               <span className="text-cyan-400">{currentNav?.label}</span>
             </div>
@@ -529,12 +538,13 @@ export default function App() {
                   </div>
                 )}
               </div>
-              <button
-                onClick={() => navigateTo('settings')}
-                className="w-8 h-8 rounded-full bg-gradient-to-br from-cyan-500 to-indigo-600 flex items-center justify-center text-xs font-bold cursor-pointer hover:opacity-90 transition-opacity"
+              <a
+                href="/settings"
+                onClick={(e) => { if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) return; e.preventDefault(); navigateTo('settings'); }}
+                className="w-8 h-8 rounded-full bg-gradient-to-br from-cyan-500 to-indigo-600 flex items-center justify-center text-xs font-bold cursor-pointer hover:opacity-90 transition-opacity no-underline"
               >
                 A
-              </button>
+              </a>
             </div>
           </div>
         </header>
@@ -544,42 +554,48 @@ export default function App() {
         <div className="fixed inset-0 top-16 z-40 md:hidden">
           <div className="absolute inset-0 bg-black/30" onClick={() => setSidebarOpen(false)} />
           <div className="absolute left-4 right-4 top-3 glass-card rounded-2xl p-3 shadow-2xl animate-fade-in">
-            <button
-              onClick={() => navigateToHomeSection('features')}
-              className="w-full text-left px-4 py-3 rounded-xl text-sm font-medium text-gray-300 hover:bg-gray-800/50 hover:text-cyan-400 transition-colors cursor-pointer"
+            <a
+              href="/#features"
+              onClick={(e) => { if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) return; e.preventDefault(); navigateToHomeSection('features'); }}
+              className="block text-left px-4 py-3 rounded-xl text-sm font-medium text-gray-300 hover:bg-gray-800/50 hover:text-cyan-400 transition-colors cursor-pointer no-underline"
             >
               Features
-            </button>
-            <button
-              onClick={() => navigateToHomeSection('how-it-works')}
-              className="w-full text-left px-4 py-3 rounded-xl text-sm font-medium text-gray-300 hover:bg-gray-800/50 hover:text-cyan-400 transition-colors cursor-pointer"
+            </a>
+            <a
+              href="/#how-it-works"
+              onClick={(e) => { if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) return; e.preventDefault(); navigateToHomeSection('how-it-works'); }}
+              className="block text-left px-4 py-3 rounded-xl text-sm font-medium text-gray-300 hover:bg-gray-800/50 hover:text-cyan-400 transition-colors cursor-pointer no-underline"
             >
               How It Works
-            </button>
-            <button
-              onClick={() => navigateTo('education')}
-              className="w-full text-left px-4 py-3 rounded-xl text-sm font-medium text-gray-300 hover:bg-gray-800/50 hover:text-cyan-400 transition-colors cursor-pointer"
+            </a>
+            <a
+              href="/learn"
+              onClick={(e) => { if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) return; e.preventDefault(); navigateTo('education'); }}
+              className="block text-left px-4 py-3 rounded-xl text-sm font-medium text-gray-300 hover:bg-gray-800/50 hover:text-cyan-400 transition-colors cursor-pointer no-underline"
             >
               Learn About Staking
-            </button>
-            <button
-              onClick={() => navigateTo('about')}
-              className="w-full text-left px-4 py-3 rounded-xl text-sm font-medium text-gray-300 hover:bg-gray-800/50 hover:text-cyan-400 transition-colors cursor-pointer"
+            </a>
+            <a
+              href="/about"
+              onClick={(e) => { if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) return; e.preventDefault(); navigateTo('about'); }}
+              className="block text-left px-4 py-3 rounded-xl text-sm font-medium text-gray-300 hover:bg-gray-800/50 hover:text-cyan-400 transition-colors cursor-pointer no-underline"
             >
               About
-            </button>
-            <button
-              onClick={() => navigateTo('faq')}
-              className="w-full text-left px-4 py-3 rounded-xl text-sm font-medium text-gray-300 hover:bg-gray-800/50 hover:text-cyan-400 transition-colors cursor-pointer"
+            </a>
+            <a
+              href="/faq"
+              onClick={(e) => { if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) return; e.preventDefault(); navigateTo('faq'); }}
+              className="block text-left px-4 py-3 rounded-xl text-sm font-medium text-gray-300 hover:bg-gray-800/50 hover:text-cyan-400 transition-colors cursor-pointer no-underline"
             >
               FAQ
-            </button>
-            <button
-              onClick={() => navigateTo('dashboard')}
-              className="w-full mt-2 bg-cyan-500 hover:bg-cyan-600 text-white font-semibold rounded-xl px-4 py-3 text-sm transition-colors cursor-pointer"
+            </a>
+            <a
+              href="/dashboard"
+              onClick={(e) => { if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) return; e.preventDefault(); navigateTo('dashboard'); }}
+              className="block w-full mt-2 bg-cyan-500 hover:bg-cyan-600 text-white font-semibold rounded-xl px-4 py-3 text-sm transition-colors cursor-pointer no-underline"
             >
               Launch App
-            </button>
+            </a>
           </div>
         </div>
       )}
@@ -641,16 +657,17 @@ export default function App() {
               const Icon = item.icon;
               const isActive = currentPage === item.id;
               return (
-                <button
+                <a
                   key={item.id}
-                  onClick={() => navigateTo(item.id)}
-                  className={`flex flex-col items-center gap-0.5 px-2 py-1.5 rounded-lg text-[10px] font-medium transition-all cursor-pointer min-w-0 ${
+                  href={PAGE_PATHS[item.id]}
+                  onClick={(e) => { if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) return; e.preventDefault(); navigateTo(item.id); }}
+                  className={`flex flex-col items-center gap-0.5 px-2 py-1.5 rounded-lg text-[10px] font-medium transition-all cursor-pointer no-underline min-w-0 ${
                     isActive ? 'text-cyan-400' : 'text-gray-500 hover:text-gray-300'
                   }`}
                 >
                   <Icon className={`w-5 h-5 ${isActive ? 'drop-shadow-[0_0_6px_rgba(6,182,212,0.5)]' : ''}`} />
                   <span className="truncate">{item.shortLabel}</span>
-                </button>
+                </a>
               );
             }
           )}
