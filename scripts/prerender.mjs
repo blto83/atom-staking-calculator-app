@@ -2,6 +2,7 @@
 import fs from 'fs/promises';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import { loadContentBlocks, renderArticleBodyHtml, renderLearnIndexHtml } from './content-html.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -54,10 +55,14 @@ async function getArticleMetadata() {
     const ogImageMatch = obj.match(/ogImage:\s*'([^']+)'/);
 
     const dateMatch = obj.match(/date:\s*'([^']+)'/);
+    const titleMatch = obj.match(/[^a-zA-Z]title:\s*'([^']+)'/);
+    const authorMatch = obj.match(/author:\s*'([^']+)'/);
 
     if (slugMatch && seoTitleMatch && seoDescMatch) {
       articles.push({
         slug: slugMatch[1],
+        title: titleMatch ? titleMatch[1] : slugMatch[1],
+        author: authorMatch ? authorMatch[1] : 'Atom Staking Calculator Team',
         seoTitle: seoTitleMatch[1],
         seoDescription: seoDescMatch[1],
         ogImage: ogImageMatch ? ogImageMatch[1] : null,
@@ -256,6 +261,20 @@ async function validateBuild(articles) {
     try {
       const articleHtml = await fs.readFile(articlePath, 'utf-8');
 
+      const h1Count = (articleHtml.match(/<h1[\s>]/g) || []).length;
+      if (h1Count !== 1) {
+        errors.push(`Article "${article.slug}" must contain exactly 1 <h1>, found ${h1Count}`);
+      }
+      if (!article.firstH2Text) {
+        errors.push(`Article "${article.slug}" has no first <h2> heading in its content blocks`);
+      } else if (!articleHtml.includes(`<h2>${article.firstH2Text}</h2>`)) {
+        errors.push(`Article "${article.slug}" first <h2> text mismatch: expected "${article.firstH2Text}"`);
+      }
+      const internalLinkCount = (articleHtml.match(/href="(\/learn\/|\/calculator)/g) || []).length;
+      if (internalLinkCount < 3) {
+        errors.push(`Article "${article.slug}" must contain at least 3 links to /learn/ or /calculator, found ${internalLinkCount}`);
+      }
+
       if (articleHtml.includes('bolt.new')) {
         errors.push(`Article "${article.slug}" still contains bolt.new references`);
       }
@@ -360,6 +379,56 @@ ${urls.join('\n')}
 </urlset>`;
 }
 
+function injectHtmlIntoRoot(html, bodyHtml) {
+  const rootIndex = html.indexOf('<div id="root">');
+  if (rootIndex === -1) {
+    throw new Error('dist/index.html has no <div id="root"> to inject into');
+  }
+  const openTagEnd = html.indexOf('>', rootIndex);
+  const closeIndex = html.indexOf('</div>', openTagEnd);
+  if (closeIndex === -1) {
+    throw new Error('dist/index.html has no closing </div> for #root');
+  }
+  return html.slice(0, closeIndex) + bodyHtml + html.slice(closeIndex);
+}
+
+// A few content files contain no internal-link/calculator-cta blocks. Content
+// files are immutable, so the prerender appends a small related-guides section
+// at build time to satisfy the minimum cross-link requirement.
+function appendRelatedLinksIfUnderMinimum(slug, bodyHtml) {
+  const linkCount = (bodyHtml.match(/href="(\/learn\/|\/calculator)/g) || []).length;
+  if (linkCount >= 3) return bodyHtml;
+
+  const related = [
+    { href: '/calculator', label: 'ATOM Staking Calculator' },
+    { href: '/learn/what-is-cosmos-atom-staking-beginner-guide-2026', label: 'What Is Cosmos ATOM Staking? Beginner Guide' },
+    { href: '/learn/how-to-choose-the-right-cosmos-validator-5-core-metrics', label: 'How to Choose the Right Cosmos Validator' },
+  ];
+  const links = related
+    .map((r) => `<a href="${r.href}">${r.label}</a>`)
+    .join(', ');
+  return `${bodyHtml}
+    <aside class="article-related"><strong>Related:</strong> ${links}</aside>`;
+}
+
+function validateInjectedArticleHtml(slug, html, article) {
+  const h1Count = (html.match(/<h1[\s>]/g) || []).length;
+  if (h1Count !== 1) {
+    throw new Error(`Article "${slug}": expected exactly 1 <h1>, found ${h1Count}`);
+  }
+
+  const firstHeadingBlockMatch = html.match(/<h2[^>]*>([\s\S]*?)<\/h2>/);
+  const firstH2Text = firstHeadingBlockMatch ? firstHeadingBlockMatch[1].replace(/<[^>]+>/g, '').trim() : null;
+  if (!firstH2Text || !html.includes(`<h2>${firstH2Text}</h2>`) || !article.firstH2Text || article.firstH2Text !== firstH2Text) {
+    throw new Error(`Article "${slug}": first <h2> text mismatch or missing (found: "${firstH2Text}")`);
+  }
+
+  const internalLinkCount = (html.match(/href="(\/learn\/|\/calculator)/g) || []).length;
+  if (internalLinkCount < 3) {
+    throw new Error(`Article "${slug}": expected at least 3 links to /learn/ or /calculator, found ${internalLinkCount}`);
+  }
+}
+
 async function main() {
   console.log('🔨 ATOM Staking Calculator - Article Prerender\n');
 
@@ -375,12 +444,25 @@ async function main() {
 
     console.log(`📚 Prerendering ${articles.length} articles...\n`);
 
+    // Compute each article's first <h2> heading text from its content blocks so
+    // validation can compare it against the injected HTML.
+    const articleBodies = new Map();
+    for (const article of articles) {
+      const blocks = await loadContentBlocks(article.slug);
+      const firstHeading = blocks.find((b) => b.type === 'heading' && b.level === 2);
+      article.firstH2Text = firstHeading ? firstHeading.text : null;
+      articleBodies.set(article.slug, renderArticleBodyHtml(article, blocks));
+    }
+
     for (const article of articles) {
       const outDir = path.join(__dirname, '..', 'dist', 'learn', article.slug);
       await fs.mkdir(outDir, { recursive: true });
 
       const articleHtml = injectMetadata(baseHtml, article);
-      await fs.writeFile(path.join(outDir, 'index.html'), articleHtml);
+      const withBody = appendRelatedLinksIfUnderMinimum(article.slug, articleBodies.get(article.slug));
+      const injected = injectHtmlIntoRoot(articleHtml, withBody);
+      validateInjectedArticleHtml(article.slug, injected, article);
+      await fs.writeFile(path.join(outDir, 'index.html'), injected);
 
       const imageSource = article.ogImage ? 'custom' : 'default';
       console.log(`✓ Generated: /learn/${article.slug}/index.html (og:image: ${imageSource})`);
@@ -398,6 +480,15 @@ async function main() {
     }
 
     console.log(`\n✅ Successfully prerendered ${ROUTES.length} static route pages!\n`);
+
+    // Inject a static article index into /learn
+    console.log('📄 Injecting article index into /learn...');
+    const learnIndexPath = path.join(__dirname, '..', 'dist', 'learn', 'index.html');
+    const learnHtml = await fs.readFile(learnIndexPath, 'utf-8');
+    const learnRoute = ROUTES.find((r) => r.path === '/learn');
+    const learnWithIndex = injectHtmlIntoRoot(learnHtml, renderLearnIndexHtml(articles));
+    await fs.writeFile(learnIndexPath, learnWithIndex);
+    console.log(`✓ Injected ${articles.length} article links into /learn/index.html (title source: ${learnRoute ? 'route metadata' : 'fallback'})\n`);
 
     // Generate dynamic sitemap
     console.log('🗺️  Generating sitemap.xml...');
