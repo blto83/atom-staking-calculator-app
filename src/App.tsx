@@ -27,8 +27,11 @@ import PrivacyPolicyPage from './components/PrivacyPolicyPage';
 import TermsOfUsePage from './components/TermsOfUsePage';
 import LivePriceBadge from './components/LivePriceBadge';
 import Footer from './components/Footer';
+import NotFound from './components/NotFound';
+import { ARTICLES } from './data/articles';
 
 type Page =
+  | 'notfound'
   | 'home'
   | 'dashboard'
   | 'calculator'
@@ -84,11 +87,15 @@ const PAGE_PATHS: Record<Page, string> = {
 };
 
 function getPageFromPath(pathname: string): Page {
-  if (pathname.startsWith('/learn/')) return 'education';
+  const normalized = pathname !== '/' ? pathname.replace(/\/+$/, '') || '/' : pathname;
+  if (normalized.startsWith('/learn/')) {
+    const slug = normalized.slice('/learn/'.length);
+    return ARTICLES.some((a) => a.slug === slug) ? 'education' : 'notfound';
+  }
   const found = (Object.entries(PAGE_PATHS) as [Page, string][]).find(
-    ([, path]) => path === pathname
+    ([, path]) => path === normalized
   );
-  return found?.[0] ?? 'home';
+  return found?.[0] ?? 'notfound';
 }
 
 export default function App() {
@@ -138,8 +145,9 @@ export default function App() {
   }, [portfolio.theme]);
 
   useEffect(() => {
-    // Skip metadata updates for education page - EducationPage handles its own SEO
-    if (currentPage === 'education') return;
+    // Skip metadata updates for education page - EducationPage handles its own SEO.
+    // NotFound handles its own title and noindex robots meta.
+    if (currentPage === 'education' || currentPage === 'notfound') return;
 
     const meta: Record<Page, { title: string; description: string }> = {
       home: {
@@ -346,6 +354,8 @@ export default function App() {
         return <TermsOfUsePage />;
       case 'disclaimer':
         return <DisclaimerPage />;
+      case 'notfound':
+        return <NotFound />;
       default:
         return null;
     }
