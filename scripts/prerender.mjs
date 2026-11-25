@@ -2,7 +2,7 @@
 import fs from 'fs/promises';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import { loadContentBlocks, renderArticleBodyHtml, renderLearnIndexHtml } from './content-html.mjs';
+import { escapeHtml, loadArticles, loadContentBlocks, renderArticleBodyHtml, renderLearnIndexHtml } from './content-html.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -29,47 +29,21 @@ const ROUTES = [
 // transactions, settings) and legal pages are intentionally excluded.
 const SITEMAP_PAGES = ['/', '/calculator', '/growth', '/learn', '/faq', '/about'];
 
+function normalizeArticle(raw) {
+  return {
+    slug: raw.slug,
+    title: raw.title,
+    author: raw.author || 'Atom Staking Calculator Team',
+    seoTitle: raw.seoTitle,
+    seoDescription: raw.seoDescription,
+    ogImage: raw.ogImage || null,
+    date: raw.date || null,
+  };
+}
+
 async function getArticleMetadata() {
-  const articlesPath = path.join(__dirname, '..', 'src', 'data', 'articles.ts');
-  const content = await fs.readFile(articlesPath, 'utf-8');
-
-  const articles = [];
-
-  // Parse each article object from the TypeScript file
-  // Match article blocks starting from { id: to the closing },
-  const articleBlockPattern = /{\s*id:\s*'([^']+)',\s*slug:\s*'([^']+)',[\s\S]*?seoTitle:\s*'([^']+)',\s*seoDescription:\s*'([^']+)'[\s\S]*?},?\n\s*}/g;
-
-  // Simpler approach: extract each article object
-  const slugPattern = /slug:\s*'([^']+)'/g;
-  const seoTitlePattern = /seoTitle:\s*'([^']+)'/g;
-  const seoDescPattern = /seoDescription:\s*'([^']+)'/g;
-  const ogImagePattern = /ogImage:\s*'([^']+)'/g;
-
-  // Split by article objects
-  const articleObjects = content.match(/{\s*id:\s*'[^']+',[\s\S]*?(?:featured:\s*(?:true|false),?\s*)?}/g) || [];
-
-  for (const obj of articleObjects) {
-    const slugMatch = obj.match(/slug:\s*'([^']+)'/);
-    const seoTitleMatch = obj.match(/seoTitle:\s*'([^']+)'/);
-    const seoDescMatch = obj.match(/seoDescription:\s*'([^']+)'/);
-    const ogImageMatch = obj.match(/ogImage:\s*'([^']+)'/);
-
-    const dateMatch = obj.match(/date:\s*'([^']+)'/);
-    const titleMatch = obj.match(/[^a-zA-Z]title:\s*'([^']+)'/);
-    const authorMatch = obj.match(/author:\s*'([^']+)'/);
-
-    if (slugMatch && seoTitleMatch && seoDescMatch) {
-      articles.push({
-        slug: slugMatch[1],
-        title: titleMatch ? titleMatch[1] : slugMatch[1],
-        author: authorMatch ? authorMatch[1] : 'Atom Staking Calculator Team',
-        seoTitle: seoTitleMatch[1],
-        seoDescription: seoDescMatch[1],
-        ogImage: ogImageMatch ? ogImageMatch[1] : null,
-        date: dateMatch ? dateMatch[1] : null,
-      });
-    }
-  }
+  const rawArticles = await loadArticles();
+  const articles = rawArticles.map(normalizeArticle);
 
   if (articles.length === 0) {
     throw new Error('No article slugs found in articles.ts');
@@ -83,18 +57,22 @@ function injectMetadata(html, article) {
   const canonicalUrl = `${SITE_URL}/learn/${article.slug}`;
   const ogImageUrl = article.ogImage || DEFAULT_OG_IMAGE;
 
+  const titleAttr = escapeHtml(fullTitle);
+  const seoTitleAttr = escapeHtml(article.seoTitle);
+  const seoDescAttr = escapeHtml(article.seoDescription);
+
   let result = html;
 
   // <title> keeps the full "seoTitle | ATOM Staking Calculator" form
   result = result.replace(
     /<title>[^<]*<\/title>/,
-    `<title>${fullTitle}</title>`
+    `<title>${titleAttr}</title>`
   );
 
   // meta description
   result = result.replace(
     /<meta name="description" content="[^"]*"/,
-    `<meta name="description" content="${article.seoDescription}"`
+    `<meta name="description" content="${seoDescAttr}"`
   );
 
   // og:site_name — replace if present, inject after og:type otherwise
@@ -113,13 +91,13 @@ function injectMetadata(html, article) {
   // og:title — use seoTitle directly (no suffix) to stay under 60 chars
   result = result.replace(
     /<meta property="og:title" content="[^"]*"/,
-    `<meta property="og:title" content="${article.seoTitle}"`
+    `<meta property="og:title" content="${seoTitleAttr}"`
   );
 
   // og:description
   result = result.replace(
     /<meta property="og:description" content="[^"]*"/,
-    `<meta property="og:description" content="${article.seoDescription}"`
+    `<meta property="og:description" content="${seoDescAttr}"`
   );
 
   // og:url
@@ -137,13 +115,13 @@ function injectMetadata(html, article) {
   // twitter:title — use seoTitle directly (no suffix) to stay under 60 chars
   result = result.replace(
     /<meta name="twitter:title" content="[^"]*"/,
-    `<meta name="twitter:title" content="${article.seoTitle}"`
+    `<meta name="twitter:title" content="${seoTitleAttr}"`
   );
 
   // twitter:description
   result = result.replace(
     /<meta name="twitter:description" content="[^"]*"/,
-    `<meta name="twitter:description" content="${article.seoDescription}"`
+    `<meta name="twitter:description" content="${seoDescAttr}"`
   );
 
   // twitter:image
@@ -163,25 +141,27 @@ function injectMetadata(html, article) {
 
 function injectRouteMetadata(html, route) {
   const canonicalUrl = `${SITE_URL}${route.path}`;
+  const titleAttr = escapeHtml(route.title);
+  const descAttr = escapeHtml(route.description);
 
   let result = html.replace(
     /<title>[^<]*<\/title>/,
-    `<title>${route.title}</title>`
+    `<title>${titleAttr}</title>`
   );
 
   result = result.replace(
     /<meta name="description" content="[^"]*"/,
-    `<meta name="description" content="${route.description}"`
+    `<meta name="description" content="${descAttr}"`
   );
 
   result = result.replace(
     /<meta property="og:title" content="[^"]*"/,
-    `<meta property="og:title" content="${route.title}"`
+    `<meta property="og:title" content="${titleAttr}"`
   );
 
   result = result.replace(
     /<meta property="og:description" content="[^"]*"/,
-    `<meta property="og:description" content="${route.description}"`
+    `<meta property="og:description" content="${descAttr}"`
   );
 
   result = result.replace(
@@ -191,12 +171,12 @@ function injectRouteMetadata(html, route) {
 
   result = result.replace(
     /<meta name="twitter:title" content="[^"]*"/,
-    `<meta name="twitter:title" content="${route.title}"`
+    `<meta name="twitter:title" content="${titleAttr}"`
   );
 
   result = result.replace(
     /<meta name="twitter:description" content="[^"]*"/,
-    `<meta name="twitter:description" content="${route.description}"`
+    `<meta name="twitter:description" content="${descAttr}"`
   );
 
   result = result.replace(
@@ -415,6 +395,25 @@ function validateInjectedArticleHtml(slug, html, article) {
   const h1Count = (html.match(/<h1[\s>]/g) || []).length;
   if (h1Count !== 1) {
     throw new Error(`Article "${slug}": expected exactly 1 <h1>, found ${h1Count}`);
+  }
+
+  // A trailing backslash means an escaped quote (\' or \") in the source
+  // string was cut mid-escape; a very short title means extraction failed.
+  const injectedTitle = (html.match(/<h1>([\s\S]*?)<\/h1>/) || [])[1] || '';
+  const decodedTitle = injectedTitle
+    .replace(/&amp;/g, '&')
+    .replace(/&lt;/g, '<')
+    .replace(/&gt;/g, '>')
+    .replace(/&quot;/g, '"')
+    .replace(/&#39;/g, "'");
+  if (decodedTitle.endsWith('\\')) {
+    throw new Error(`Article "${slug}": injected title ends with a backslash (likely a truncated escape): "${decodedTitle}"`);
+  }
+  if (decodedTitle.trim().length < 15) {
+    throw new Error(`Article "${slug}": injected title too short (${decodedTitle.trim().length} chars): "${decodedTitle}"`);
+  }
+  if (article.title && decodedTitle !== article.title) {
+    throw new Error(`Article "${slug}": injected <h1> title does not match article title.\n  expected: "${article.title}"\n  found:    "${decodedTitle}"`);
   }
 
   const firstHeadingBlockMatch = html.match(/<h2[^>]*>([\s\S]*?)<\/h2>/);

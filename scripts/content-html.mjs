@@ -7,6 +7,7 @@ import esbuild from 'esbuild';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const CONTENT_DIR = path.join(__dirname, '..', 'src', 'content');
+const DATA_DIR = path.join(__dirname, '..', 'src', 'data');
 
 export function escapeHtml(text) {
   return String(text)
@@ -17,11 +18,9 @@ export function escapeHtml(text) {
     .replace(/'/g, '&#39;');
 }
 
-// Bundles the TS content file to CJS in memory and evaluates it, then returns
-// the first exported array (export names vary between content files).
-export async function loadContentBlocks(slug) {
-  const entry = path.join(CONTENT_DIR, `${slug}.ts`);
-
+// Bundles a TS source file to CJS in memory and evaluates it, returning its
+// exports. Avoids regex-parsing source files, which breaks on escaped quotes.
+async function loadTsModule(entry) {
   let result;
   try {
     result = await esbuild.build({
@@ -33,7 +32,7 @@ export async function loadContentBlocks(slug) {
       logLevel: 'silent',
     });
   } catch (e) {
-    throw new Error(`Failed to load content file for article "${slug}": ${e.message}`);
+    throw new Error(`Failed to load TypeScript file "${entry}": ${e.message}`);
   }
 
   const code = result.outputFiles[0].text;
@@ -41,14 +40,32 @@ export async function loadContentBlocks(slug) {
   try {
     new Function('module', 'exports', 'require', code)(mod, mod.exports, () => ({}));
   } catch (e) {
-    throw new Error(`Failed to evaluate content file for article "${slug}": ${e.message}`);
+    throw new Error(`Failed to evaluate TypeScript file "${entry}": ${e.message}`);
   }
+  return mod.exports;
+}
 
-  const blocks = Object.values(mod.exports).find((v) => Array.isArray(v) && v.length > 0);
+// Loads the ContentBlock[] array from src/content/<slug>.ts (export names vary
+// between content files, so pick the first non-empty array).
+export async function loadContentBlocks(slug) {
+  const entry = path.join(CONTENT_DIR, `${slug}.ts`);
+  const exports = await loadTsModule(entry);
+  const blocks = Object.values(exports).find((v) => Array.isArray(v) && v.length > 0);
   if (!blocks) {
     throw new Error(`Content file for article "${slug}" exports no ContentBlock[] array`);
   }
   return blocks;
+}
+
+// Loads the Article[] metadata from src/data/articles.ts.
+export async function loadArticles() {
+  const entry = path.join(DATA_DIR, 'articles.ts');
+  const exports = await loadTsModule(entry);
+  const articles = exports.ARTICLES;
+  if (!Array.isArray(articles) || articles.length === 0) {
+    throw new Error('articles.ts exports no non-empty ARTICLES array');
+  }
+  return articles;
 }
 
 function renderExampleCalculation(block) {
